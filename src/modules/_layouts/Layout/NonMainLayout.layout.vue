@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <LoginLayout />
+    <router-view />
   </div>
 </template>
 <script lang="ts">
@@ -33,7 +33,7 @@ html,
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
-  padding-top: 30vh;
+  padding-top: 100px;
   padding-bottom: 40px;
   background-color: #ffffff;
 }

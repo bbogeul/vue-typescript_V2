@@ -1,1 +1,1 @@
-import { RouterConfig } from 'vue-router';
+import { RouteConfig } from 'vue-router';

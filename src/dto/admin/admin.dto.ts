@@ -1,8 +1,4 @@
 import { BaseDto } from '@/core';
+import { BaseUser } from '@/services/shared/auth';
 
-export class Admin extends BaseDto<Admin> {
-  no: number;
-  name: string;
-  phone: string;
-  authCode: string;
-}
+export class Admin extends BaseUser {}

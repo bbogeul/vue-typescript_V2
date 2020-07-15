@@ -11,8 +11,7 @@ class AuthService extends BaseService {
   }
 
   signin(credential: SigninDto): Observable<any> {
-    console.log(credential);
-    return this.post('company-user/login', credential);
+    return this.post('auth/admin/login', credential);
   }
 
   //   logout and remove session storage

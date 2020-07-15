@@ -1,6 +1,6 @@
 <template>
   <section>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand" href="#">NND</a>
       <button
         class="navbar-toggler"
@@ -13,12 +13,12 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <NavBarList v-if="isLoggedIn" />
+      <NavBarList />
     </nav>
   </section>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
 import NavBarList from './NavBarList.layout.vue';
 
@@ -32,3 +32,5 @@ export default class NavBar extends BaseComponent {
   isLoggedIn = false;
 }
 </script>
+
+<style scoped lang="scss"></style>

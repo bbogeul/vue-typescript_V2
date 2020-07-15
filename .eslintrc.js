@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/class-name-casing': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
   overrides: [
     {

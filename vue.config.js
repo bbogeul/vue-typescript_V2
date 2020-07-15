@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 
 const name = '나누다 공유 플랫폼'; // TODO: get this variable from setting.ts

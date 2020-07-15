@@ -4,6 +4,7 @@ import * as env from '../../environments/development.environment';
 import { Observable } from 'rxjs';
 import { Pagination, PaginatedResponse } from './interfaces';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
+import toast from '../../resources/assets/js/services/toast.js';
 
 // axios에서 사용할 메소드 타입
 type Method =
@@ -66,6 +67,23 @@ export class BaseService {
 
   private __api(method: Method, path: string, params?: any): Observable<any> {
     console.log(params);
+    // axios observable에서 글로벌 에러 catch하는 코드
+    Axios.interceptors.response.use(
+      response => {
+        return response;
+      },
+      error => {
+        if (typeof error.response.data.message === 'object') {
+          toast.error(
+            error.response.data.message[0].constraints[
+              Object.keys(error.response.data.message[0].constraints)[0]
+            ],
+          );
+        } else {
+          toast.error(error.response.data.message);
+        }
+      },
+    );
     if (path.indexOf('http') !== 0) {
       path = env.DevelopmentEnvironment.baseURL + path;
     }

@@ -1,5 +1,5 @@
 class JwtStorageService {
-  TOKEN_NAME = 'company_user_access_token';
+  TOKEN_NAME = 'admin_user_access_token';
 
   getToken(): string {
     return sessionStorage.getItem(this.TOKEN_NAME);

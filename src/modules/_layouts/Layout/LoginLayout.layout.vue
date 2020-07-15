@@ -1,0 +1,120 @@
+<template>
+  <section class="body text-center">
+    <div class="form-signin">
+      <img class="mb-4 logo" src="https://nanudakitchen.com/_nuxt/img/65bad5b.svg" alt width="72" />
+
+      <label for="inputPhone" class="sr-only">휴대폰 번호</label>
+      <input
+        id="inputPhone"
+        class="form-control"
+        placeholder="휴대폰 번호"
+        v-model="signinDto.phone"
+        required
+        autofocus
+      />
+      <label for="inputPassword" class="sr-only">비밀번호</label>
+      <input
+        type="password"
+        id="inputPassword"
+        class="form-control"
+        placeholder="비밀번호"
+        v-model="signinDto.password"
+        required
+      />
+      <button @click="signin()" class="btn btn-lg btn-primary btn-block">로그인</button>
+      <p class="mt-5 mb-3 text-muted">
+        &copy;
+        <a href="https://nanudakitchen.com" target="_blank">위대한 상사 2020</a>
+      </p>
+    </div>
+  </section>
+</template>
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import BaseComponent from '../../../core/base.component';
+import { SigninDto } from '../../../services/shared/auth/dto';
+import AuthService from '../../../services/shared/auth/auth.service';
+import JwtStorageService from '../../../services/shared/auth/jwt-storage.service';
+import CompanyUserService from '../../../services/company-user.service';
+import { CompanyUserDto, CompanyUserListDto } from '../../../dto';
+import { IsValidatePhone, IsValidatePassword, Pagination } from '../../../core';
+
+@Component({
+  name: 'LoginLayout',
+})
+export default class LoginLayout extends BaseComponent {
+  private signinDto = new SigninDto();
+  private companyUserListDto = new CompanyUserListDto();
+  private pagination = new Pagination();
+  // clear all parameters
+  private clearOut() {
+    this.signinDto = new SigninDto();
+  }
+
+  // TODO: phone and password validator
+  signin() {
+    AuthService.signin(this.signinDto).subscribe(res => {
+      if (!res) {
+        this.clearOut();
+      } else {
+        JwtStorageService.setToken(res.data);
+        this.getAll();
+      }
+    });
+  }
+
+  getAll() {
+    CompanyUserService.getAll(
+      this.companyUserListDto,
+      this.pagination,
+    ).subscribe(res => {
+      console.log(res);
+    });
+  }
+
+  mounted() {
+    this.clearOut();
+  }
+}
+</script>
+<style lang="scss" scoped>
+.form-signin {
+  width: 100%;
+  max-width: 380px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type='email'] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type='password'] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.btn-primary {
+  background-color: #eb7f1a;
+  border-color: #eb7f1a;
+}
+
+/* img */
+.logo {
+  padding-bottom: 32px;
+}
+</style>

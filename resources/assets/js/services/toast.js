@@ -1,0 +1,15 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+import '../../../../node_modules/izitoast/dist/css/iziToast.css';
+const iZtoast = require('izitoast');
+
+const toast = {
+  error: (message, title = 'Error') => {
+    return iZtoast.error({
+      title: title,
+      message: message,
+      position: 'topRight',
+    });
+  },
+};
+
+export default toast;
