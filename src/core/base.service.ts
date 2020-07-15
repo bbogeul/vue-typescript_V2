@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import Axios from 'axios-observable';
 import * as env from '../../environments/development.environment';
 import { Observable } from 'rxjs';
-import { Pagination, PaginatedResponse } from './interfaces';
+import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
 
@@ -129,7 +129,7 @@ export class BaseService {
     path: string,
     params: any | Pagination,
     pagination?: Pagination,
-  ): Observable<PaginatedResponse<T>> {
+  ): Observable<any> {
     let request = {};
     if (params instanceof Pagination) {
       request = {

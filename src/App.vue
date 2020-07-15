@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view />
+    <component :is="layout"> </component>
   </div>
 </template>
 <script lang="ts">
@@ -10,5 +10,10 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component({
   name: 'App',
 })
-export default class extends BaseComponent {}
+export default class extends BaseComponent {
+  // get layout
+  get layout() {
+    return this.$route.meta.layout;
+  }
+}
 </script>

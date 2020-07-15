@@ -1,4 +1,5 @@
-import { BaseService, Pagination } from '@/core';
+import { BaseService } from '@/core';
+import { Pagination } from '@/common';
 import { CompanyUserDto, CompanyUserListDto } from '@/dto';
 
 class CompanyUserService extends BaseService {

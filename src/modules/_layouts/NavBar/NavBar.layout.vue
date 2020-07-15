@@ -1,7 +1,7 @@
 <template>
-  <section>
-    <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">NND</a>
+  <nav id="nav" class="navbar fixed-top navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand brand-text" href="#">NND</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -14,8 +14,8 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <NavBarList />
-    </nav>
-  </section>
+    </div>
+  </nav>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -28,9 +28,15 @@ import NavBarList from './NavBarList.layout.vue';
     NavBarList,
   },
 })
-export default class NavBar extends BaseComponent {
-  isLoggedIn = false;
-}
+export default class NavBar extends BaseComponent {}
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+nav {
+  background-color: rgb(255, 136, 0);
+}
+.brand-text {
+  color: #fff;
+  font-weight: 700;
+}
+</style>

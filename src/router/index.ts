@@ -1,19 +1,40 @@
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
-import NonMainLayout from '../modules/_layouts/Layout/NonMainLayout.layout.vue';
-import { Environment, DevelopmentEnvironment } from '../../environments';
-import { component } from 'vue/types/umd';
-import { ADMIN_USER } from '@/services/shared';
+import {
+  Environment,
+  DevelopmentEnvironment,
+  EnvironmentType,
+  ProductionEnvironment,
+} from '../../environments';
+import { CONST_ADMIN_USER } from '@/services/shared';
 
+let env = new Environment();
+if (process.env.NODE_ENV === EnvironmentType.development) {
+  env = DevelopmentEnvironment;
+}
+if (process.env.NODE_ENV === EnvironmentType.production) {
+  env = ProductionEnvironment;
+}
 // 뷰에서 라이터를 사용할 것을 파람으로 받아 다른 라우터 기능을 억제한다.
 Vue.use(Router);
 
 export const constantRoutes: RouteConfig[] = [
   {
     path: '/login',
-    component: NonMainLayout,
+    component: () =>
+      import('../modules/_layouts/Layout/LoginLayout.layout.vue'),
     name: 'Login',
-    meta: { hidden: true, requiredAuth: false },
+    meta: { requiresAuth: false, layout: 'NonMainLayout' },
+  },
+  {
+    path: '/dashboard',
+    component: () => import('../modules/dashboard/Dashboard.vue'),
+    name: 'Dashboard',
+    meta: {
+      requiresAuth: true,
+      layout: 'MainLayout',
+      roles: [...CONST_ADMIN_USER],
+    },
   },
 ];
 
@@ -27,8 +48,8 @@ const createRouter = () =>
         return { x: 0, y: 0 };
       }
     },
-    // TODO: pull in environment
-    base: process.env.BASE_URL || 'http:localhost:4200/',
+
+    base: env.baseURL,
     routes: constantRoutes,
   });
 

@@ -1,5 +1,5 @@
 import { BaseDto } from '@/core';
-import { YN } from '@/core/interfaces/del-yn.type';
+import { YN } from '@/common';
 
 export class CodeManagementDto extends BaseDto<CodeManagementDto> {
   constructor(partial?: any) {

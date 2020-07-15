@@ -1,7 +1,12 @@
 <template>
   <section class="body text-center">
     <div class="form-signin">
-      <img class="mb-4 logo" src="https://nanudakitchen.com/_nuxt/img/65bad5b.svg" alt width="72" />
+      <img
+        class="mb-4 logo"
+        src="https://nanudakitchen.com/_nuxt/img/65bad5b.svg"
+        alt
+        width="72"
+      />
 
       <label for="inputPhone" class="sr-only">휴대폰 번호</label>
       <input
@@ -21,7 +26,9 @@
         v-model="signinDto.password"
         required
       />
-      <button @click="signin()" class="btn btn-lg btn-primary btn-block">로그인</button>
+      <button @click="signin()" class="btn btn-lg btn-primary btn-block">
+        로그인
+      </button>
       <p class="mt-5 mb-3 text-muted">
         &copy;
         <a href="https://nanudakitchen.com" target="_blank">위대한 상사 2020</a>
@@ -37,7 +44,8 @@ import AuthService from '../../../services/shared/auth/auth.service';
 import JwtStorageService from '../../../services/shared/auth/jwt-storage.service';
 import CompanyUserService from '../../../services/company-user.service';
 import { CompanyUserDto, CompanyUserListDto } from '../../../dto';
-import { IsValidatePhone, IsValidatePassword, Pagination } from '../../../core';
+import { IsValidatePhone, IsValidatePassword } from '../../../core';
+import { Pagination } from '../../../common';
 
 @Component({
   name: 'LoginLayout',
@@ -68,7 +76,7 @@ export default class LoginLayout extends BaseComponent {
       this.companyUserListDto,
       this.pagination,
     ).subscribe(res => {
-      console.log(res);
+      this.$router.push('/dashboard');
     });
   }
 
