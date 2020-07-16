@@ -10,6 +10,7 @@ import {
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import moment from 'moment';
+import '@/core/guards/auth-role.guard';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
