@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h3 v-if="founderConsultList > 0">총 {{ founderConsultListCount }}</h3>
+    <h3>총 {{ founderConsultListCount }}</h3>
     <table class="table">
       <thead>
         <tr>

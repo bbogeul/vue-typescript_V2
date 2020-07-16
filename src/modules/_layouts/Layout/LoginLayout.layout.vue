@@ -52,8 +52,6 @@ import { Pagination } from '../../../common';
 })
 export default class LoginLayout extends BaseComponent {
   private signinDto = new SigninDto();
-  private companyUserListDto = new CompanyUserListDto();
-  private pagination = new Pagination();
   // clear all parameters
   private clearOut() {
     this.signinDto = new SigninDto();
@@ -66,17 +64,8 @@ export default class LoginLayout extends BaseComponent {
         this.clearOut();
       } else {
         JwtStorageService.setToken(res.data);
-        this.getAll();
+        this.$router.push('/dashboard');
       }
-    });
-  }
-
-  getAll() {
-    CompanyUserService.getAll(
-      this.companyUserListDto,
-      this.pagination,
-    ).subscribe(res => {
-      this.$router.push('/dashboard');
     });
   }
 
