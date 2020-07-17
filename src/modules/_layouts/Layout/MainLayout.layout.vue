@@ -3,22 +3,24 @@
     <NavBar />
     <div id="app-main" class="container">
       <router-view />
+      <button @click="logout()">Logout</button>
     </div>
-
+    <!-- 
     <footer class="footer">
       <div class="container">
-        <span
-          >The Great Trading Company All Rights Reserved | 위대한 상사
-          2020</span
-        >
+        <span>
+          The Great Trading Company All Rights Reserved | 위대한 상사
+          2020
+        </span>
       </div>
-    </footer>
+    </footer>-->
   </section>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
 import NavBar from '../NavBar/NavBar.layout.vue';
+import JwtStorageService from '../../../services/shared/auth/jwt-storage.service';
 
 @Component({
   name: 'MainLayout',
@@ -26,7 +28,13 @@ import NavBar from '../NavBar/NavBar.layout.vue';
     NavBar,
   },
 })
-export default class MainLayout extends BaseComponent {}
+export default class MainLayout extends BaseComponent {
+  // TODO: REMOVE THIS LATER
+  logout() {
+    JwtStorageService.removeToken();
+    this.$router.push('/login');
+  }
+}
 </script>
 <style lang="scss" scoped>
 #app-main {
@@ -34,7 +42,6 @@ export default class MainLayout extends BaseComponent {}
 }
 
 .footer {
-  position: absolute;
   bottom: 0;
   width: 100%;
   height: 60px; /* Set the fixed height of the footer here */

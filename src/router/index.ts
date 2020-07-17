@@ -24,14 +24,14 @@ export const constantRoutes: RouteConfig[] = [
     component: () =>
       import('../modules/_layouts/Layout/LoginLayout.layout.vue'),
     name: 'Login',
-    meta: { requiresAuth: false, layout: 'NonMainLayout' },
+    meta: { authRequired: false, layout: 'NonMainLayout' },
   },
   {
     path: '/dashboard',
     component: () => import('../modules/dashboard/Dashboard.vue'),
     name: 'Dashboard',
     meta: {
-      requiresAuth: true,
+      authRequired: true,
       layout: 'MainLayout',
       roles: [...CONST_ADMIN_USER],
     },
@@ -40,7 +40,7 @@ export const constantRoutes: RouteConfig[] = [
 
 const createRouter = () =>
   new Router({
-    // mode: 'history',  // Disabled due to Github Pages doesn't support this, enable this if you need.
+    mode: 'history',
     scrollBehavior: (to, from, savedPosition) => {
       if (savedPosition) {
         return savedPosition;
@@ -48,17 +48,15 @@ const createRouter = () =>
         return { x: 0, y: 0 };
       }
     },
-
-    base: env.baseURL,
     routes: constantRoutes,
   });
 
 const router = createRouter();
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter();
-  (router as any).matcher = (newRouter as any).matcher; // reset router
-}
+// // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+// export function resetRouter() {
+//   const newRouter = createRouter();
+//   (router as any).matcher = (newRouter as any).matcher; // reset router
+// }
 
 export default router;

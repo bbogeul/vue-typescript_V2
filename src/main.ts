@@ -7,6 +7,7 @@ import {
   Environment,
   EnvironmentType,
 } from '../environments';
+import CoreuiVue from '@coreui/vue';
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import moment from 'moment';
@@ -31,8 +32,12 @@ Vue.filter('dateFilter', (value: Date | string): string => {
   return moment(String(value)).format('YYYY/MM/DD hh:mm A');
 });
 
+// Core ui
+Vue.use(CoreuiVue);
+
 new Vue({
   router,
   store,
+
   render: h => h(App),
 }).$mount('#app');

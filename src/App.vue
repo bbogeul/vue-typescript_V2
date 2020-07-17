@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <component :is="layout"> </component>
+    <component :is="layout"></component>
   </div>
 </template>
 <script lang="ts">
@@ -17,3 +17,8 @@ export default class extends BaseComponent {
   }
 }
 </script>
+<style lang="scss" scoped>
+html {
+  position: relative;
+}
+</style>
