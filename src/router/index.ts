@@ -20,6 +20,13 @@ Vue.use(Router);
 
 export const constantRoutes: RouteConfig[] = [
   {
+    path: '',
+    component: () =>
+      import('../modules/_layouts/Layout/LoginLayout.layout.vue'),
+    name: 'Home',
+    meta: { authRequired: false, layout: 'NonMainLayout' },
+  },
+  {
     path: '/login',
     component: () =>
       import('../modules/_layouts/Layout/LoginLayout.layout.vue'),

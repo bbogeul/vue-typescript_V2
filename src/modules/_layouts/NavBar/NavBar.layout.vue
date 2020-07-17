@@ -1,5 +1,5 @@
 <template>
-  <nav id="nav" class="navbar fixed-top navbar-expand-lg">
+  <nav id="nav" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
       <a class="navbar-brand brand-text" href="#">NND</a>
       <button
@@ -32,9 +32,6 @@ export default class NavBar extends BaseComponent {}
 </script>
 
 <style scoped lang="scss">
-nav {
-  background-color: rgb(255, 136, 0);
-}
 .brand-text {
   color: #fff;
   font-weight: 700;

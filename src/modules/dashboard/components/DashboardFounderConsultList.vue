@@ -1,8 +1,7 @@
 <template>
   <section>
-    <h3>총 {{ founderConsultListCount }}</h3>
-    <table class="table">
-      <thead>
+    <table class="table table-bordered" v-if="founderConsultListCount">
+      <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
           <th scope="col">SPACE ID</th>
@@ -13,10 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="founderConsult in founderConsultList"
-          :key="founderConsult.no"
-        >
+        <tr v-for="founderConsult in founderConsultList" :key="founderConsult.no">
           <th scope="row">{{ founderConsult.no }}</th>
           <td>{{ founderConsult.spaceNo }}</td>
           <td>{{ founderConsult.nanudaUserNo }}</td>
@@ -24,17 +20,20 @@
             {{ founderConsult.space.address }}
             {{ founderConsult.space.detailAddress }}
           </td>
+          <td>{{ founderConsult.createdAt | dateFilter }}</td>
           <td>
-            {{ founderConsult.createdAt | dateFilter }}
-          </td>
-          <td>
-            <span class="badge badge-pill badge-warning">{{
+            <span class="badge badge-pill badge-warning">
+              {{
               founderConsult.codeManagement.value
-            }}</span>
+              }}
+            </span>
           </td>
         </tr>
       </tbody>
     </table>
+    <div v-else>
+      <p>Nothing here</p>
+    </div>
   </section>
 </template>
 <script lang="ts">

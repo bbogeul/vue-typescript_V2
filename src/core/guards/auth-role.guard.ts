@@ -23,6 +23,7 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
   const token = JwtStorageService.getToken();
 
   NProgress.start();
+
   if (to.meta.authRequired) {
     if (!token) {
       toast.error('로그인 해주세요.');

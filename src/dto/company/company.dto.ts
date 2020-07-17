@@ -1,5 +1,6 @@
 import { BaseDto } from '@/core';
 import { APPROVAL_STATUS } from '@/services/shared';
+import { CodeManagementDto } from '@/services/init/dto';
 
 export class CompanyDto extends BaseDto<CompanyDto> {
   no: number;

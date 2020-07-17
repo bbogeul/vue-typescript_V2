@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="page-content">
     <component :is="layout"></component>
   </div>
 </template>
@@ -19,6 +19,6 @@ export default class extends BaseComponent {
 </script>
 <style lang="scss" scoped>
 html {
-  position: relative;
+  height: 100%;
 }
 </style>
