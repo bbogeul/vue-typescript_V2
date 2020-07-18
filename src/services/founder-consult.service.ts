@@ -4,6 +4,7 @@ import {
   FounderConsultDto,
 } from '@/dto/founder-consult';
 import { Pagination } from '@/common';
+import { CodeManagementDto } from './init/dto';
 
 class FounderConsultService extends BaseService {
   /**
@@ -11,7 +12,7 @@ class FounderConsultService extends BaseService {
    * @param filter
    * @param pagination
    */
-  findAll(filter: FounderConsultListDto, pagination: Pagination) {
+  findAll(filter: FounderConsultListDto, pagination?: Pagination) {
     return super.paginate<FounderConsultDto>(
       'admin/founder-consult',
       filter,
@@ -24,7 +25,7 @@ class FounderConsultService extends BaseService {
    * @param id
    */
   findOne(id: number) {
-    return super.get<FounderConsultDto>(`/admin/founder/${id}`);
+    return super.get<FounderConsultDto>(`admin/founder/${id}`);
   }
 }
 

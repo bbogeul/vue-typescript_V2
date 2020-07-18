@@ -29,4 +29,12 @@ import DashboardCompanyList from './components/DashboardCompanyList.vue';
 })
 export default class Dashboard extends BaseComponent {}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+.title {
+  margin-bottom: 15px;
+}
+
+h5 {
+  margin-top: 3px;
+}
+</style>

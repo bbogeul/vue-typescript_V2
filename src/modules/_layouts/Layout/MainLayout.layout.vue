@@ -18,17 +18,11 @@ import JwtStorageService from '../../../services/shared/auth/jwt-storage.service
     NavBar,
   },
 })
-export default class MainLayout extends BaseComponent {
-  // TODO: REMOVE THIS LATER
-  logout() {
-    JwtStorageService.removeToken();
-    this.$router.push('/login');
-  }
-}
+export default class MainLayout extends BaseComponent {}
 </script>
 <style lang="scss" scoped>
 #app-main {
   margin-top: 80px;
-  font-size: 12px;
+  font-size: 11px;
 }
 </style>

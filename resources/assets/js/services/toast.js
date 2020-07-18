@@ -10,6 +10,14 @@ const toast = {
       position: 'topRight',
     });
   },
+
+  success: (message, title = '성공') => {
+    return iZtoast.success({
+      title: title,
+      message: message,
+      position: 'topRight',
+    });
+  },
 };
 
 export default toast;

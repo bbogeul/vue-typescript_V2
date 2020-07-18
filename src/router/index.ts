@@ -43,6 +43,16 @@ export const constantRoutes: RouteConfig[] = [
       roles: [...CONST_ADMIN_USER],
     },
   },
+  {
+    path: '/founder-consult',
+    component: () => import('../modules/founder-consult/FounderConsult.vue'),
+    name: '방문자 신청',
+    meta: {
+      authRequired: true,
+      layout: 'MainLayout',
+      roles: [...CONST_ADMIN_USER],
+    },
+  },
 ];
 
 const createRouter = () =>

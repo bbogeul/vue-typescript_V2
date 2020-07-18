@@ -1,7 +1,7 @@
 <template>
   <nav id="nav" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand brand-text" href="#">NND</a>
+      <router-link class="navbar-brand brand-text" to="/">NND</router-link>
       <button
         class="navbar-toggler"
         type="button"

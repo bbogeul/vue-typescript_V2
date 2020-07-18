@@ -32,7 +32,7 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
       return;
     }
     const payload = await jwtDecode(token);
-    console.log(payload);
+
     if (!payload) {
       toast.error('payload error');
       JwtStorageService.removeToken();
@@ -45,23 +45,24 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
     splittedArray.map(role => {
       newArray.push(role);
     });
-    console.log(newArray);
+
     const hasPermission = () =>
       to.meta.roles.some(role => {
         return newArray.includes(role);
       });
     if (!hasPermission()) {
       next(false);
-      toast.error('권한이 없습니다.');
+      toast.error(
+        `${to.path}으로 진입할 권한이 없습니다. 가능한 등금: ${to.meta.roles} | 본인 등급: ${authCode}`,
+      );
+      NProgress.done();
       return;
-    } else {
-      next();
     }
+    next();
   }
   if (!to.meta.authRequired) {
-    console.log(from);
     if (token) {
-      next(from.path);
+      next('/dashboard');
       NProgress.done();
       return;
     }

@@ -1,31 +1,58 @@
 <template>
   <section>
+    <div class="title">
+      <h5 class="d-inline-block">최신 방문자 신청</h5>
+      <router-link to="/founder-consult"
+        ><button type="button" class="btn btn-primary float-right">
+          더 보기
+        </button></router-link
+      >
+    </div>
     <table class="table table-bordered" v-if="founderConsultListCount">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">ID</th>
           <th scope="col">SPACE ID</th>
-          <th scope="col">USER ID</th>
+          <th scope="col">USER NAME</th>
+          <th scope="col">USER PHONE</th>
+
           <th scope="col">ADDRESS</th>
           <th scope="col">CREATED</th>
+          <th scope="col">COMPANY</th>
+          <th scope="col">AVAILABLE TIME</th>
           <th scope="col">STATUS</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="founderConsult in founderConsultList" :key="founderConsult.no">
+        <tr
+          v-for="founderConsult in founderConsultList"
+          :key="founderConsult.no"
+        >
           <th scope="row">{{ founderConsult.no }}</th>
           <td>{{ founderConsult.spaceNo }}</td>
-          <td>{{ founderConsult.nanudaUserNo }}</td>
+          <td>{{ founderConsult.nanudaUser.name }}</td>
+          <td>{{ founderConsult.nanudaUser.phone }}</td>
           <td>
             {{ founderConsult.space.address }}
             {{ founderConsult.space.detailAddress }}
           </td>
           <td>{{ founderConsult.createdAt | dateFilter }}</td>
+          <td v-if="founderConsult.space.companyDistricts">
+            <div
+              v-for="company in founderConsult.space.companyDistricts"
+              :key="company.no"
+            >
+              <div v-if="company.company.nameKr">
+                {{ company.company.nameKr }}
+              </div>
+            </div>
+          </td>
+          <td v-if="founderConsult.availableTime">
+            {{ founderConsult.availableTime.value }}
+          </td>
           <td>
             <span class="badge badge-pill badge-warning">
-              {{
-              founderConsult.codeManagement.value
-              }}
+              {{ founderConsult.codeManagement.value }}
             </span>
           </td>
         </tr>

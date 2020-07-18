@@ -1,12 +1,15 @@
 <template>
   <div>
-    <h4>업체 승인요청건</h4>
+    <div class="title">
+      <h5 class="d-inline-block">업체 수정요청</h5>
+      <button type="button" class="btn btn-primary float-right">더 보기</button>
+    </div>
     <table class="table table-bordered" v-if="companyListCount > 0">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">ID</th>
           <th scope="col">NAME</th>
-          <th scope="col">COMPANY</th>
+          <th scope="col">CEO</th>
           <th scope="col">PHONE</th>
 
           <th scope="col">STATUS</th>
@@ -19,10 +22,11 @@
           <td>{{ company.ceoKr }}</td>
           <td>{{ company.phone }}</td>
           <td>
-            <span class="badge badge-pill badge-warning" v-if="company.codeManagement">
-              {{
-              company.codeManagement.value
-              }}
+            <span
+              class="badge badge-pill badge-warning"
+              v-if="company.codeManagement"
+            >
+              {{ company.codeManagement.value }}
             </span>
           </td>
         </tr>
@@ -53,7 +57,6 @@ export default class DashboardCompanyList extends BaseComponent {
     CompanyService.getAll(this.companyListDto, this.pagination).subscribe(
       res => {
         const data = res.data;
-        console.log(data);
         this.companyListDto = data.items;
         this.companyListCount = data.totalCount;
       },

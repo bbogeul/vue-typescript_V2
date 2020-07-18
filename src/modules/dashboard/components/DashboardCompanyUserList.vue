@@ -1,10 +1,13 @@
 <template>
   <div>
-    <h4>승인요청건</h4>
+    <div class="title">
+      <h5 class="d-inline-block">사용자 수정요청</h5>
+      <button type="button" class="btn btn-primary float-right">더 보기</button>
+    </div>
     <table class="table table-bordered" v-if="companyUserListCount > 0">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">ID</th>
           <th scope="col">NAME</th>
           <th scope="col">COMPANY</th>
           <th scope="col">PHONE</th>
@@ -21,9 +24,7 @@
 
           <td>
             <span class="badge badge-pill badge-warning">
-              {{
-              companyUser.codeManagement.value
-              }}
+              {{ companyUser.codeManagement.value }}
             </span>
           </td>
         </tr>

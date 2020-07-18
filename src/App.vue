@@ -17,8 +17,21 @@ export default class extends BaseComponent {
   }
 }
 </script>
-<style lang="scss" scoped>
-html {
+<style lang="scss">
+html,
+body {
   height: 100%;
+}
+.btn {
+  font-size: 12px;
+}
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: grey;
+  margin-bottom: 10px;
+}
+.badge {
+  font-size: 11px;
 }
 </style>

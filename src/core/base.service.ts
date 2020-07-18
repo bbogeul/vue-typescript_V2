@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
+import { AxiosObservable } from 'axios-observable/dist/axios-observable.interface';
 
 // axios에서 사용할 메소드 타입
 type Method =
@@ -65,8 +66,29 @@ export class BaseService {
     return { fromString: params };
   }
 
-  private __api(method: Method, path: string, params?: any): Observable<any> {
-    console.log(params);
+  // remove empty string values
+  private __excludeNullParam(value: any) {
+    if (!value) {
+      return;
+    }
+    if (typeof value !== 'object') {
+      return value;
+    }
+    Object.keys(value).map(prop => {
+      console.log(prop);
+      if (value[prop] === '') {
+        console.log(value);
+        delete value[prop];
+      }
+    });
+    return value;
+  }
+
+  private __api<T>(
+    method: Method,
+    path: string,
+    params?: any,
+  ): AxiosObservable<T> {
     // axios observable에서 글로벌 에러 catch하는 코드
     Axios.interceptors.response.use(
       response => {
@@ -97,31 +119,30 @@ export class BaseService {
     if (accessToken) {
       headers.Authorization = `Bearer ${accessToken}`;
     }
-    console.log(headers);
-    // if (params) {
-    //   params = this.__makeArrayParam(params);
-    // }
+    if (params) {
+      params = this.__excludeNullParam(params);
+      console.log(params);
+    }
     if (method === 'get') {
-      console.log('params params', params);
-      return Axios.get(path, { params, headers });
+      return Axios.get(path, { params, headers }) as AxiosObservable<T>;
     } else if (method === 'post') {
-      return Axios.post(path, params, { headers });
+      return Axios.post(path, params, { headers }) as AxiosObservable<T>;
     } else if (method === 'put') {
-      return Axios.put(path, params, { headers });
+      return Axios.put(path, params, { headers }) as AxiosObservable<T>;
     } else if (method === 'delete') {
-      return Axios.delete(path, params);
+      return Axios.delete(path, params) as AxiosObservable<T>;
     }
   }
 
-  protected get<T>(path: string, params?: any): Observable<T> {
+  protected get<T>(path: string, params?: any): AxiosObservable<T> {
     return this.__api('get', path, params);
   }
 
-  protected post<T>(path: string, params?: any): Observable<T> {
+  protected post<T>(path: string, params?: any): AxiosObservable<T> {
     return this.__api('post', path, params);
   }
 
-  protected put<T>(path: string, params?: any): Observable<T> {
+  protected put<T>(path: string, params?: any): AxiosObservable<T> {
     return this.__api('put', path, params);
   }
 
@@ -133,13 +154,13 @@ export class BaseService {
     let request = {};
     if (params instanceof Pagination) {
       request = {
-        skip: String(params.limit * params.page),
+        skip: String(params.page),
         take: String(params.limit),
       };
     } else {
       request = {
         ...params,
-        skip: String(pagination.limit * pagination.page),
+        skip: String(pagination.page),
         take: String(pagination.limit),
       };
     }
