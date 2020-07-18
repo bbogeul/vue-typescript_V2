@@ -63,6 +63,7 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
   if (!to.meta.authRequired) {
     if (token) {
       next('/dashboard');
+      toast.success('Welcome back!');
       NProgress.done();
       return;
     }

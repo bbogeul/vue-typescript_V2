@@ -7,6 +7,7 @@ import {
   ProductionEnvironment,
 } from '../../environments';
 import { CONST_ADMIN_USER } from '@/services/shared';
+import componentsRouter from './modules/component';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
@@ -43,16 +44,9 @@ export const constantRoutes: RouteConfig[] = [
       roles: [...CONST_ADMIN_USER],
     },
   },
-  {
-    path: '/founder-consult',
-    component: () => import('../modules/founder-consult/FounderConsult.vue'),
-    name: '방문자 신청',
-    meta: {
-      authRequired: true,
-      layout: 'MainLayout',
-      roles: [...CONST_ADMIN_USER],
-    },
-  },
+  // component routers
+  // 가독성 위해서 분리
+  ...componentsRouter,
 ];
 
 const createRouter = () =>
@@ -70,10 +64,10 @@ const createRouter = () =>
 
 const router = createRouter();
 
-// // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-// export function resetRouter() {
-//   const newRouter = createRouter();
-//   (router as any).matcher = (newRouter as any).matcher; // reset router
-// }
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter();
+  (router as any).matcher = (newRouter as any).matcher; // reset router
+}
 
 export default router;

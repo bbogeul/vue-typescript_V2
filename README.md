@@ -34,3 +34,8 @@
         - router
         - store
     - main.ts
+
+# TODO
+
+1. REMEMBER ME FOR LOGIN
+2. AUTOCOMPLETE FOR SELECT OPTIONS

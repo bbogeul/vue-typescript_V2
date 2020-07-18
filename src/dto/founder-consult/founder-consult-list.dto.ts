@@ -15,5 +15,6 @@ export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   companyDistrictNameKr?: string;
   companyDistrictNameEng?: string;
   spaceTypeNo?: number;
+  nanudaUserName?: string;
   orderByNo?: OrderByValue;
 }

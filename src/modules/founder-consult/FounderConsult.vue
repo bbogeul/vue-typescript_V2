@@ -20,6 +20,7 @@
             id="validationTooltip04"
             v-model="founderConsultListDto.companyNo"
           >
+            <option value="" selected>전체</option>
             <option
               v-for="company in companySelect"
               :key="company.no"
@@ -28,7 +29,7 @@
             >
           </select>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-2 mb-3">
           <label for="validationTooltip02">업체 지점</label>
           <input
             type="text"
@@ -37,9 +38,13 @@
             v-model="founderConsultListDto.companyDistrictNameKr"
           />
         </div>
-        <div class="col-md-3 mb-3">
-          <label>Last name</label>
-          <input type="text" class="form-control" />
+        <div class="col-md-2 mb-3">
+          <label>나누다 사용자명</label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="founderConsultListDto.nanudaUserName"
+          />
         </div>
       </div>
       <div class="form-row">
@@ -50,6 +55,7 @@
             id="validationTooltip04"
             v-model="founderConsultListDto.hopeTime"
           >
+            <option value="" selected>전체</option>
             <option
               v-for="time in availableTimesSelect"
               :key="time.no"
@@ -65,6 +71,7 @@
             id="validationTooltip04"
             v-model="founderConsultListDto.status"
           >
+            <option value="" selected>전체</option>
             <option
               v-for="status in founderConsultStatusSelect"
               :key="status.no"
@@ -102,12 +109,14 @@ export default class FounderConsult extends BaseComponent {
   founderConsultListDto = new FounderConsultListDto();
   pagination = new Pagination();
 
+  // 상태값
   getFounderConsultCodes() {
     CodeManagementService.findCodesFounderConsult().subscribe(res => {
       this.founderConsultStatusSelect = res.data;
     });
   }
 
+  // 희망시간대
   getAvailableTimes() {
     CodeManagementService.findAvailableTimes().subscribe(res => {
       this.availableTimesSelect = res.data;
@@ -121,6 +130,7 @@ export default class FounderConsult extends BaseComponent {
     });
   }
 
+  // 검색하기
   search() {
     FounderConsultService.findAll(
       this.founderConsultListDto,
@@ -130,6 +140,7 @@ export default class FounderConsult extends BaseComponent {
     });
   }
 
+  // 초기화
   clearOut() {
     this.founderConsultListDto = new FounderConsultListDto();
   }
