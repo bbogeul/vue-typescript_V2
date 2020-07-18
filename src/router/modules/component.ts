@@ -11,6 +11,11 @@ const componentsRouter: RouteConfig[] = [
       layout: 'MainLayout',
       roles: [...CONST_ADMIN_USER],
     },
+    children: [
+      {
+        path: ':id',
+      },
+    ],
   },
 ];
 
