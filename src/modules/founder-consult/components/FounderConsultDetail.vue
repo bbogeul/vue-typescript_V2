@@ -14,6 +14,14 @@
                 >
               </p>
             </div>
+            <div>
+              <p>
+                전화번호: <b>{{ founderConsult.nanudaUser.phone }}</b>
+              </p>
+            </div>
+            <div>
+              <b-button v-b-modal.modal-1>문자하기</b-button>
+            </div>
           </div>
         </div>
       </div>
@@ -30,10 +38,22 @@
                 <span v-else><b>관리자 없음</b></span>
               </p>
             </div>
+            <div>
+              <p>
+                전화번호: <b>{{ founderConsult.admin.phone }}</b>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- for the text message -->
+    <b-modal id="modal-1" title="나누다 사용자에게 문자하기">
+      <p class="my-4">
+        <b>{{ founderConsult.nanudaUser.name }}</b
+        >에게 문자하기
+      </p>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
@@ -47,6 +67,7 @@ import { FounderConsultDto } from '../../../dto';
 })
 export default class FounderConsultDetail extends BaseComponent {
   private founderConsult = new FounderConsultDto();
+  private googleMap = '';
   findOne(id) {
     // find founder consult detail
     FounderConsultService.findOne(id).subscribe(res => {
@@ -56,7 +77,6 @@ export default class FounderConsultDetail extends BaseComponent {
 
   mounted() {
     const founderConsultId = this.$route.params.id;
-    console.log(founderConsultId);
     this.findOne(founderConsultId);
   }
 }
