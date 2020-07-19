@@ -17,22 +17,19 @@ const componentsRouter: RouteConfig[] = [
       roles: [...CONST_ADMIN_USER],
       title: '방문자 신청',
     },
-    children: [
-      {
-        path: '/founder-consult/:id(\\d+)',
-        name: 'test',
-        component: () =>
-          import(
-            /* webpackChunkName: "lazyLoaded" */ '../../modules/founder-consult/FounderConsult.vue'
-          ),
-        meta: {
-          authRequired: true,
-          layout: 'MainLayout',
-          roles: [...CONST_ADMIN_USER],
-          title: '',
-        },
-      },
-    ],
+  },
+  {
+    path: '/founder-consult/:id',
+    name: 'FounderConsultDetail',
+    component: () =>
+      import(
+        /* webpackChunkName: "lazyLoaded" */ '../../modules/founder-consult/components/FounderConsultDetail.vue'
+      ),
+    meta: {
+      authRequired: true,
+      layout: 'MainLayout',
+      roles: [...CONST_ADMIN_USER],
+    },
   },
 ];
 

@@ -171,10 +171,9 @@
             <router-link
               v-if="founderConsult.space"
               :to="{
-                name: 'test',
+                name: 'FounderConsultDetail',
                 params: {
                   id: founderConsult.no,
-                  title: founderConsult.space.name,
                 },
               }"
               >{{ founderConsult.no }}</router-link
