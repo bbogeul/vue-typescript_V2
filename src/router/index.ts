@@ -42,6 +42,7 @@ export const constantRoutes: RouteConfig[] = [
       authRequired: true,
       layout: 'MainLayout',
       roles: [...CONST_ADMIN_USER],
+      title: 'Dashboard',
     },
   },
   // component routers

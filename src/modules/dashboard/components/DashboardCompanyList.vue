@@ -5,7 +5,7 @@
       <button type="button" class="btn btn-primary float-right">더 보기</button>
     </div>
     <table class="table table-bordered" v-if="companyListCount > 0">
-      <thead class="thead-dark">
+      <thead>
         <tr>
           <th scope="col">ID</th>
           <th scope="col">NAME</th>
@@ -25,9 +25,7 @@
             <span
               class="badge badge-pill badge-warning"
               v-if="company.codeManagement"
-            >
-              {{ company.codeManagement.value }}
-            </span>
+            >{{ company.codeManagement.value }}</span>
           </td>
         </tr>
       </tbody>

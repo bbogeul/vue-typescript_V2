@@ -5,7 +5,7 @@
       <button type="button" class="btn btn-primary float-right">더 보기</button>
     </div>
     <table class="table table-bordered" v-if="companyUserListCount > 0">
-      <thead class="thead-dark">
+      <thead>
         <tr>
           <th scope="col">ID</th>
           <th scope="col">NAME</th>
@@ -23,9 +23,7 @@
           <td>{{ companyUser.phone }}</td>
 
           <td>
-            <span class="badge badge-pill badge-warning">
-              {{ companyUser.codeManagement.value }}
-            </span>
+            <span class="badge badge-pill badge-warning">{{ companyUser.codeManagement.value }}</span>
           </td>
         </tr>
       </tbody>

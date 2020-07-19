@@ -6,6 +6,7 @@ import { AVAILABLE_TIME, YN, OrderByValue } from '@/common';
 export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   implements Partial<FounderConsultDto> {
   spaceNo?: number;
+  phone?: string;
   status?: FOUNDER_CONSULT;
   hopeTime?: AVAILABLE_TIME;
   purposeUse?: YN;
@@ -16,5 +17,7 @@ export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   companyDistrictNameEng?: string;
   spaceTypeNo?: number;
   nanudaUserName?: string;
+  adminUserName?: string;
+  address?: string;
   orderByNo?: OrderByValue;
 }

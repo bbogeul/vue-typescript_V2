@@ -34,4 +34,22 @@ body {
 .badge {
   font-size: 11px;
 }
+
+h5 {
+  font-size: 14px;
+}
+
+.div-center {
+  margin: 0;
+}
+
+.highlighted {
+  background-color: orange;
+  border-color: orange;
+  color: #fff;
+}
+
+select {
+  font: inherit;
+}
 </style>

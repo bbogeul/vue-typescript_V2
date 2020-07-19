@@ -2,14 +2,12 @@
   <section>
     <div class="title">
       <h5 class="d-inline-block">최신 방문자 신청</h5>
-      <router-link to="/founder-consult"
-        ><button type="button" class="btn btn-primary float-right">
-          더 보기
-        </button></router-link
-      >
+      <router-link to="/founder-consult">
+        <button type="button" class="btn btn-primary float-right">더 보기</button>
+      </router-link>
     </div>
     <table class="table table-bordered" v-if="founderConsultListCount">
-      <thead class="thead-dark">
+      <thead>
         <tr>
           <th scope="col">ID</th>
           <th scope="col">SPACE ID</th>
@@ -24,11 +22,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="founderConsult in founderConsultList"
-          :key="founderConsult.no"
-        >
-          <th scope="row">{{ founderConsult.no }}</th>
+        <tr v-for="founderConsult in founderConsultList" :key="founderConsult.no">
+          <th scope="row">
+            <router-link
+              :to="{
+                name: 'test',
+                params: { id: founderConsult.no },
+              }"
+            >{{ founderConsult.no }}</router-link>
+          </th>
           <td>{{ founderConsult.spaceNo }}</td>
           <td>{{ founderConsult.nanudaUser.name }}</td>
           <td>{{ founderConsult.nanudaUser.phone }}</td>
@@ -38,22 +40,13 @@
           </td>
           <td>{{ founderConsult.createdAt | dateFilter }}</td>
           <td v-if="founderConsult.space.companyDistricts">
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
-              <div v-if="company.company.nameKr">
-                {{ company.company.nameKr }}
-              </div>
+            <div v-for="company in founderConsult.space.companyDistricts" :key="company.no">
+              <div v-if="company.company.nameKr">{{ company.company.nameKr }}</div>
             </div>
           </td>
-          <td v-if="founderConsult.availableTime">
-            {{ founderConsult.availableTime.value }}
-          </td>
+          <td v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</td>
           <td>
-            <span class="badge badge-pill badge-warning">
-              {{ founderConsult.codeManagement.value }}
-            </span>
+            <span class="badge badge-pill badge-warning">{{ founderConsult.codeManagement.value }}</span>
           </td>
         </tr>
       </tbody>

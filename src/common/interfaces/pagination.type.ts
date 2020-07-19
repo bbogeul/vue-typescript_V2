@@ -1,5 +1,3 @@
-// import { Default } from '..';
-
 export class PaginatedResponse<T> {
   items!: T[];
 
@@ -7,7 +5,7 @@ export class PaginatedResponse<T> {
 }
 
 export class Pagination {
-  limit = 15;
+  limit = 20;
   page!: number;
   totalCount?: number;
 }

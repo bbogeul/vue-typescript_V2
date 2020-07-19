@@ -2,6 +2,7 @@ import { BaseDto } from '@/core';
 import { FOUNDER_CONSULT } from '@/services/shared';
 import { AVAILABLE_TIME, YN } from '@/common';
 import { CodeManagementDto } from '@/services/init/dto';
+import { AdminDto } from '../admin';
 
 export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   no: number;
@@ -16,4 +17,5 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   spaceConsultEtc?: string;
   space?: object;
   codeManagement?: CodeManagementDto;
+  admin?: AdminDto;
 }

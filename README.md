@@ -8,6 +8,8 @@
 # scaffolding
 
     - src
+        - common
+            - interfaces
         - assets
             - images
                 - common
@@ -21,12 +23,17 @@
                     - sidebar
                 - nanuda-admin
                 - company
+        - core
+            - guards
+            - pipes
+            - validators
         - dto
-        - shared
-            - init
-                - common-code
-            - auth (jwt handler)
-                - dto
+        - services
+            - shared
+                - init
+                    - common-code
+             - auth (jwt handler)
+                 - dto
         - environments
             - environment.prod.ts
             - environment.staging.ts
@@ -34,8 +41,3 @@
         - router
         - store
     - main.ts
-
-# TODO
-
-1. REMEMBER ME FOR LOGIN
-2. AUTOCOMPLETE FOR SELECT OPTIONS

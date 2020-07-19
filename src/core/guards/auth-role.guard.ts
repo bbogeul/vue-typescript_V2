@@ -75,5 +75,6 @@ router.afterEach((to: Route) => {
   // Finish progress bar
   NProgress.done();
   // set page title
-  document.title = getPageTitle(`${to.name} - 나누다 공유 플랫폼`);
+  console.log(to.meta);
+  document.title = getPageTitle(`${to.meta.title} - 나누다 공유 플랫폼`);
 });

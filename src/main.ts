@@ -7,11 +7,14 @@ import {
   Environment,
   EnvironmentType,
 } from '../environments';
-import CoreuiVue from '@coreui/vue';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
+// import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
-import moment from 'moment';
 import '@/core/guards/auth-role.guard';
+import { datePipe } from './core';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
@@ -25,15 +28,11 @@ Vue.component('NonMainLayout', NonMainLayout);
 Vue.component('MainLayout', MainLayout);
 
 // filters
-Vue.filter('dateFilter', (value: Date | string): string => {
-  if (!value) {
-    return;
-  }
-  return moment(String(value)).format('YYYY/MM/DD hh:mm A');
-});
+datePipe();
 
-// Core ui
-Vue.use(CoreuiVue);
+// bootstrap
+Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 
 new Vue({
   router,
