@@ -5,11 +5,11 @@
         <!-- user information -->
         <h5>사용자 정보</h5>
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" v-if="founderConsult.nanudaUser">
             <div>
               <p>
                 사용자명:
-                <span v-if="founderConsult.nanudaUser"
+                <span
                   ><b>{{ founderConsult.nanudaUser.name }}</b></span
                 >
               </p>
@@ -23,19 +23,19 @@
               <b-button v-b-modal.modal-1>문자하기</b-button>
             </div>
           </div>
+          <div class="card-body" v-else><b>관리자 없음</b></div>
         </div>
       </div>
       <div class="col-md-3">
         <h5>관리자 정보</h5>
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" v-if="founderConsult.admin">
             <div>
               <p>
                 관리자명:
-                <span v-if="founderConsult.admin"
+                <span
                   ><b>{{ founderConsult.admin.name }}</b></span
                 >
-                <span v-else><b>관리자 없음</b></span>
               </p>
             </div>
             <div>
@@ -44,13 +44,16 @@
               </p>
             </div>
           </div>
+          <div class="card-body" v-else><b>관리자 없음</b></div>
         </div>
       </div>
     </div>
     <!-- for the text message -->
     <b-modal id="modal-1" title="나누다 사용자에게 문자하기">
       <p class="my-4">
-        <b>{{ founderConsult.nanudaUser.name }}</b
+        <b v-if="founderConsult.nanudaUser">{{
+          founderConsult.nanudaUser.name
+        }}</b
         >에게 문자하기
       </p>
     </b-modal>

@@ -18,5 +18,6 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   spaceConsultEtc?: string;
   space?: SpaceDto;
   codeManagement?: CodeManagementDto;
+  nanudaUser?: object;
   admin?: AdminDto;
 }
