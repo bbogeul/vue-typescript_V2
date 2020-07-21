@@ -22,8 +22,8 @@ class FounderConsultService extends BaseService {
   }
 
   /**
-   * find one for founder consult admin
-   * @param id
+   * find one for founer consult admin
+   * @param founderConsultNo
    */
   findOne(founderConsultNo) {
     return super.get<FounderConsultDto>(

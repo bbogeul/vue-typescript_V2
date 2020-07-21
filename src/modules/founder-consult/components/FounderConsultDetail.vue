@@ -168,13 +168,11 @@
       </div>
     </div>
     <div class="row" style="margin-top:10px;">
-      <div class="text-center">
-        <router-link to="/founder-consult">
-          <button class="btn btn-primary">
-            목록으로 다시 가기
-          </button></router-link
-        >
-      </div>
+      <router-link to="/founder-consult">
+        <button class="btn btn-primary text-center">
+          목록으로 다시 가기
+        </button></router-link
+      >
     </div>
     <!-- for the text message -->
     <b-modal id="message-user" title="나누다 사용자에게 문자하기">

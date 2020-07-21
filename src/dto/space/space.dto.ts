@@ -2,6 +2,7 @@ import { BaseDto } from '@/core';
 import { YN } from '@/common';
 import { SPACE } from '@/services/shared';
 import { AdminDto } from '../admin';
+import { NanudaUserDto } from '../nanuda-user';
 
 export class SpaceDto extends BaseDto<SpaceDto> {
   no: number;
@@ -142,7 +143,7 @@ export class SpaceDto extends BaseDto<SpaceDto> {
 
   deliverySpaceOptions?: any[];
 
-  nanudaUser?: any;
+  nanudaUser?: NanudaUserDto;
 
   admin?: AdminDto;
 
