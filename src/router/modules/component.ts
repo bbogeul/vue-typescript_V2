@@ -1,6 +1,5 @@
 import { RouteConfig } from 'vue-router';
 import { CONST_ADMIN_USER } from '@/services/shared';
-import router from '..';
 
 const componentsRouter: RouteConfig[] = [
   {

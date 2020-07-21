@@ -44,7 +44,7 @@
             {{ founderConsult.space.address }}
             {{ founderConsult.space.detailAddress }}
           </td>
-          <td>{{ founderConsult.createdAt | dateFilter }}</td>
+          <td>{{ founderConsult.createdAt | dateTransformer }}</td>
           <td v-if="founderConsult.space.companyDistricts">
             <div
               v-for="company in founderConsult.space.companyDistricts"

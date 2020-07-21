@@ -1,4 +1,3 @@
-import { EnumToArrayTransformer } from '@/core';
 export enum YN {
   'YES' = 'Y',
   'NO' = 'N',

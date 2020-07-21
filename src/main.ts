@@ -14,7 +14,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import '@/core/guards/auth-role.guard';
-import { datePipe } from './core';
+import { DatePipeTransformer, EnumPipeTransformer } from './core';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
@@ -28,7 +28,8 @@ Vue.component('NonMainLayout', NonMainLayout);
 Vue.component('MainLayout', MainLayout);
 
 // filters
-datePipe();
+DatePipeTransformer();
+EnumPipeTransformer();
 
 // bootstrap
 Vue.use(BootstrapVue);

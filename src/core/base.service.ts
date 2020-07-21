@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import Axios from 'axios-observable';
 import * as env from '../../environments/development.environment';
-import { Observable } from 'rxjs';
 import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
@@ -126,8 +125,8 @@ export class BaseService {
       return Axios.get(path, { params, headers }) as AxiosObservable<T>;
     } else if (method === 'post') {
       return Axios.post(path, params, { headers }) as AxiosObservable<T>;
-    } else if (method === 'put') {
-      return Axios.put(path, params, { headers }) as AxiosObservable<T>;
+    } else if (method === 'patch') {
+      return Axios.patch(path, params, { headers }) as AxiosObservable<T>;
     } else if (method === 'delete') {
       return Axios.delete(path, params) as AxiosObservable<T>;
     }
@@ -141,15 +140,15 @@ export class BaseService {
     return this.__api('post', path, params);
   }
 
-  protected put<T>(path: string, params?: any): AxiosObservable<T> {
-    return this.__api('put', path, params);
+  protected patch<T>(path: string, params?: any): AxiosObservable<T> {
+    return this.__api('patch', path, params);
   }
 
   protected paginate<T>(
     path: string,
     params: any | Pagination,
     pagination?: Pagination,
-  ): Observable<any> {
+  ): AxiosObservable<PaginatedResponse<T>> {
     let request = {};
     if (params instanceof Pagination) {
       request = {

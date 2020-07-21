@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h4>방문자 신청 관리</h4>
+    <h3>방문자 신청 관리</h3>
     <div class="divider"></div>
     <div v-on:keyup.enter="search()">
       <div class="form-row">
@@ -52,10 +52,26 @@
             v-model="founderConsultListDto.companyDistrictNameKr"
           />
         </div>
+        <div class="col-md-1 mb-3">
+          <label>공간 유형</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultListDto.spaceTypeNo"
+          >
+            <option value></option>
+            <option
+              v-for="spaceType in spaceTypeList"
+              :key="spaceType.no"
+              :value="spaceType.no"
+            >
+              {{ spaceType.displayName }}
+            </option>
+          </select>
+        </div>
       </div>
       <!-- second row -->
       <div class="form-row">
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <label>공간 주소</label>
           <input
             type="text"
@@ -98,6 +114,50 @@
               >{{ status.value }}</option
             >
           </select>
+        </div>
+        <div class="col-md-1 mb-3">
+          <label>창업 경험 유무</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultListDto.changUpExpYn"
+          >
+            <option value></option>
+            <option v-for="yn in delYn" :key="yn" :value="yn">
+              {{ yn | enumTransformer }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-1 mb-3">
+          <label>공간 소우 유무</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultListDto.spaceOwnYn"
+          >
+            <option value></option>
+            <option v-for="yn in delYn" :key="yn" :value="yn">
+              {{ yn | enumTransformer }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-6">
+          <label>확정 날짜</label>
+          <b-form-datepicker
+            id="confirmDate"
+            v-model="founderConsultListDto.confirmDate"
+            placeholder="확정 날짜를 선택해주세요"
+            class="mb-2"
+          ></b-form-datepicker>
+        </div>
+        <div class="col-md-6">
+          <label>희망 날짜</label>
+          <b-form-datepicker
+            id="hopeDate"
+            v-model="founderConsultListDto.hopeDate"
+            placeholder="희망 날짜를 선택해주세요"
+            class="mb-2"
+          ></b-form-datepicker>
         </div>
       </div>
       <div class="btn-group" style="margin-bottom: 20px">
@@ -199,7 +259,7 @@
           <td v-if="founderConsult.availableTime">
             {{ founderConsult.availableTime.value }}
           </td>
-          <td>{{ founderConsult.createdAt | dateFilter }}</td>
+          <td>{{ founderConsult.createdAt | dateTransformer }}</td>
           <td v-if="founderConsult.admin">{{ founderConsult.admin.name }}</td>
           <td v-else>No manager</td>
           <td>
@@ -229,12 +289,20 @@ import { FOUNDER_CONSULT, CONST_FOUNDER_CONSULT } from '../../services/shared';
 import { CodeManagementDto } from '../../services/init/dto';
 import FounderConsultService from '../../services/founder-consult.service';
 import CodeManagementService from '../../services/code-management.service';
+import SpaceTypeService from '../../services/space-type.service';
 import {
   FounderConsultListDto,
   CompanyDto,
   FounderConsultDto,
+  SpaceTypeDto,
 } from '../../dto';
-import { Pagination } from '../../common';
+import {
+  Pagination,
+  CONST_OBJECT_BY_VALUE,
+  OrderByValue,
+  YN,
+  CONST_YN,
+} from '../../common';
 import CompanyService from '../../services/company.service';
 
 @Component({
@@ -246,9 +314,11 @@ export default class FounderConsult extends BaseComponent {
   private founderConsultStatusSelect: CodeManagementDto[] = [];
   private availableTimesSelect: CodeManagementDto[] = [];
   private companySelect: CompanyDto[] = [];
-  founderConsultListDto = new FounderConsultListDto();
-  pagination = new Pagination();
   private totalPage = 0;
+  private founderConsultListDto = new FounderConsultListDto();
+  private delYn: YN[] = [...CONST_YN];
+  private spaceTypeList: SpaceTypeDto[] = [];
+  private pagination = new Pagination();
 
   // 상태값
   getFounderConsultCodes() {
@@ -268,6 +338,12 @@ export default class FounderConsult extends BaseComponent {
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {
       this.companySelect = res.data;
+    });
+  }
+
+  getSpaceType() {
+    SpaceTypeService.getAll().subscribe(res => {
+      this.spaceTypeList = res.data;
     });
   }
 
@@ -301,10 +377,12 @@ export default class FounderConsult extends BaseComponent {
   }
 
   created() {
+    console.log(this.delYn);
     this.pagination.page = 1;
     this.getAvailableTimes();
     this.getCompanies();
     this.getFounderConsultCodes();
+    this.getSpaceType();
     this.search();
   }
 }

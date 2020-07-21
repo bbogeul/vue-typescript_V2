@@ -4,6 +4,7 @@ import { AVAILABLE_TIME, YN } from '@/common';
 import { CodeManagementDto } from '@/services/init/dto';
 import { AdminDto } from '../admin';
 import { SpaceDto } from '../space';
+import { NanudaUserDto } from '../nanuda-user';
 
 export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   no: number;
@@ -18,6 +19,8 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   spaceConsultEtc?: string;
   space?: SpaceDto;
   codeManagement?: CodeManagementDto;
-  nanudaUser?: object;
+  nanudaUser?: NanudaUserDto;
   admin?: AdminDto;
+  confirmDate?: Date;
+  hopeDate?: Date;
 }

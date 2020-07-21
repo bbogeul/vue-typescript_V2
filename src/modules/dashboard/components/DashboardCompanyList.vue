@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="company in companyListDto" :key="company.no">
+        <tr v-for="company in companyDto" :key="company.no">
           <th scope="row">{{ company.no }}</th>
           <td>{{ company.nameKr }}</td>
           <td>{{ company.ceoKr }}</td>
@@ -25,7 +25,8 @@
             <span
               class="badge badge-pill badge-warning"
               v-if="company.codeManagement"
-            >{{ company.codeManagement.value }}</span>
+              >{{ company.codeManagement.value }}</span
+            >
           </td>
         </tr>
       </tbody>
@@ -54,9 +55,8 @@ export default class DashboardCompanyList extends BaseComponent {
     this.companyListDto.companyStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
     CompanyService.getAll(this.companyListDto, this.pagination).subscribe(
       res => {
-        const data = res.data;
-        this.companyListDto = data.items;
-        this.companyListCount = data.totalCount;
+        this.companyDto = res.data.items;
+        this.companyListCount = res.data.totalCount;
       },
     );
   }

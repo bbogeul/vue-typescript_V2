@@ -18,6 +18,8 @@ export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   spaceTypeNo?: number;
   nanudaUserName?: string;
   adminUserName?: string;
+  confirmDate?: Date;
+  hopeDate?: Date;
   address?: string;
   orderByNo?: OrderByValue;
 }
