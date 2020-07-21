@@ -140,7 +140,7 @@
           </select>
         </div>
       </div>
-      <div class="form-row">
+      <!-- <div class="form-row">
         <div class="col-md-6">
           <label>확정 날짜</label>
           <b-form-datepicker
@@ -159,15 +159,17 @@
             class="mb-2"
           ></b-form-datepicker>
         </div>
-      </div>
-      <div class="btn-group" style="margin-bottom: 20px">
-        <button class="btn btn-success" @click="search()">검색</button>
-        <button class="btn btn-primary" @click="clearOut()">초기화</button>
+      </div> -->
+      <div class="text-center">
+        <div class="btn-group mb-4">
+          <button class="btn btn-primary" @click="clearOut()">초기화</button>
+          <button class="btn btn-success" @click="search()">검색</button>
+        </div>
       </div>
     </div>
     <h5>검색 결과: {{ founderConsultsCount }}</h5>
 
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover table-sm text-center">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -189,7 +191,9 @@
           >
             USER PHONE
           </th>
-
+          <th scope="col">
+            GENDER
+          </th>
           <th
             scope="col"
             v-bind:class="{ highlighted: founderConsultListDto.address }"
@@ -222,31 +226,28 @@
           >
             STATUS
           </th>
+          <th scope="col">VIEW</th>
         </tr>
       </thead>
 
       <tbody v-if="founderConsultsCount">
         <tr v-for="founderConsult in founderConsults" :key="founderConsult.no">
-          <td>
-            <router-link
-              v-if="founderConsult.space"
-              :to="{
-                name: 'FounderConsultDetail',
-                params: {
-                  id: founderConsult.no,
-                },
-              }"
-              >{{ founderConsult.no }}</router-link
-            >
+          <td class="align-middle">
+            {{ founderConsult.no }}
           </td>
-          <td>{{ founderConsult.spaceNo }}</td>
-          <td>{{ founderConsult.nanudaUser.name }}</td>
-          <td>{{ founderConsult.nanudaUser.phone }}</td>
-          <td>
+          <td class="align-middle">{{ founderConsult.spaceNo }}</td>
+          <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
+          <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
+          <td class="align-middle">
+            <div v-if="founderConsult.nanudaUser.genderInfo">
+              {{ founderConsult.nanudaUser.genderInfo.value }}
+            </div>
+          </td>
+          <td class="align-middle text-left">
             {{ founderConsult.space.address }}
             {{ founderConsult.space.detailAddress }}
           </td>
-          <td v-if="founderConsult.space.companyDistricts">
+          <td class="align-middle" v-if="founderConsult.space.companyDistricts">
             <div
               v-for="company in founderConsult.space.companyDistricts"
               :key="company.no"
@@ -256,16 +257,34 @@
               </div>
             </div>
           </td>
-          <td v-if="founderConsult.availableTime">
+          <td class="align-middle" v-if="founderConsult.availableTime">
             {{ founderConsult.availableTime.value }}
           </td>
-          <td>{{ founderConsult.createdAt | dateTransformer }}</td>
-          <td v-if="founderConsult.admin">{{ founderConsult.admin.name }}</td>
-          <td v-else>No manager</td>
-          <td>
-            <span class="badge badge-pill badge-warning">
+          <td class="align-middle">
+            {{ founderConsult.createdAt | dateTransformer }}
+          </td>
+          <td class="align-middle" v-if="founderConsult.admin">
+            {{ founderConsult.admin.name }}
+          </td>
+          <td class="align-middle" v-else>No manager</td>
+          <td class="align-middle">
+            <span class="badge badge-pill badge-warning p-2">
               {{ founderConsult.codeManagement.value }}
             </span>
+          </td>
+          <td class="align-middle">
+            <router-link
+              v-if="founderConsult.space"
+              class="btn btn-sm btn-secondary"
+              :to="{
+                name: 'FounderConsultDetail',
+                params: {
+                  id: founderConsult.no,
+                },
+              }"
+            >
+              상세보기
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -277,7 +296,7 @@
       :total-rows="founderConsultsCount"
       :per-page="pagination.limit"
       @input="paginateSearch"
-      class="mt-4"
+      class="mt-4 justify-content-center"
     ></b-pagination>
     <div v-else>Nothing here</div>
   </section>
