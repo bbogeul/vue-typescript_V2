@@ -59,7 +59,15 @@
                   </p>
                 </li>
                 <li>
-                  <p>성별: {{ founderConsult.nanudaUser.genderInfo.value }}</p>
+                  <p>
+                    성별:
+                    <b v-if="founderConsult.nanudaUser.genderInfo">
+                      {{ founderConsult.nanudaUser.genderInfo.value }}</b
+                    >
+                    <b v-else>
+                      -
+                    </b>
+                  </p>
                 </li>
                 <!-- <li>
                   <p>
@@ -137,76 +145,65 @@
       <div class="my-3 col-md-4">
         <BaseCard title="업체 정보">
           <template v-slot:body>
-            <div>
-              <div v-if="founderConsult.space.companyDistricts.length > 0">
-                <div v-if="founderConsult.space.companyDistricts[0]">
-                  <ul>
-                    <li>
-                      <p>
-                        업체명:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company
-                            .nameKr
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        대표:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company.ceoKr
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        업체 상태:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company
-                            .codeManagement.value
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        웹주소:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company
-                            .website
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        전화번호:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company.phone
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        사업 등록번호:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].company
-                            .businessNo
-                        }}</b>
-                      </p>
-                    </li>
-                    <li>
-                      <p>
-                        지점명:
-                        <b>{{
-                          founderConsult.space.companyDistricts[0].nameKr
-                        }}</b>
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div v-else>
-                <p>업체 정보 없음</p>
-              </div>
+            <div v-if="founderConsult.space">
+              <ul>
+                <li>
+                  <p>
+                    업체명:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company.nameKr
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    대표:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company.ceoKr
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    업체 상태:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company
+                        .codeManagement.value
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    웹주소:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company.website
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    전화번호:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company.phone
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    사업 등록번호:
+                    <b>{{
+                      founderConsult.space.companyDistricts[0].company
+                        .businessNo
+                    }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    지점명:
+                    <b>{{ founderConsult.space.companyDistricts[0].nameKr }}</b>
+                  </p>
+                </li>
+              </ul>
             </div>
           </template>
         </BaseCard>
@@ -214,7 +211,7 @@
       <div class="my-3 col-md-4">
         <BaseCard title="공간 정보">
           <template v-slot:body>
-            <div>
+            <div v-if="founderConsult.space">
               <ul>
                 <li>
                   <p>
@@ -231,7 +228,7 @@
                     공간주소 : <b>{{ founderConsult.space.address }}</b>
                   </p>
                 </li>
-                <li v-if="founderConsult.space.amenities.length > 0">
+                <li v-if="founderConsult.space.amenities">
                   <p>
                     공용시설:
                     <b
@@ -241,7 +238,7 @@
                     </b>
                   </p>
                 </li>
-                <li v-if="founderConsult.space.deliverySpaceOptions.length > 0">
+                <li v-if="founderConsult.space.deliverySpaceOptions">
                   <p>
                     공간옵션 :
                     <b
@@ -271,7 +268,7 @@
             </div>
           </template>
           <template v-slot:body>
-            <div>
+            <div v-if="founderConsult.codeManagement">
               <ul>
                 <li>
                   <p>
@@ -511,7 +508,7 @@ export default class FounderConsultDetail extends BaseComponent {
 
   // 희망 상담 시간
   getAvailableTimes() {
-    CodeManagementService.findGender().subscribe(res => {
+    CodeManagementService.findAvailableTimes().subscribe(res => {
       this.availableTimesSelect = res.data;
     });
   }
