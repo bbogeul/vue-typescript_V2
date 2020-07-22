@@ -9,12 +9,17 @@
       </router-link>
     </div>
     <div class="row d-flex align-items-stretch">
-      <div class="my-2 col-md-4" v-if="founderConsult.nanudaUser">
+      <div class="my-3 col-md-4" v-if="founderConsult.nanudaUser">
         <BaseCard title="사용자 정보">
           <template v-slot:head>
-            <b-button variant="primary" v-b-modal.message-user
-              >문자전송</b-button
-            >
+            <div>
+              <b-button
+                variant="primary"
+                @click="updateNanudaUser()"
+                v-b-modal.nanuda-user
+                >수정하기</b-button
+              >
+            </div>
           </template>
           <template v-slot:body>
             <div v-if="founderConsult.nanudaUser">
@@ -37,13 +42,31 @@
                 </li>
                 <li>
                   <p>
-                    전화번호: <b>{{ founderConsult.nanudaUser.phone }}</b>
+                    <span>
+                      전화번호:
+                      <b>{{ founderConsult.nanudaUser.phone }}</b></span
+                    >
+                    <span class="mx-2">
+                      <b-button
+                        size="sm"
+                        variant="info"
+                        pill
+                        v-b-modal.message-user
+                        ><b-icon icon="envelope"></b-icon>
+                        <span class="d-none">문자전송</span></b-button
+                      >
+                    </span>
                   </p>
                 </li>
-                <li v-if="founderConsult.nanudaUser.genderInfo">
-                  <p>{{ founderConsult.nanudaUser.genderInfo.desc }}</p>
+                <li>
+                  <p>성별: {{ founderConsult.nanudaUser.genderInfo.value }}</p>
                 </li>
-                <li v-if="founderConsult.nanudaUser.lastLoginAt">
+                <!-- <li>
+                  <p>
+                    공간 소유 유무 : <b>{{ founderConsult.spaceOwnYn }}</b>
+                  </p>
+                </li> -->
+                <li>
                   <p>
                     마지막 로그인 날짜:
                     <b>{{
@@ -59,7 +82,7 @@
           </template>
         </BaseCard>
       </div>
-      <div class="my-2 col-md-4">
+      <div class="my-3 col-md-4">
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
@@ -111,12 +134,12 @@
           </template>
         </BaseCard>
       </div>
-      <div class="my-2 col-md-4">
+      <div class="my-3 col-md-4">
         <BaseCard title="업체 정보">
           <template v-slot:body>
             <div>
-              <div v-if="founderConsult.space.companyDistricts[0]">
-                <div>
+              <div v-if="founderConsult.space.companyDistricts.length > 0">
+                <div v-if="founderConsult.space.companyDistricts[0]">
                   <ul>
                     <li>
                       <p>
@@ -188,7 +211,7 @@
           </template>
         </BaseCard>
       </div>
-      <div class="my-2 col-md-4">
+      <div class="my-3 col-md-4">
         <BaseCard title="공간 정보">
           <template v-slot:body>
             <div>
@@ -235,10 +258,139 @@
           </template>
         </BaseCard>
       </div>
+      <div class="my-3 col-md-4">
+        <BaseCard title="상담 상세 정보">
+          <template v-slot:head>
+            <div>
+              <b-button
+                variant="primary"
+                @click="updateConsultInfo()"
+                v-b-modal.consult-info
+                >수정하기</b-button
+              >
+            </div>
+          </template>
+          <template v-slot:body>
+            <div>
+              <ul>
+                <li>
+                  <p>
+                    신청 상태:
+                    <span class="badge badge-pill badge-warning p-2">
+                      {{ founderConsult.codeManagement.value }}
+                    </span>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    상담 신청일 :
+                    <b>{{ founderConsult.createdAt | dateTransformer }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    창업 경험 유무 :
+                    <b>{{ founderConsult.changUpExpYn | enumTransformer }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    희망 업종 : <b>{{ founderConsult.hopeFoodCategory }}</b>
+                  </p>
+                </li>
+                <li>
+                  <p>
+                    희망 통화 시간 :
+                    <b>{{ founderConsult.hopeTime }}</b>
+                  </p>
+                </li>
+                <li v-if="founderConsult.spaceConsultEtc">
+                  <p>문의 내용 : {{ founderConsult.spaceConsultEtc }}</p>
+                </li>
+              </ul>
+            </div>
+          </template>
+        </BaseCard>
+      </div>
     </div>
     <!-- for the text message -->
+    <b-modal
+      id="nanuda-user"
+      title="사용자정보 수정"
+      @cancel="cancelSelection()"
+      @hide="cancelSelection()"
+      @ok="updateFounderConsult()"
+    >
+      <div class="form-row">
+        <div class="mb-3">
+          <label>사용자 성별</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultUpdateDto.gender"
+          >
+            <option
+              v-for="gender in genderSelect"
+              :key="gender.no"
+              :value="gender.key"
+              >{{ gender.value }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </b-modal>
+    <b-modal
+      id="consult-info"
+      title="상담 내용 수정"
+      @cancel="cancelSelection()"
+      @hide="cancelSelection()"
+      @ok="updateFounderConsult()"
+    >
+      <div class="form-row">
+        <div class="col-12 mb-3">
+          <label>신청 상태</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultUpdateDto.status"
+          >
+            <option value selected>전체</option>
+            <option
+              v-for="status in founderConsultStatusSelect"
+              :key="status.no"
+              :value="status.key"
+              >{{ status.value }}</option
+            >
+          </select>
+        </div>
+        <div class="col-12 mb-3">
+          <b-form-group label="창업 경험 유무">
+            <b-form-radio
+              v-model="founderConsultUpdateDto.changUpExpYn"
+              v-for="yn in delYn"
+              :key="yn"
+              :value="yn"
+              name="changUpExpYn"
+              >{{ yn | enumTransformer }}</b-form-radio
+            >
+          </b-form-group>
+        </div>
+        <div class="col-12 mb-3">
+          <label>희망시간대 선택</label>
+          <select
+            class="custom-select"
+            v-model="founderConsultUpdateDto.hopeTime"
+          >
+            <option
+              v-for="time in availableTimesSelect"
+              :key="time.no"
+              :value="time.key"
+              >{{ time.value }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </b-modal>
     <b-modal id="message-user" title="나누다 사용자에게 문자하기">
-      <p class="my-4">
+      <p class="my-3">
         <b v-if="founderConsult.nanudaUser">{{
           founderConsult.nanudaUser.name
         }}</b
@@ -252,7 +404,7 @@
       @hide="cancelSelection()"
       @ok="updateFounderConsult()"
     >
-      <table class="table tabl-bordered">
+      <table class="table table-sm tabl-bordered text-center">
         <thead>
           <tr>
             <th scope="col">NAME</th>
@@ -298,6 +450,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
+import { CodeManagementDto } from '../../../services/init/dto';
+import { GENDER, CONST_GENDER } from '../../../services/shared';
+import CodeManagementService from '../../../services/code-management.service';
 import FounderConsultService from '../../../services/founder-consult.service';
 import AdminService from '../../../services/admin.service';
 import {
@@ -306,9 +461,9 @@ import {
   AdminListDto,
   FounderConsultUpdateDto,
 } from '../../../dto';
-import { Pagination } from '../../../common';
+import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
-import BaseCard from '@/modules/_components/BaseCard.vue';
+import BaseCard from '../../_components/BaseCard.vue';
 
 @Component({
   name: 'FounderConsultDetail',
@@ -320,6 +475,9 @@ export default class FounderConsultDetail extends BaseComponent {
   /* global kakao */
 
   private founderConsult = new FounderConsultDto();
+  private founderConsultStatusSelect: CodeManagementDto[] = [];
+  private availableTimesSelect: CodeManagementDto[] = [];
+  private genderSelect: CodeManagementDto[] = [];
   private adminListDto = new AdminListDto();
   private pagination = new Pagination();
   private adminList: AdminDto[] = [];
@@ -327,6 +485,43 @@ export default class FounderConsultDetail extends BaseComponent {
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
   private founderConsultUpdateDto = new FounderConsultUpdateDto();
   private googleMap = '';
+  private delYn: YN[] = [...CONST_YN];
+
+  // 사용자 정보 수정
+  updateNanudaUser() {
+    this.founderConsultUpdateDto.gender = this.founderConsult.nanudaUser.gender;
+    this.getGender();
+  }
+
+  // 상담 내용 수정
+  updateConsultInfo() {
+    this.founderConsultUpdateDto.status = this.founderConsult.status;
+    this.founderConsultUpdateDto.changUpExpYn = this.founderConsult.changUpExpYn;
+    this.founderConsultUpdateDto.hopeTime = this.founderConsult.hopeTime;
+    this.getFounderConsultCodes();
+    this.getAvailableTimes();
+  }
+
+  // 성별
+  getGender() {
+    CodeManagementService.findGender().subscribe(res => {
+      this.genderSelect = res.data;
+    });
+  }
+
+  // 희망 상담 시간
+  getAvailableTimes() {
+    CodeManagementService.findGender().subscribe(res => {
+      this.availableTimesSelect = res.data;
+    });
+  }
+
+  // 신청 상태 코드
+  getFounderConsultCodes() {
+    CodeManagementService.findCodesFounderConsult().subscribe(res => {
+      this.founderConsultStatusSelect = res.data;
+    });
+  }
 
   findOne(id) {
     // find founder consult detail
@@ -363,6 +558,7 @@ export default class FounderConsultDetail extends BaseComponent {
     if (this.selectedAdmin) {
       this.founderConsultUpdateDto.spaceConsultManager = this.selectedAdmin.no;
     }
+
     FounderConsultService.update(
       this.$route.params.id,
       this.founderConsultUpdateDto,

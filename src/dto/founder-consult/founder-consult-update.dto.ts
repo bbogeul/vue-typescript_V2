@@ -1,7 +1,7 @@
 import { BaseDto } from '@/core';
 import { FounderConsultDto } from './founder-consult.dto';
-import { YN } from '@/common';
-import { FOUNDER_CONSULT } from '@/services/shared';
+import { AVAILABLE_TIME, YN } from '@/common';
+import { FOUNDER_CONSULT, GENDER } from '@/services/shared';
 
 export class FounderConsultUpdateDto extends BaseDto<FounderConsultUpdateDto>
   implements Partial<FounderConsultDto> {
@@ -9,7 +9,9 @@ export class FounderConsultUpdateDto extends BaseDto<FounderConsultUpdateDto>
   purposeYn?: YN;
   changUpExpYn?: YN;
   status?: FOUNDER_CONSULT;
+  gender?: GENDER;
   spaceOwnYn?: YN;
   confirmDate?: Date;
   hopeDate?: Date;
+  hopeTime?: AVAILABLE_TIME;
 }

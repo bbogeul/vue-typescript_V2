@@ -21,13 +21,25 @@
             v-model="founderConsultListDto.nanudaUserName"
           />
         </div>
-        <div class="col-md-3 mb-3">
-          <label>나누다 사용자 휴대폰 번호</label>
+        <div class="col-md-2 mb-3">
+          <label>사용자 휴대폰 번호</label>
           <input
             type="text"
             class="form-control"
             v-model="founderConsultListDto.phone"
           />
+        </div>
+        <div class="col-md-1 mb-3">
+          <label>사용자 성별</label>
+          <select class="custom-select" v-model="founderConsultListDto.gender">
+            <option value selected>전체</option>
+            <option
+              v-for="gender in genderSelect"
+              :key="gender"
+              :value="gender"
+              >{{ gender | enumTransformer }}</option
+            >
+          </select>
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 선택</label>
@@ -191,7 +203,10 @@
           >
             USER PHONE
           </th>
-          <th scope="col">
+          <th
+            scope="col"
+            v-bind:class="{ highlighted: founderConsultListDto.gender }"
+          >
             GENDER
           </th>
           <th
@@ -257,8 +272,10 @@
               </div>
             </div>
           </td>
-          <td class="align-middle" v-if="founderConsult.availableTime">
-            {{ founderConsult.availableTime.value }}
+          <td class="align-middle">
+            <div v-if="founderConsult.availableTime">
+              {{ founderConsult.availableTime.value }}
+            </div>
           </td>
           <td class="align-middle">
             {{ founderConsult.createdAt | dateTransformer }}
@@ -304,7 +321,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../core/base.component';
-import { FOUNDER_CONSULT, CONST_FOUNDER_CONSULT } from '../../services/shared';
+import {
+  FOUNDER_CONSULT,
+  CONST_FOUNDER_CONSULT,
+  GENDER,
+  CONST_GENDER,
+} from '../../services/shared';
 import { CodeManagementDto } from '../../services/init/dto';
 import FounderConsultService from '../../services/founder-consult.service';
 import CodeManagementService from '../../services/code-management.service';
@@ -336,6 +358,7 @@ export default class FounderConsult extends BaseComponent {
   private totalPage = 0;
   private founderConsultListDto = new FounderConsultListDto();
   private delYn: YN[] = [...CONST_YN];
+  private genderSelect: GENDER[] = [...CONST_GENDER];
   private spaceTypeList: SpaceTypeDto[] = [];
   private pagination = new Pagination();
 
@@ -396,7 +419,6 @@ export default class FounderConsult extends BaseComponent {
   }
 
   created() {
-    console.log(this.delYn);
     this.pagination.page = 1;
     this.getAvailableTimes();
     this.getCompanies();

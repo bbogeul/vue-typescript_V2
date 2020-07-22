@@ -13,6 +13,10 @@ class CodeManagementService extends BaseService {
       'admin/code-management/available-times',
     );
   }
+
+  findGender() {
+    return super.get<CodeManagementDto[]>('admin/code-management/gender');
+  }
 }
 
 export default new CodeManagementService();

@@ -55,8 +55,10 @@
               </div>
             </div>
           </td>
-          <td v-if="founderConsult.availableTime">
-            {{ founderConsult.availableTime.value }}
+          <td>
+            <div v-if="founderConsult.availableTime">
+              {{ founderConsult.availableTime.value }}
+            </div>
           </td>
           <td>
             <span class="badge badge-pill badge-warning">{{
