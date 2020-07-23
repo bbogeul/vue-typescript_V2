@@ -1,6 +1,6 @@
 import { BaseService } from '@/core';
 import { Pagination } from '@/common';
-import { CompanyDto, CompanyListDto } from '@/dto';
+import { CompanyDto, CompanyListDto, CompanyUpdateDto } from '@/dto';
 
 class CompanyUserService extends BaseService {
   findAll(filter?: CompanyListDto, paginate?: Pagination) {
@@ -16,6 +16,10 @@ class CompanyUserService extends BaseService {
 
   findForSelect() {
     return super.get<CompanyDto[]>('admin/company/select-option');
+  }
+
+  update(companyNo, CompanyUpdateDto: CompanyUpdateDto) {
+    return super.patch(`admin/founder-consult/${companyNo}`, CompanyUpdateDto);
   }
 }
 export default new CompanyUserService();

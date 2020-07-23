@@ -4,7 +4,7 @@ import { CodeManagementDto } from '@/services/init/dto';
 import { CompanyUserDto } from '../company-user';
 import { CompanyDistrictDto } from '../company-district';
 
-export class CompanyDto extends BaseDto<CompanyDto> {
+export class CompanyCreateDto extends BaseDto<CompanyCreateDto> {
   no: number;
   adminNo?: number;
   nameKr: string;

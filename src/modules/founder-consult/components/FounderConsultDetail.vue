@@ -352,7 +352,7 @@
 
     <b-modal
       id="admin-list"
-      title="관리자 정하기"
+      title="관리자 수정하기"
       @cancel="cancelSelection()"
       @hide="cancelSelection()"
       @ok="updateFounderConsult()"
@@ -406,9 +406,9 @@ import CodeManagementService from '../../../services/code-management.service';
 import FounderConsultService from '../../../services/founder-consult.service';
 import AdminService from '../../../services/admin.service';
 import {
-  FounderConsultDto,
   AdminDto,
   AdminListDto,
+  FounderConsultDto,
   FounderConsultUpdateDto,
 } from '../../../dto';
 import { Pagination, YN, CONST_YN } from '../../../common';
@@ -424,18 +424,18 @@ import BaseCard from '../../_components/BaseCard.vue';
 export default class FounderConsultDetail extends BaseComponent {
   /* global kakao */
 
-  private founderConsult = new FounderConsultDto();
-  private founderConsultStatusSelect: CodeManagementDto[] = [];
-  private availableTimesSelect: CodeManagementDto[] = [];
-  private genderSelect: CodeManagementDto[] = [];
-  private adminListDto = new AdminListDto();
-  private pagination = new Pagination();
   private adminList: AdminDto[] = [];
+  private adminListDto = new AdminListDto();
   private adminListCount = 0;
-  private selectedAdmin: AdminDto = new AdminDto(BaseUser);
-  private founderConsultUpdateDto = new FounderConsultUpdateDto();
-  private googleMap = '';
+  private availableTimesSelect: CodeManagementDto[] = [];
   private delYn: YN[] = [...CONST_YN];
+  private founderConsult = new FounderConsultDto();
+  private founderConsultUpdateDto = new FounderConsultUpdateDto();
+  private founderConsultStatusSelect: CodeManagementDto[] = [];
+  private googleMap = '';
+  private genderSelect: CodeManagementDto[] = [];
+  private pagination = new Pagination();
+  private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 
   // 사용자 정보 수정
   updateNanudaUser() {

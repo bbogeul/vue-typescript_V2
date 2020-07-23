@@ -1,6 +1,15 @@
 <template>
   <section>
-    <h3>업체 관리</h3>
+    <div class="title d-flex justify-content-between align-items-end mb-2">
+      <h3>업체 관리</h3>
+      <!-- <div>
+        <b-button
+          variant="primary"
+          @click="createCompany()"
+          >업체 등록</b-button
+        >
+      </div> -->
+    </div>
     <div class="divider"></div>
     <div v-on:keyup.enter="search()">
       <div class="form-row">

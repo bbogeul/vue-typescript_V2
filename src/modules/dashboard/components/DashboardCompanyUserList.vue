@@ -58,7 +58,7 @@ export default class DashboardCompanyUserList extends BaseComponent {
   getUserWithUpdateStatus() {
     this.pagination.limit = 5;
     this.companyUserListDto.companyUserStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
-    CompanyUserService.getAll(
+    CompanyUserService.findAll(
       this.companyUserListDto,
       this.pagination,
     ).subscribe(res => {

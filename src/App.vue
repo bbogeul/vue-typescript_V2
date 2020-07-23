@@ -37,13 +37,6 @@ body {
   font-size: 11px;
 }
 
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-
 .div-center {
   margin: 0;
 }
@@ -74,5 +67,13 @@ select {
   .empty-data {
     height: 100px;
   }
+
+  &.table-sm {
+    font-size: 11px;
+  }
+}
+.modal-title {
+  font-size: 1rem;
+  font-weight: bold;
 }
 </style>

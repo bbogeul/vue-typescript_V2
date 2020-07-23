@@ -1,6 +1,6 @@
 <template>
   <section>
-    <!-- <div class="d-flex justify-content-between align-items-end mb-2">
+    <div class="d-flex justify-content-between align-items-end mb-2">
       <h3 v-if="company" class="mb-0">{{ company.nameKr }} - 업체 정보</h3>
       <router-link to="/company" class="btn btn-secondary text-center"
         >목록으로</router-link
@@ -10,7 +10,14 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <div></div>
+            <div>
+              <b-button
+                variant="primary"
+                @click="updateCompany()"
+                v-b-modal.company-info
+                >수정하기</b-button
+              >
+            </div>
           </template>
           <template v-slot:body>
             <ul>
@@ -26,46 +33,42 @@
         </BaseCard>
       </div>
       <div class="my-3 col-12 col-lg-6" v-if="company">
-        <BaseCard title="업체 담당 관리자">
+        <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button
-                variant="primary"
-                @click="findAdmin()"
-                v-b-modal.admin-list
+              <b-button variant="primary" v-b-modal.admin-list
                 >수정하기</b-button
               >
             </div>
           </template>
           <template v-slot:body>
-              <div v-if="founderConsult.admin">
+            <div v-if="company">
               <ul>
                 <li>
                   관리자 ID:
                   <span>
-                    <b>{{ founderConsult.admin.no }}</b>
+                    <b>{{ company.adminNo }}</b>
                   </span>
                 </li>
-                <li>
+                <!-- <li>
                   관리자명:
                   <span>
-                    <b>{{ founderConsult.admin.name }}</b>
+                    <b>{{ adminList.name }}</b>
                   </span>
                 </li>
                 <li>
                   전화번호:
-                  <b>{{ founderConsult.admin.phone }}</b>
+                  <b>{{ adminList.phone }}</b>
                 </li>
                 <li>
                   생성 날짜:
                   <b>
-                    {{ founderConsult.admin.createdAt | dateTransformer }}
+                    {{ adminList.createdAt | dateTransformer }}
                   </b>
-                </li>
+                </li> -->
               </ul>
             </div>
             <div v-else>관리자 없음</div>
-            
           </template>
         </BaseCard>
       </div>
@@ -95,46 +98,31 @@
             </div>
           </template>
           <template v-slot:body>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    USER NAME
-                  </th>
-                  <th>
-                    USER PHONE
-                  </th>
-                  <th>
-                    USER EMAIL
-                  </th>
-                  <th>
-                    USER STATUS
-                  </th>
-                </tr>
-              </thead>
-              <tbody v-if="company.companyUsers">
-                <tr v-for="user in company.companyUsers" :key="user.no">
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.name }}</td>
-                  <td>
-                    {{ user.authCode }}
-                  </td>
-                </tr>
-              </tbody>
-              <tbody v-else>
-                <tr>
-                  <td colspan="4" class="empty-data">
-                    <p>사용자를 등록해주세요</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <CompanyUserList />
           </template>
         </BaseCard>
       </div>
-      
     </div>
+
+    <b-modal
+      id="company-info"
+      title="업체 정보 수정"
+      @cancel="cancelSelection()"
+      @hide="cancelSelection()"
+      @ok="updateCompany()"
+    >
+      <div class="form-row" v-if="CompanyUpdateDto">
+        <div class="col-12 mb-3">
+          <label>대표명</label>
+          <input
+            type="text"
+            class="form-control"
+            id="ceoKr"
+            v-model="CompanyUpdateDto.ceoKr"
+          />
+        </div>
+      </div>
+    </b-modal>
     <b-modal
       id="company-district"
       title="지점 추가하기"
@@ -161,14 +149,34 @@
         </div>
       </div>
     </b-modal>
-<b-modal
+    <b-modal
       id="admin-list"
-      title="관리자 수정"
-      @cancel="new CompanyDistrictDto()"
-      @hide="new CompanyDistrictDto()"
-      @ok="createCompanyDistrcit()"
+      title="관리자 수정하기"
+      @cancel="cancelSelection()"
+      @hide="cancelSelection()"
+      @ok="updateCompany()"
     >
-    <div
+      <table class="table table-sm tabl-bordered text-center">
+        <thead>
+          <tr>
+            <th scope="col">NAME</th>
+            <th scope="col">PHONE</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="admin in adminList" :key="admin.no">
+            <td>{{ admin.name }}</td>
+            <td>{{ admin.phone }}</td>
+            <td class="text-center">
+              <button class="btn btn-primary" @click="selectAdmin(admin)">
+                선택
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
         v-if="selectedAdmin.name"
         class="py-2 px-4 rounded"
         style="background-color:#f1f1f1"
@@ -185,7 +193,7 @@
         @input="paginateSearch"
         class="mt-4 justify-content-center"
       ></b-pagination>
-</b-modal> -->
+    </b-modal>
   </section>
 </template>
 
@@ -198,6 +206,7 @@ import {
   AdminDto,
   AdminListDto,
   CompanyDto,
+  CompanyUpdateDto,
   CompanyDistrictListDto,
   CompanyDistrictDto,
 } from '../../../dto';
@@ -205,7 +214,9 @@ import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
 import BaseCard from '../../_components/BaseCard.vue';
 import CompanyDistrictList from './CompanyDistrictList.vue';
+import CompanyUserList from './CompanyUserList.vue';
 
+import AdminService from '../../../services/admin.service';
 import CompanyService from '../../../services/company.service';
 import {
   APPROVAL_STATUS,
@@ -217,12 +228,19 @@ import {
   components: {
     BaseCard,
     CompanyDistrictList,
+    CompanyUserList,
   },
 })
 export default class CompanyDetail extends BaseComponent {
-  private company = new CompanyDto();
-  private pagination = new Pagination();
+  private adminList: AdminDto[] = [];
+  private adminListDto = new AdminListDto();
+  private adminListCount = 0;
   private approvalStatusSelect: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
+
+  private company = new CompanyDto();
+  private companyUpdateDto = new CompanyUpdateDto();
+  private pagination = new Pagination();
+  private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 
   findOne(id) {
     // find founder consult detail
@@ -234,7 +252,46 @@ export default class CompanyDetail extends BaseComponent {
 
   // 지점 추가
   createCompanyDistrcit() {
-    alert('지점 추가하기');
+    console.log('지점 추가');
+  }
+
+  findAdmin(isPagination: boolean) {
+    if (!isPagination) {
+      this.pagination.page = 1;
+    }
+    this.pagination.limit = 5;
+    AdminService.findAll(this.adminListDto, this.pagination).subscribe(res => {
+      console.log(res);
+      this.adminList = res.data.items;
+      this.adminListCount = res.data.totalCount;
+    });
+  }
+
+  updateCompany() {
+    if (this.selectedAdmin) {
+      this.companyUpdateDto.adminNo = this.selectedAdmin.no;
+    }
+
+    CompanyService.update(
+      this.$route.params.id,
+      this.companyUpdateDto,
+    ).subscribe(res => {
+      this.cancelSelection();
+      this.companyUpdateDto = new CompanyUpdateDto();
+      this.findOne(this.$route.params.id);
+    });
+  }
+
+  paginateSearch() {
+    this.findAdmin(true);
+  }
+
+  selectAdmin(admin: AdminDto) {
+    this.selectedAdmin = admin;
+  }
+
+  cancelSelection() {
+    this.selectedAdmin = new AdminDto(BaseUser);
   }
 
   created() {

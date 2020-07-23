@@ -9,7 +9,8 @@ export class CompanyUserListDto extends BaseDto<CompanyUserListDto>
   constructor(partial?: any) {
     super(partial);
   }
-
+  no: number;
+  companyNo: number;
   name?: string;
   email?: string;
   phone?: string;

@@ -5,6 +5,8 @@ import { CodeManagementDto } from '@/services/init/dto';
 import { CompanyDto } from '../company/company.dto';
 import { CompanyUserUpdateHistoryDto } from '../company-user-update-history';
 export class CompanyUserDto extends BaseUser {
+  no: number;
+  companyNo: number;
   passwordChangedYn?: YN;
   companyAdminRole?: COMPANY_USER;
   codeManagement?: CodeManagementDto;

@@ -3,8 +3,10 @@ import { APPROVAL_STATUS } from '@/services/shared';
 import { CodeManagementDto } from '@/services/init/dto';
 import { CompanyUserDto } from '../company-user';
 import { CompanyDistrictDto } from '../company-district';
+import { CompanyDto } from '.';
 
-export class CompanyDto extends BaseDto<CompanyDto> {
+export class CompanyUpdateDto extends BaseDto<CompanyUpdateDto>
+  implements Partial<CompanyDto> {
   no: number;
   adminNo?: number;
   nameKr: string;
