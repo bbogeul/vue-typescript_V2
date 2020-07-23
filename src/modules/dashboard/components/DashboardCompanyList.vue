@@ -2,7 +2,9 @@
   <div>
     <div class="title">
       <h5 class="d-inline-block">업체 수정요청</h5>
-      <button type="button" class="btn btn-primary float-right">더 보기</button>
+      <router-link to="/company">
+        <button type="button" class="btn btn-primary float-right">더 보기</button>
+      </router-link>
     </div>
     <table class="table table-bordered" v-if="companyListCount > 0">
       <thead>
@@ -25,8 +27,7 @@
             <span
               class="badge badge-pill badge-warning"
               v-if="company.codeManagement"
-              >{{ company.codeManagement.value }}</span
-            >
+            >{{ company.codeManagement.value }}</span>
           </td>
         </tr>
       </tbody>
@@ -53,7 +54,7 @@ export default class DashboardCompanyList extends BaseComponent {
   getCompanyUpdateStatusList() {
     this.pagination.limit = 5;
     this.companyListDto.companyStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
-    CompanyService.getAll(this.companyListDto, this.pagination).subscribe(
+    CompanyService.findAll(this.companyListDto, this.pagination).subscribe(
       res => {
         this.companyDto = res.data.items;
         this.companyListCount = res.data.totalCount;
