@@ -21,6 +21,8 @@ export default class extends BaseComponent {
 html,
 body {
   height: 100%;
+  background-color: #f1f1f1;
+  padding: 10px 0 40px;
 }
 .btn {
   font-size: 12px;

@@ -25,7 +25,7 @@ export const constantRoutes: RouteConfig[] = [
     component: () =>
       import('../modules/_layouts/Layout/LoginLayout.layout.vue'),
     name: 'Home',
-    meta: { authRequired: false, layout: 'NonMainLayout' },
+    meta: { authRequired: false, layout: 'NonMainLayout', title: 'Login' },
   },
   {
     path: '/login',
