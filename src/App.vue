@@ -37,8 +37,11 @@ body {
   font-size: 11px;
 }
 
+h4 {
+  font-size: 18px;
+}
 h5 {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .div-center {
@@ -53,5 +56,23 @@ h5 {
 
 select {
   font: inherit;
+}
+
+.table {
+  margin-bottom: 0;
+  th,
+  td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  thead {
+    th {
+      border-top: 0;
+      border-bottom: 0;
+    }
+  }
+  .empty-data {
+    height: 100px;
+  }
 }
 </style>

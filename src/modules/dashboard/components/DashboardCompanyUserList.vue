@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h5 class="d-inline-block">사용자 수정요청</h5>
+      <h4 class="d-inline-block">사용자 수정요청</h4>
       <button type="button" class="btn btn-primary float-right">더 보기</button>
     </div>
     <table class="table table-bordered" v-if="companyUserListCount > 0">
@@ -23,7 +23,9 @@
           <td>{{ companyUser.phone }}</td>
 
           <td>
-            <span class="badge badge-pill badge-warning">{{ companyUser.codeManagement.value }}</span>
+            <span class="badge badge-pill badge-warning p-2">{{
+              companyUser.codeManagement.value
+            }}</span>
           </td>
         </tr>
       </tbody>

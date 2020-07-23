@@ -10,7 +10,7 @@
             type="text"
             class="form-control"
             id="username"
-            v-model="founderConsultListDto.spaceNo"
+            v-model="founderConsultSearchDto.spaceNo"
           />
         </div>
         <div class="col-md-2 mb-3">
@@ -18,7 +18,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="founderConsultListDto.nanudaUserName"
+            v-model="founderConsultSearchDto.nanudaUserName"
           />
         </div>
         <div class="col-md-2 mb-3">
@@ -26,12 +26,15 @@
           <input
             type="text"
             class="form-control"
-            v-model="founderConsultListDto.phone"
+            v-model="founderConsultSearchDto.phone"
           />
         </div>
         <div class="col-md-1 mb-3">
           <label>사용자 성별</label>
-          <select class="custom-select" v-model="founderConsultListDto.gender">
+          <select
+            class="custom-select"
+            v-model="founderConsultSearchDto.gender"
+          >
             <option value selected>전체</option>
             <option
               v-for="gender in genderSelect"
@@ -45,7 +48,7 @@
           <label>업체 선택</label>
           <select
             class="custom-select"
-            v-model="founderConsultListDto.companyNo"
+            v-model="founderConsultSearchDto.companyNo"
           >
             <option value selected>전체</option>
             <option
@@ -61,16 +64,16 @@
           <input
             type="text"
             class="form-control"
-            v-model="founderConsultListDto.companyDistrictNameKr"
+            v-model="founderConsultSearchDto.companyDistrictNameKr"
           />
         </div>
         <div class="col-md-1 mb-3">
           <label>공간 유형</label>
           <select
             class="custom-select"
-            v-model="founderConsultListDto.spaceTypeNo"
+            v-model="founderConsultSearchDto.spaceTypeNo"
           >
-            <option value></option>
+            <option value selected>전체</option>
             <option
               v-for="spaceType in spaceTypeList"
               :key="spaceType.no"
@@ -88,7 +91,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="founderConsultListDto.address"
+            v-model="founderConsultSearchDto.address"
           />
         </div>
         <div class="col-md-2 mb-3">
@@ -96,7 +99,7 @@
           <input
             type="text"
             class="form-control"
-            v-model="founderConsultListDto.adminUserName"
+            v-model="founderConsultSearchDto.adminUserName"
           />
         </div>
 
@@ -104,7 +107,7 @@
           <label>희망시간대 선택</label>
           <select
             class="custom-select"
-            v-model="founderConsultListDto.hopeTime"
+            v-model="founderConsultSearchDto.hopeTime"
           >
             <option value selected>전체</option>
             <option
@@ -117,7 +120,10 @@
         </div>
         <div class="col-md-2 mb-3">
           <label>신청 상태값 선택</label>
-          <select class="custom-select" v-model="founderConsultListDto.status">
+          <select
+            class="custom-select"
+            v-model="founderConsultSearchDto.status"
+          >
             <option value selected>전체</option>
             <option
               v-for="status in founderConsultStatusSelect"
@@ -131,9 +137,9 @@
           <label>창업 경험 유무</label>
           <select
             class="custom-select"
-            v-model="founderConsultListDto.changUpExpYn"
+            v-model="founderConsultSearchDto.changUpExpYn"
           >
-            <option value></option>
+            <option value selected>전체</option>
             <option v-for="yn in delYn" :key="yn" :value="yn">
               {{ yn | enumTransformer }}
             </option>
@@ -143,9 +149,9 @@
           <label>공간 소우 유무</label>
           <select
             class="custom-select"
-            v-model="founderConsultListDto.spaceOwnYn"
+            v-model="founderConsultSearchDto.spaceOwnYn"
           >
-            <option value></option>
+            <option value selected>전체</option>
             <option v-for="yn in delYn" :key="yn" :value="yn">
               {{ yn | enumTransformer }}
             </option>
@@ -157,7 +163,7 @@
           <label>확정 날짜</label>
           <b-form-datepicker
             id="confirmDate"
-            v-model="founderConsultListDto.confirmDate"
+            v-model="founderConsultSearchDto.confirmDate"
             placeholder="확정 날짜를 선택해주세요"
             class="mb-2"
           ></b-form-datepicker>
@@ -166,7 +172,7 @@
           <label>희망 날짜</label>
           <b-form-datepicker
             id="hopeDate"
-            v-model="founderConsultListDto.hopeDate"
+            v-model="founderConsultSearchDto.hopeDate"
             placeholder="희망 날짜를 선택해주세요"
             class="mb-2"
           ></b-form-datepicker>
@@ -179,7 +185,9 @@
         </div>
       </div>
     </div>
-    <h5>검색 결과: {{ founderConsultsCount }}</h5>
+    <h5>
+      검색 결과: <strong>{{ founderConsultListTotalCount }}</strong>
+    </h5>
 
     <table class="table table-bordered table-hover table-sm text-center">
       <thead>
@@ -187,57 +195,61 @@
           <th scope="col">ID</th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.spaceNo }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
           >
             SPACE ID
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.nanudaUserName }"
+            v-bind:class="{
+              highlighted: founderConsultSearchDto.nanudaUserName,
+            }"
           >
             USER NAME
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.phone }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.phone }"
           >
             USER PHONE
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.gender }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.gender }"
           >
             GENDER
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.address }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.address }"
           >
             ADDRESS
           </th>
 
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.companyNo }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }"
           >
             COMPANY
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.hopeTime }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
           >
             AVAILABLE TIME
           </th>
           <th scope="col">CREATED</th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.adminUserName }"
+            v-bind:class="{
+              highlighted: founderConsultSearchDto.adminUserName,
+            }"
           >
             ADMIN
           </th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: founderConsultListDto.status }"
+            v-bind:class="{ highlighted: founderConsultSearchDto.status }"
           >
             STATUS
           </th>
@@ -245,14 +257,17 @@
         </tr>
       </thead>
 
-      <tbody v-if="founderConsultsCount">
-        <tr v-for="founderConsult in founderConsults" :key="founderConsult.no">
+      <tbody v-if="founderConsultListTotalCount">
+        <tr
+          v-for="founderConsult in founderConsultList"
+          :key="founderConsult.no"
+        >
           <td class="align-middle">
             {{ founderConsult.no }}
           </td>
           <td class="align-middle">{{ founderConsult.spaceNo }}</td>
           <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
-          <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
+          <td class="align-middle">{{ founderConsult.nanudaUser.phone }}</td>
           <td class="align-middle">
             <div v-if="founderConsult.nanudaUser.genderInfo">
               {{ founderConsult.nanudaUser.genderInfo.value }}
@@ -308,9 +323,9 @@
     </table>
     <b-pagination
       v-model="pagination.page"
-      v-if="founderConsultsCount"
+      v-if="founderConsultListTotalCount"
       pills
-      :total-rows="founderConsultsCount"
+      :total-rows="founderConsultListTotalCount"
       :per-page="pagination.limit"
       @input="paginateSearch"
       class="mt-4 justify-content-center"
@@ -350,13 +365,13 @@ import CompanyService from '../../../services/company.service';
   name: 'FounderConsultList',
 })
 export default class FounderConsult extends BaseComponent {
-  private founderConsults: FounderConsultDto[] = [];
-  private founderConsultsCount = 0;
+  private founderConsultSearchDto = new FounderConsultListDto();
+  private founderConsultList: FounderConsultDto[] = [];
+  private founderConsultListTotalCount = 0;
   private founderConsultStatusSelect: CodeManagementDto[] = [];
   private availableTimesSelect: CodeManagementDto[] = [];
   private companySelect: CompanyDto[] = [];
   private totalPage = 0;
-  private founderConsultListDto = new FounderConsultListDto();
   private delYn: YN[] = [...CONST_YN];
   private genderSelect: GENDER[] = [...CONST_GENDER];
   private spaceTypeList: SpaceTypeDto[] = [];
@@ -399,13 +414,13 @@ export default class FounderConsult extends BaseComponent {
       this.pagination.page = 1;
     }
     FounderConsultService.findAll(
-      this.founderConsultListDto,
+      this.founderConsultSearchDto,
       this.pagination,
     ).subscribe(res => {
-      this.founderConsults = res.data.items;
-      this.founderConsultsCount = res.data.totalCount;
+      this.founderConsultList = res.data.items;
+      this.founderConsultListTotalCount = res.data.totalCount;
       this.totalPage = Math.ceil(
-        this.founderConsultsCount / this.pagination.limit,
+        this.founderConsultListTotalCount / this.pagination.limit,
       );
     });
     window.scrollTo(0, 0);
@@ -414,7 +429,7 @@ export default class FounderConsult extends BaseComponent {
   // 초기화
   clearOut() {
     this.pagination.page = 1;
-    this.founderConsultListDto = new FounderConsultListDto();
+    this.founderConsultSearchDto = new FounderConsultListDto();
     this.search();
   }
 
