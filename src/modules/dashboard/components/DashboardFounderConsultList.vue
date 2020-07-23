@@ -2,10 +2,8 @@
   <section>
     <div class="title">
       <h4 class="d-inline-block">최신 방문자 신청</h4>
-      <router-link to="/founder-consult">
-        <button type="button" class="btn btn-primary float-right">
-          더 보기
-        </button>
+      <router-link to="/founder-consult" class="btn btn-primary float-right">
+        더 보기
       </router-link>
     </div>
     <table

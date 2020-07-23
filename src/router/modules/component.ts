@@ -38,6 +38,27 @@ const componentsRouter: RouteConfig[] = [
     ],
   },
   {
+    path: '/company-user',
+    name: '업체 사용자 관리',
+    component: () => import('../../modules/company-user/CompanyUser.vue'),
+    children: [
+      {
+        path: '/company-user',
+        name: '업체 사용자 관리',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserList.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '업체 사용자 관리',
+        },
+      },
+    ],
+  },
+  {
     path: '/founder-consult',
     name: '방문자 신청',
     component: () => import('../../modules/founder-consult/FounderConsult.vue'),

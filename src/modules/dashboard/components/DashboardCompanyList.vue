@@ -2,10 +2,8 @@
   <div>
     <div class="title">
       <h4 class="d-inline-block">업체 수정요청</h4>
-      <router-link to="/company">
-        <button type="button" class="btn btn-primary float-right">
-          더 보기
-        </button>
+      <router-link to="/company" class="btn btn-primary float-right">
+        더 보기
       </router-link>
     </div>
     <table class="table table-bordered" v-if="companyListCount > 0">

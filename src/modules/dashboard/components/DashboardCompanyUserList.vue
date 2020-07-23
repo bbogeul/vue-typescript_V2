@@ -2,7 +2,9 @@
   <div>
     <div class="title">
       <h4 class="d-inline-block">사용자 수정요청</h4>
-      <button type="button" class="btn btn-primary float-right">더 보기</button>
+      <router-link to="/company-user" class="btn btn-primary float-right">
+        더 보기
+      </router-link>
     </div>
     <table class="table table-bordered" v-if="companyUserListCount > 0">
       <thead>
@@ -68,7 +70,7 @@ export default class DashboardCompanyUserList extends BaseComponent {
     });
   }
 
-  mounted() {
+  created() {
     this.getUserWithUpdateStatus();
   }
 }
