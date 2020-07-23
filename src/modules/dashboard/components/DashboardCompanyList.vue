@@ -1,9 +1,11 @@
 <template>
   <div>
     <div class="title">
-      <h5 class="d-inline-block">업체 수정요청</h5>
+      <h4 class="d-inline-block">업체 수정요청</h4>
       <router-link to="/company">
-        <button type="button" class="btn btn-primary float-right">더 보기</button>
+        <button type="button" class="btn btn-primary float-right">
+          더 보기
+        </button>
       </router-link>
     </div>
     <table class="table table-bordered" v-if="companyListCount > 0">
@@ -25,9 +27,10 @@
           <td>{{ company.phone }}</td>
           <td>
             <span
-              class="badge badge-pill badge-warning"
+              class="badge badge-pill badge-warning p-2"
               v-if="company.codeManagement"
-            >{{ company.codeManagement.value }}</span>
+              >{{ company.codeManagement.value }}</span
+            >
           </td>
         </tr>
       </tbody>

@@ -42,19 +42,22 @@ export default class BaseCard extends BaseComponent {
     }
   }
   .card-body {
+    padding: 0;
     ul {
-      padding-left: 0;
+      padding: 1.25em;
       margin-left: 0;
       li {
         list-style: none;
         position: relative;
         padding-left: 10px;
+        margin: 5px 0;
         &:before {
           display: inline-block;
           content: '';
           position: absolute;
           left: 0;
-          top: 0.625em;
+          top: 50%;
+          transform: translate(-50%);
           vertical-align: top;
           width: 4px;
           height: 4px;

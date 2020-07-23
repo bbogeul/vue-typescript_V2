@@ -22,6 +22,19 @@ const componentsRouter: RouteConfig[] = [
           title: '업체관리',
         },
       },
+      {
+        path: '/company/:id',
+        name: 'CompanyDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/company/components/CompanyDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+        },
+      },
     ],
   },
   {

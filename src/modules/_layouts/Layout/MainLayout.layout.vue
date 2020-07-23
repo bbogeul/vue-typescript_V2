@@ -23,6 +23,7 @@ export default class MainLayout extends BaseComponent {}
 <style lang="scss" scoped>
 #app-main {
   margin-top: 80px;
+  margin-bottom: 40px;
   font-size: 11px;
 }
 </style>

@@ -1,14 +1,17 @@
 <template>
   <section>
     <div class="title">
-      <h5 class="d-inline-block">최신 방문자 신청</h5>
+      <h4 class="d-inline-block">최신 방문자 신청</h4>
       <router-link to="/founder-consult">
         <button type="button" class="btn btn-primary float-right">
           더 보기
         </button>
       </router-link>
     </div>
-    <table class="table table-bordered" v-if="founderConsultListCount">
+    <table
+      class="table table-sm table-bordered text-center"
+      v-if="founderConsultListCount"
+    >
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -61,7 +64,7 @@
             </div>
           </td>
           <td>
-            <span class="badge badge-pill badge-warning">{{
+            <span class="badge badge-pill badge-warning p-2">{{
               founderConsult.codeManagement.value
             }}</span>
           </td>
