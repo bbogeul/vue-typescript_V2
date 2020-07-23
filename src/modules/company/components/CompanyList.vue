@@ -6,43 +6,76 @@
       <div class="form-row">
         <div class="col-md-2 mb-2">
           <label for="username">업체 ID</label>
-          <input type="text" class="form-control" id="username" v-model="companySearchDto.spaceNo" />
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            v-model="companySearchDto.spaceNo"
+          />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 대표명</label>
-          <input type="text" class="form-control" v-model="companySearchDto.ceoKr" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.ceoKr"
+          />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체명</label>
-          <input type="text" class="form-control" v-model="companySearchDto.nameKr" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.nameKr"
+          />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 전화번호</label>
-          <input type="text" class="form-control" v-model="companySearchDto.phone" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.phone"
+          />
         </div>
         <div class="col-md-4 mb-3">
           <label>업체 주소</label>
-          <input type="text" class="form-control" v-model="companySearchDto.address" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.address"
+          />
         </div>
       </div>
       <div class="form-row">
         <div class="col-md-3 mb-3">
           <label>업체 이메일</label>
-          <input type="text" class="form-control" v-model="companySearchDto.email" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.email"
+          />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 팩스번호</label>
-          <input type="text" class="form-control" v-model="companySearchDto.fax" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="companySearchDto.fax"
+          />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 승인 상태</label>
-          <select class="custom-select" v-model="companySearchDto.companyStatus">
+          <select
+            class="custom-select"
+            v-model="companySearchDto.companyStatus"
+          >
             <option value>전체</option>
             <option
               v-for="status in approvalStatus"
               :key="status"
               :value="status"
-            >{{ status | enumTransformer }}</option>
+              >{{ status | enumTransformer }}</option
+            >
           </select>
         </div>
       </div>

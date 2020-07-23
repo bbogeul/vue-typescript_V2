@@ -35,6 +35,5 @@ html,
   justify-content: center;
   padding-top: 100px;
   padding-bottom: 40px;
-  background-color: #ffffff;
 }
 </style>

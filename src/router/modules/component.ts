@@ -45,7 +45,7 @@ const componentsRouter: RouteConfig[] = [
         },
       },
       {
-        path: '/:id',
+        path: '/founder-consult/:id',
         name: 'FounderConsultDetail',
         component: () =>
           import(
