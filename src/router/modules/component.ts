@@ -5,12 +5,12 @@ import { CONST_ADMIN_USER } from '@/services/shared';
 const componentsRouter: RouteConfig[] = [
   {
     path: '/company',
-    name: 'Company',
+    name: '업체',
     component: () => import('../../modules/company/Company.vue'),
     children: [
       {
-        path: '/',
-        name: 'CompanyList',
+        path: '/company',
+        name: '업체 관리',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/company/components/CompanyList.vue'
@@ -26,17 +26,17 @@ const componentsRouter: RouteConfig[] = [
   },
   {
     path: '/founder-consult',
-    name: 'FounderConsult',
+    name: '방문자 신청',
     component: () => import('../../modules/founder-consult/FounderConsult.vue'),
     children: [
       {
-        path: '/',
+        path: '/founder-consult',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/founder-consult/components/FounderConsultList.vue'
           ),
-        name: 'FounderConsultList',
+        name: '방문자 신청 관리',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
@@ -55,6 +55,7 @@ const componentsRouter: RouteConfig[] = [
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
+          detailPage: true,
         },
       },
     ],
