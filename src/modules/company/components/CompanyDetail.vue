@@ -47,12 +47,24 @@
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="company">
+            <div v-if="company.admin">
               <ul>
                 <li>
                   관리자 ID:
                   <span>
-                    <b>{{ company.adminNo }}</b>
+                    <b>{{ company.admin.no }}</b>
+                  </span>
+                </li>
+                <li>
+                  관리자 이름:
+                  <span>
+                    <b>{{ company.admin.name }}</b>
+                  </span>
+                </li>
+                <li>
+                  관리자 휴대폰번호:
+                  <span>
+                    <b>{{ company.admin.phone }}</b>
                   </span>
                 </li>
               </ul>
@@ -64,11 +76,11 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="지점 정보">
           <template v-slot:head>
-            <div>
+            <!-- <div>
               <b-button variant="primary" v-b-modal.company-district
                 >추가하기</b-button
               >
-            </div>
+            </div> -->
           </template>
           <template v-slot:body>
             <div>
@@ -80,11 +92,11 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 사용자 정보">
           <template v-slot:head>
-            <div>
+            <!-- <div>
               <b-button variant="primary" v-b-modal.company-user
                 >추가하기</b-button
               >
-            </div>
+            </div> -->
           </template>
           <template v-slot:body>
             <CompanyUserList />

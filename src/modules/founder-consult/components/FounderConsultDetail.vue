@@ -58,7 +58,9 @@
                   <b v-if="founderConsult.nanudaUser.genderInfo">{{
                     founderConsult.nanudaUser.genderInfo.value
                   }}</b>
-                  <b v-else>-</b>
+                  <b v-else>
+                    <span>미입력 상태</span>
+                  </b>
                 </li>
                 <!-- <li>
                   
@@ -249,7 +251,7 @@
                   창업 경험 유무 :
                   <b>{{ founderConsult.changUpExpYn | enumTransformer }}</b>
                 </li>
-                <li>
+                <li v-if="founderConsult.hopeFoodCategory">
                   희망 업종 :
                   <b>{{ founderConsult.hopeFoodCategory }}</b>
                 </li>
@@ -325,6 +327,17 @@
               >{{ yn | enumTransformer }}</b-form-radio
             >
           </b-form-group>
+        </div>
+        <div class="col-12 mb-3">
+          <label>희망 업종</label>
+          <div>
+            <input
+              type="text"
+              class="form-control"
+              id=""
+              v-model="founderConsultUpdateDto.hopeFoodCategory"
+            />
+          </div>
         </div>
         <div class="col-12 mb-3">
           <label>희망시간대 선택</label>
@@ -405,12 +418,17 @@ import { GENDER, CONST_GENDER } from '../../../services/shared';
 import CodeManagementService from '../../../services/code-management.service';
 import FounderConsultService from '../../../services/founder-consult.service';
 import AdminService from '../../../services/admin.service';
+import FoodCategoryService from '../../../services/food-category.service';
 import {
   AdminDto,
   AdminListDto,
   FounderConsultDto,
   FounderConsultUpdateDto,
 } from '../../../dto';
+import {
+  FoodCategoryDto,
+  FoodCategoryListDto,
+} from '../../../dto/food-category';
 import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
 import BaseCard from '../../_components/BaseCard.vue';
@@ -434,6 +452,9 @@ export default class FounderConsultDetail extends BaseComponent {
   private founderConsultStatusSelect: CodeManagementDto[] = [];
   private googleMap = '';
   private genderSelect: CodeManagementDto[] = [];
+  private foodCategoryList: FoodCategoryDto[] = [];
+  private foodCategoryListDto = new FoodCategoryListDto();
+  private foodCategoryListCount = 0;
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 
@@ -450,6 +471,7 @@ export default class FounderConsultDetail extends BaseComponent {
     this.founderConsultUpdateDto.hopeTime = this.founderConsult.hopeTime;
     this.getFounderConsultCodes();
     this.getAvailableTimes();
+    this.findFoodCategory(true);
   }
 
   // 성별
@@ -501,6 +523,21 @@ export default class FounderConsultDetail extends BaseComponent {
       console.log(res);
       this.adminList = res.data.items;
       this.adminListCount = res.data.totalCount;
+    });
+  }
+
+  findFoodCategory(isPagination: boolean) {
+    if (!isPagination) {
+      this.pagination.page = 1;
+    }
+    this.pagination.limit = 5;
+    FoodCategoryService.findAll(
+      this.foodCategoryListDto,
+      this.pagination,
+    ).subscribe(res => {
+      console.log(res);
+      this.foodCategoryList = res.data.items;
+      this.foodCategoryListCount = res.data.totalCount;
     });
   }
 

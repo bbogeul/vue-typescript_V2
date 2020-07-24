@@ -1,11 +1,10 @@
 import { BaseService } from '@/core';
 import {
-  FounderConsultListDto,
   FounderConsultDto,
+  FounderConsultListDto,
   FounderConsultUpdateDto,
 } from '@/dto/founder-consult';
 import { Pagination } from '@/common';
-import { CodeManagementDto } from './init/dto';
 
 class FounderConsultService extends BaseService {
   /**
