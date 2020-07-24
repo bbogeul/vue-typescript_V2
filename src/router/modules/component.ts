@@ -56,6 +56,20 @@ const componentsRouter: RouteConfig[] = [
           title: '업체 사용자 관리',
         },
       },
+      {
+        path: '/company-user/:id',
+        name: 'CompanyUserDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+        },
+      },
     ],
   },
   {

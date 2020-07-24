@@ -23,11 +23,26 @@
           />
         </div>
         <div class="col-md-2 mb-3">
+          <label>업체 선택</label>
+          <select
+            class="custom-select"
+            v-model="companyUserSearchDto.companyNo"
+          >
+            <option value selected>전체</option>
+            <option
+              v-for="company in companySelect"
+              :key="company.no"
+              :value="company.no"
+              >{{ company.nameKr }}</option
+            >
+          </select>
+        </div>
+        <div class="col-md-2 mb-3">
           <label>사용자명</label>
           <input
             type="text"
             class="form-control"
-            v-model="companyUserSearchDto.nameKr"
+            v-model="companyUserSearchDto.name"
           />
         </div>
         <div class="col-md-3 mb-3">
@@ -87,7 +102,7 @@
           <th
             scope="col"
             v-bind:class="{
-              highlighted: companyUserSearchDto.nameKr,
+              highlighted: companyUserSearchDto.company,
             }"
           >
             COMPANY
@@ -153,7 +168,7 @@
               v-if="companyUser.no"
               class="btn btn-sm btn-secondary"
               :to="{
-                name: 'CompanyDetail',
+                name: 'CompanyUserDetail',
                 params: {
                   id: companyUser.no,
                 },
@@ -184,9 +199,10 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
-import { CompanyUserListDto, CompanyUserDto } from '../../../dto';
+import { CompanyUserListDto, CompanyUserDto, CompanyDto } from '../../../dto';
 import { Pagination } from '../../../common';
 import CompanyUserService from '../../../services/company-user.service';
+import CompanyService from '../../../services/company.service';
 import {
   CONST_APPROVAL_STATUS,
   APPROVAL_STATUS,
@@ -199,9 +215,17 @@ export default class Company extends BaseComponent {
   private companyUserSearchDto = new CompanyUserListDto();
   private companyUserListDto: CompanyUserDto[] = Array<CompanyUserDto>();
   private companyUserListTotalCount = 0;
+  private companySelect: CompanyDto[] = [];
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
   private totalPage = 0;
+
+  // TODO: Create autocomplete box
+  getCompanies() {
+    CompanyService.findForSelect().subscribe(res => {
+      this.companySelect = res.data;
+    });
+  }
 
   paginateSearch() {
     this.search(true);
@@ -231,7 +255,7 @@ export default class Company extends BaseComponent {
 
   created() {
     this.search();
-    console.log(this.companyUserListDto);
+    this.getCompanies();
   }
 }
 </script>

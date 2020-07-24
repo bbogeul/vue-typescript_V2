@@ -10,33 +10,38 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <div>
+            <!-- <div>
               <b-button
                 variant="primary"
                 @click="updateCompany()"
                 v-b-modal.company-info
                 >수정하기</b-button
               >
-            </div>
+            </div> -->
           </template>
           <template v-slot:body>
             <ul>
               <li>업체명 : {{ company.nameKr }}</li>
               <li>대표 : {{ company.ceoKr }}</li>
               <li>전화번호 : {{ company.phone }}</li>
-              <li>이메일 : {{ company.email }}</li>
-              <li>팩스 : {{ company.fax }}</li>
+              <li v-if="company.email">이메일 : {{ company.email }}</li>
+              <li v-if="company.fax">팩스 : {{ company.fax }}</li>
               <li>주소 : {{ company.address }}</li>
-              <li>생성일 : {{ company.createdAt | dateTransformer }}</li>
+              <li v-if="company.createdAt">
+                생성일 : {{ company.createdAt | dateTransformer }}
+              </li>
             </ul>
           </template>
         </BaseCard>
       </div>
-      <div class="my-3 col-12 col-lg-6" v-if="company">
+      <div class="my-3 col-12 col-lg-6" v-if="adminList">
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button variant="primary" v-b-modal.admin-list
+              <b-button
+                variant="primary"
+                v-b-modal.admin-list
+                @click="findAdmin()"
                 >수정하기</b-button
               >
             </div>
@@ -50,22 +55,6 @@
                     <b>{{ company.adminNo }}</b>
                   </span>
                 </li>
-                <!-- <li>
-                  관리자명:
-                  <span>
-                    <b>{{ adminList.name }}</b>
-                  </span>
-                </li>
-                <li>
-                  전화번호:
-                  <b>{{ adminList.phone }}</b>
-                </li>
-                <li>
-                  생성 날짜:
-                  <b>
-                    {{ adminList.createdAt | dateTransformer }}
-                  </b>
-                </li> -->
               </ul>
             </div>
             <div v-else>관리자 없음</div>
@@ -111,7 +100,7 @@
       @hide="cancelSelection()"
       @ok="updateCompany()"
     >
-      <div class="form-row" v-if="CompanyUpdateDto">
+      <!-- <div class="form-row" v-if="CompanyUpdateDto">
         <div class="col-12 mb-3">
           <label>대표명</label>
           <input
@@ -121,7 +110,7 @@
             v-model="CompanyUpdateDto.ceoKr"
           />
         </div>
-      </div>
+      </div> -->
     </b-modal>
     <b-modal
       id="company-district"
