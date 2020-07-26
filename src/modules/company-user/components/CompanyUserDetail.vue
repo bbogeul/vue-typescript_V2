@@ -1,12 +1,8 @@
 <template>
   <section>
     <div class="d-flex justify-content-between align-items-end mb-2">
-      <h3 v-if="companyUser" class="mb-0">
-        {{ companyUser.name }} - 사용자 정보
-      </h3>
-      <router-link to="/company-user" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
+      <h3 v-if="companyUser" class="mb-0">{{ companyUser.name }} - 사용자 정보</h3>
+      <router-link to="/company-user" class="btn btn-secondary text-center">목록으로</router-link>
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="col col-12">
@@ -14,15 +10,15 @@
           <template v-slot:body>
             <div>
               <ul>
-                <li>업체명 : {{ companyUser.company.nameKr }}</li>
+                <li v-if="companyUser.company">업체명 : {{ companyUser.company.nameKr }}</li>
                 <li>사용자명 : {{ companyUser.name }}</li>
                 <li>휴대폰 번호 : {{ companyUser.phone }}</li>
                 <li>이메일 : {{ companyUser.email }}</li>
                 <li>
                   승인상태 :
-                  <span class="badge badge-pill badge-warning p-2">
-                    {{ companyUser.companyUserStatus | enumTransformer }}
-                  </span>
+                  <span
+                    class="badge badge-pill badge-warning p-2"
+                  >{{ companyUser.companyUserStatus | enumTransformer }}</span>
                 </li>
               </ul>
             </div>

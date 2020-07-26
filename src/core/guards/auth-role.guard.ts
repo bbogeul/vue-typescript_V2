@@ -6,7 +6,6 @@ import JwtStorageService from '../../services/shared/auth/jwt-storage.service';
 import { PermissionGuard } from './permission.guard';
 import * as jwtDecode from 'jwt-decode';
 import toast from '../../../resources/assets/js/services/toast.js';
-import { async } from 'rxjs';
 
 // const whiteList = ['/login', '/auth-redirect'];
 

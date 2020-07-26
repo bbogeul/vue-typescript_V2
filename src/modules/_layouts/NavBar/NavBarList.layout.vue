@@ -1,39 +1,20 @@
 <template>
-  <div class="collapse navbar-collapse " id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <div v-for="item in items" :key="item.path">
-        <li class="nav-item" v-if="item.children.length < 1">
-          <NavBarLink :to="item.path" slot="name">{{ item.name }}</NavBarLink>
-        </li>
-        <li class="nav-item dropdown" v-if="item.children.length > 0">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {{ item.name }}
-          </a>
-          <div
-            class="dropdown-menu"
-            v-for="children in item.children"
+        <b-nav-item-dropdown :text="item.name" left>
+          <b-dropdown-item
+            :to="children.path"
+            v-for="(children) in item.children"
             :key="children.path"
           >
-            <NavBarLink
-              :to="children.path"
-              slot="name"
-              class="dropdown-item"
-              v-if="!children.meta.detailPage"
-              >{{ children.name }}</NavBarLink
-            >
-          </div>
-        </li>
+            <template v-if="!children.meta.detailPage">{{children.name}}</template>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
       </div>
     </ul>
-    <ul class="navbar-nav ml-auto ">
-      <li class="nav-item dropdown  ">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
           href="#"
@@ -43,13 +24,9 @@
           aria-haspopup="true"
           aria-expanded="false"
           v-if="admin"
-        >
-          {{ admin.name }}
-        </a>
+        >{{ admin.name }}</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">
-            마이 프로필
-          </a>
+          <a class="dropdown-item" href="#">마이 프로필</a>
 
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" @click="logout()">로그아웃</a>
@@ -93,7 +70,18 @@ export default class NavBarList extends BaseComponent {
     this.$router.push('/login');
   }
 
+  private activeRoutes() {
+    return this.items.filter(item => {
+      console.log(item, 'item');
+    });
+  }
+
+  load(items) {
+    console.log(items);
+  }
+
   created() {
+    console.log(this.activeRoutes());
     AdminService.findMe().subscribe(res => {
       this.admin = res.data;
     });

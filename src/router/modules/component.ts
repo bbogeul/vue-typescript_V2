@@ -23,7 +23,7 @@ const componentsRouter: RouteConfig[] = [
         },
       },
       {
-        path: '/company/:id',
+        path: '/company/:id([0-9]+)',
         name: 'CompanyDetail',
         component: () =>
           import(
@@ -33,17 +33,11 @@ const componentsRouter: RouteConfig[] = [
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
+          detailPage: true,
         },
       },
-    ],
-  },
-  {
-    path: '/company-user',
-    name: '업체 사용자 관리',
-    component: () => import('../../modules/company-user/CompanyUser.vue'),
-    children: [
       {
-        path: '/company-user',
+        path: '/company/company-user',
         name: '업체 사용자 관리',
         component: () =>
           import(
@@ -57,7 +51,7 @@ const componentsRouter: RouteConfig[] = [
         },
       },
       {
-        path: '/company-user/:id',
+        path: '/company/company-user/:id([0-9]+)',
         name: 'CompanyUserDetail',
         component: () =>
           import(
@@ -72,6 +66,41 @@ const componentsRouter: RouteConfig[] = [
       },
     ],
   },
+  // {
+  //   path: '/company-user',
+  //   name: '업체 사용자 관리',
+  //   component: () => import('../../modules/company-user/CompanyUser.vue'),
+  //   children: [
+  //     {
+  //       path: '/company-user',
+  //       name: '업체 사용자 관리',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserList.vue'
+  //         ),
+  //       meta: {
+  //         authRequired: true,
+  //         layout: 'MainLayout',
+  //         roles: [...CONST_ADMIN_USER],
+  //         title: '업체 사용자 관리',
+  //       },
+  //     },
+  //     {
+  //       path: '/company-user/:id',
+  //       name: 'CompanyUserDetail',
+  //       component: () =>
+  //         import(
+  //           /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserDetail.vue'
+  //         ),
+  //       meta: {
+  //         authRequired: true,
+  //         layout: 'MainLayout',
+  //         roles: [...CONST_ADMIN_USER],
+  //         detailPage: true,
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/founder-consult',
     name: '방문자 신청',
@@ -93,7 +122,7 @@ const componentsRouter: RouteConfig[] = [
         },
       },
       {
-        path: '/founder-consult/:id',
+        path: '/founder-consult/:id([0-9]+)',
         name: 'FounderConsultDetail',
         component: () =>
           import(
