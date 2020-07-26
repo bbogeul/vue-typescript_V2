@@ -2,7 +2,10 @@
   <div>
     <div class="title">
       <h4 class="d-inline-block">사용자 수정요청</h4>
-      <router-link to="/company-user" class="btn btn-primary float-right">
+      <router-link
+        to="/company/company-user"
+        class="btn btn-primary float-right"
+      >
         더 보기
       </router-link>
     </div>

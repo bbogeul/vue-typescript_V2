@@ -10,14 +10,14 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <!-- <div>
+            <div>
               <b-button
                 variant="primary"
                 @click="updateCompany()"
                 v-b-modal.company-info
                 >수정하기</b-button
               >
-            </div> -->
+            </div>
           </template>
           <template v-slot:body>
             <ul>
@@ -29,6 +29,12 @@
               <li>주소 : {{ company.address }}</li>
               <li v-if="company.createdAt">
                 생성일 : {{ company.createdAt | dateTransformer }}
+              </li>
+              <li v-if="company.createdAt">
+                승인상태 :
+                <span class="badge badge-pill badge-warning p-2">
+                  {{ company.companyStatus | enumTransformer }}
+                </span>
               </li>
             </ul>
           </template>
@@ -270,7 +276,8 @@ export default class CompanyDetail extends BaseComponent {
 
   updateCompany() {
     if (this.selectedAdmin) {
-      this.companyUpdateDto.adminNo = this.selectedAdmin.no;
+      console.log(this.companyUpdateDto.managerNo, this.selectedAdmin.no);
+      this.companyUpdateDto.managerNo = this.selectedAdmin.no;
     }
 
     CompanyService.update(

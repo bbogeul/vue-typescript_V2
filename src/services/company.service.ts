@@ -19,7 +19,7 @@ class CompanyUserService extends BaseService {
   }
 
   update(companyNo, CompanyUpdateDto: CompanyUpdateDto) {
-    return super.patch(`admin/founder-consult/${companyNo}`, CompanyUpdateDto);
+    return super.patch(`admin/company/${companyNo}`, CompanyUpdateDto);
   }
 }
 export default new CompanyUserService();
