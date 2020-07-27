@@ -50,7 +50,7 @@
                   </h5>
                 </div>
                 <div
-                  v-if="company.companyUpdateHistories[0]"
+                  v-if="company.companyUpdateHistories"
                   class="py-2 mt-3 border-top border-bottom"
                 >
                   <ul>
@@ -171,19 +171,30 @@
       @ok="updateRefusal()"
     >
       <div>
-        {{ companyUpdateRefusalReasonDto }}
-        <div>
-          <label for="">거절이유</label>
-          <input type="text" v-model="companyUpdateRefusalDto.refusalDesc" />
+        <div v-if="company.companyUpdateHistories" class="form-check">
+          <input
+            type="checkbox"
+            v-model="companyUpdateRefusalDto.refusalReasons.ceoKr"
+            v-if="company.companyUpdateHistories[0].ceoKr"
+            class="form-check-input"
+            id="ceoKr"
+          />
+          <label
+            v-for="(value, name, index) in company.companyUpdateHistories[0]"
+            :key="index"
+          >
+            {{ name | stringTransformer }}
+          </label>
         </div>
-
-        <input
-          type="checkbox"
-          :value="value"
-          v-model="companyUpdateRefusalDto.refusalReasons.ceoKr"
-          v-if="company.companyUpdateHistories[0].ceoKr"
-        />
-        <label for="">대표명</label>
+        <div>
+          <label for="refusalDesc" class="d-block">거절이유</label>
+          <textarea
+            name="refusalDesc"
+            id="refusalDesc"
+            v-model="companyUpdateRefusalDto.refusalReasons"
+            style="width:100%; height:100px;"
+          ></textarea>
+        </div>
       </div>
     </b-modal>
     <b-modal
@@ -271,7 +282,6 @@ import {
   CompanyDto,
   CompanyUpdateDto,
   CompanyUpdateRefusalDto,
-  CompanyUpdateRefusalReasonDto,
   CompanyDistrictListDto,
   CompanyDistrictDto,
 } from '../../../dto';

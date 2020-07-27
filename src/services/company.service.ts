@@ -3,7 +3,7 @@ import { Pagination } from '@/common';
 import { CompanyDto, CompanyListDto, CompanyUpdateDto } from '@/dto';
 import { CompanyUpdateRefusalDto } from '@/dto/company/company-update-refusal.dto';
 
-class CompanyUserService extends BaseService {
+class CompanyService extends BaseService {
   findAll(filter?: CompanyListDto, paginate?: Pagination) {
     return super.paginate<CompanyDto>('admin/company', filter, paginate);
   }
@@ -34,4 +34,4 @@ class CompanyUserService extends BaseService {
     );
   }
 }
-export default new CompanyUserService();
+export default new CompanyService();
