@@ -5,10 +5,12 @@
         <b-nav-item-dropdown :text="item.name" left>
           <b-dropdown-item
             :to="children.path"
-            v-for="(children) in item.children"
+            v-for="children in item.children"
             :key="children.path"
           >
-            <template v-if="!children.meta.detailPage">{{children.name}}</template>
+            <template v-if="!children.meta.detailPage">{{
+              children.name
+            }}</template>
           </b-dropdown-item>
         </b-nav-item-dropdown>
       </div>
@@ -24,7 +26,8 @@
           aria-haspopup="true"
           aria-expanded="false"
           v-if="admin"
-        >{{ admin.name }}</a>
+          >{{ admin.name }}</a
+        >
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">마이 프로필</a>
 

@@ -14,7 +14,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import '@/core/guards/auth-role.guard';
-import { DatePipeTransformer, EnumPipeTransformer } from './core';
+import {
+  DatePipeTransformer,
+  EnumPipeTransformer,
+  StringPipeTransformer,
+} from './core';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
@@ -30,6 +34,7 @@ Vue.component('MainLayout', MainLayout);
 // filters
 DatePipeTransformer();
 EnumPipeTransformer();
+StringPipeTransformer();
 
 // bootstrap
 Vue.use(BootstrapVue);

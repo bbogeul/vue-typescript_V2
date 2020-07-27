@@ -42,10 +42,11 @@ export default class BaseCard extends BaseComponent {
     }
   }
   .card-body {
-    padding: 0;
+    padding: 1.25em;
     ul {
-      padding: 1.25em;
-      margin-left: 0;
+      padding: 0;
+      margin: 0;
+
       li {
         list-style: none;
         position: relative;

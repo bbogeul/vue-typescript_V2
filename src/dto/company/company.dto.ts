@@ -3,9 +3,11 @@ import { APPROVAL_STATUS } from '@/services/shared';
 import { CodeManagementDto } from '@/services/init/dto';
 import { CompanyUserDto } from '../company-user';
 import { CompanyDistrictDto } from '../company-district';
+import { AdminDto } from '../admin';
 
 export class CompanyDto extends BaseDto<CompanyDto> {
   no: number;
+  admin?: AdminDto;
   adminNo?: number;
   nameKr: string;
   nameEng?: string;

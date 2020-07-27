@@ -76,4 +76,12 @@ select {
   font-size: 1rem;
   font-weight: bold;
 }
+
+.empty-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
 </style>
