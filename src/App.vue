@@ -65,6 +65,7 @@ select {
     }
   }
   .empty-data {
+    display: table-cell;
     height: 100px;
   }
 

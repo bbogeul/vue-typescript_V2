@@ -7,12 +7,11 @@ import { CompanyUserDto } from './company-user.dto';
 import { BaseDto } from '@/core';
 export class CompanyUserUpdateDto extends BaseDto<CompanyUserUpdateDto>
   implements Partial<CompanyUserDto> {
-  no: number;
-  name: string;
-  email: string;
-  phone: string;
-  companyNo: number;
-  companyUserStatus: APPROVAL_STATUS;
+  name?: string;
+  email?: string;
+  phone?: string;
+  companyNo?: number;
+  companyUserStatus?: APPROVAL_STATUS;
   passwordChangedYn?: YN;
   companyAdminRole?: COMPANY_USER;
   codeManagement?: CodeManagementDto;

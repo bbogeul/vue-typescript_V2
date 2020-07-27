@@ -1,9 +1,4 @@
-import { BaseDto } from '@/core';
-import { CompanyUpdateRefusalReason } from './company-update-refusal-reason.type';
-
-export class CompanyUpdateRefusalReasonDto
-  extends BaseDto<CompanyUpdateRefusalReasonDto>
-  implements CompanyUpdateRefusalReason {
+export class CompanyUpdateRefusalReasonDto {
   email?: boolean;
   nameKr?: boolean;
   nameEng?: boolean;

@@ -1,6 +1,6 @@
 import { BaseDto } from '@/core';
 import { APPROVAL_STATUS } from '@/services/shared';
-import { CompanyUpdateRefusalReason } from './company-update-refusal-reason.type';
+import { CompanyUpdateRefusalReasonDto } from './company-update-refusal-reason.dto';
 
 export class CompanyUpdateHistoryDto extends BaseDto<CompanyUpdateHistoryDto> {
   no: number;
@@ -17,6 +17,6 @@ export class CompanyUpdateHistoryDto extends BaseDto<CompanyUpdateHistoryDto> {
   businessNo?: string;
   website?: string;
   companyStatus: APPROVAL_STATUS;
-  refusalReasons?: CompanyUpdateRefusalReason;
+  refusalReasons?: CompanyUpdateRefusalReasonDto;
   refusalDesc?: string;
 }

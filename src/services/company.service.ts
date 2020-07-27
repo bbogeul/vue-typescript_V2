@@ -1,9 +1,18 @@
 import { BaseService } from '@/core';
 import { Pagination } from '@/common';
-import { CompanyDto, CompanyListDto, CompanyUpdateDto } from '@/dto';
-import { CompanyUpdateRefusalDto } from '@/dto/company/company-update-refusal.dto';
+import {
+  CompanyDto,
+  CompanyListDto,
+  CompanyUpdateDto,
+  CompanyUpdateRefusalDto,
+} from '@/dto';
 
 class CompanyService extends BaseService {
+  /**
+   *
+   * @param filter
+   * @param paginate
+   */
   findAll(filter?: CompanyListDto, paginate?: Pagination) {
     return super.paginate<CompanyDto>('admin/company', filter, paginate);
   }
@@ -23,6 +32,12 @@ class CompanyService extends BaseService {
     return super.patch(`admin/company/${companyNo}`, companyUpdateDto);
   }
 
+  /**
+   *
+   * @param companyNo
+   * @param param
+   * @param companyUpdateRefusalDto
+   */
   updateCompanyStatus(
     companyNo,
     param: string,

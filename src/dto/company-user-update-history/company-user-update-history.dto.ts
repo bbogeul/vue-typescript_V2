@@ -1,7 +1,7 @@
 import { BaseDto } from '@/core';
 import { CompanyUserDto } from '../company-user/company-user.dto';
 import { COMPANY_USER, APPROVAL_STATUS } from '@/services/shared';
-import { CompanyUserUpdateRefusalReasonDto } from './company-user-update-refusal.dto';
+import { CompanyUserUpdateRefusalReasonDto } from './company-user-update-refusal-reason.dto';
 
 export class CompanyUserUpdateHistoryDto
   extends BaseDto<CompanyUserUpdateHistoryDto>

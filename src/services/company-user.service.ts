@@ -4,6 +4,7 @@ import {
   CompanyUserDto,
   CompanyUserListDto,
   CompanyUserUpdateDto,
+  CompanyUserUpdateRefusalDto,
 } from '@/dto';
 
 class CompanyUserService extends BaseService {
@@ -37,6 +38,17 @@ class CompanyUserService extends BaseService {
     return super.patch(
       `admin/company-user/${companyUserNo}`,
       CompanyUserUpdateDto,
+    );
+  }
+
+  updateCompanyUserStatus(
+    companyUserNo,
+    param: string,
+    companyUserUpdateRefusalDto?: CompanyUserUpdateRefusalDto,
+  ) {
+    return super.patch(
+      `admin/company-user/${companyUserNo}/${param}`,
+      companyUserUpdateRefusalDto,
     );
   }
 }
