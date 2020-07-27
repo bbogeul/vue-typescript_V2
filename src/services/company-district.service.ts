@@ -11,7 +11,7 @@ class CompanyDistrictService extends BaseService {
    */
   findAll(filter: CompanyDistrictListDto, paginate?: Pagination) {
     return super.paginate<CompanyDistrictDto>(
-      `admin/company/company-district`,
+      `admin/company-district`,
       filter,
       paginate,
     );
