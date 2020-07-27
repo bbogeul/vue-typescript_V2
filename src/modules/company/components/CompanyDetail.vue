@@ -2,9 +2,7 @@
   <section>
     <div class="d-flex justify-content-between align-items-end mb-2">
       <h3 v-if="company" class="mb-0">{{ company.nameKr }} - 업체 정보</h3>
-      <router-link to="/company" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
+      <router-link to="/company" class="btn btn-secondary text-center">목록으로</router-link>
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="my-3 col-12 col-lg-6" v-if="company">
@@ -14,7 +12,7 @@
               <b-button variant="primary" v-b-modal.company-info
                 >수정하기</b-button
               >
-            </div> -->
+            </div>-->
           </template>
           <template v-slot:body>
             <div>
@@ -26,14 +24,12 @@
                   <li v-if="company.email">이메일 : {{ company.email }}</li>
                   <li v-if="company.fax">팩스 : {{ company.fax }}</li>
                   <li>주소 : {{ company.address }}</li>
-                  <li v-if="company.createdAt">
-                    생성일 : {{ company.createdAt | dateTransformer }}
-                  </li>
+                  <li v-if="company.createdAt">생성일 : {{ company.createdAt | dateTransformer }}</li>
                   <li v-if="company.createdAt">
                     승인상태 :
-                    <span class="badge badge-pill badge-warning p-2">
-                      {{ company.companyStatus | enumTransformer }}
-                    </span>
+                    <span
+                      class="badge badge-pill badge-warning p-2"
+                    >{{ company.companyStatus | enumTransformer }}</span>
                   </li>
                 </ul>
               </div>
@@ -42,12 +38,7 @@
                 class="border rounded bg-light p-3 mt-4"
               >
                 <div>
-                  <h5
-                    class="text-danger"
-                    style="font-size:14px; font-weight:bold;"
-                  >
-                    승인 상태 변경
-                  </h5>
+                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 상태 변경</h5>
                 </div>
                 <div
                   v-if="company.companyUpdateHistories"
@@ -58,24 +49,12 @@
                       v-for="(value, name, index) in company
                         .companyUpdateHistories[0]"
                       :key="index"
-                    >
-                      {{ name | stringTransformer }} : {{ value }}
-                    </li>
+                    >{{ name | stringTransformer }} : {{ value }}</li>
                   </ul>
                 </div>
                 <div class="mt-2 text-right">
-                  <b-button
-                    variant="primary"
-                    class="mx-1"
-                    @click="updateApproval()"
-                    >승인</b-button
-                  >
-                  <b-button
-                    variant="secondary"
-                    v-b-modal.refusal-info
-                    class="mx-1"
-                    >거절</b-button
-                  >
+                  <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
+                  <b-button variant="secondary" v-b-modal.refusal-info class="mx-1">거절</b-button>
                 </div>
               </div>
             </div>
@@ -86,12 +65,7 @@
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button
-                variant="primary"
-                v-b-modal.admin-list
-                @click="findAdmin()"
-                >수정하기</b-button
-              >
+              <b-button variant="primary" v-b-modal.admin-list @click="findAdmin()">수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
@@ -130,7 +104,7 @@
               <b-button variant="primary" v-b-modal.company-district
                 >추가하기</b-button
               >
-            </div> -->
+            </div>-->
           </template>
           <template v-slot:body>
             <div>
@@ -146,7 +120,7 @@
               <b-button variant="primary" v-b-modal.company-user
                 >추가하기</b-button
               >
-            </div> -->
+            </div>-->
           </template>
           <template v-slot:body>
             <CompanyUserList />
@@ -161,8 +135,7 @@
       @cancel="cancelSelection()"
       @hide="cancelSelection()"
       @ok="updateCompany()"
-    >
-    </b-modal>
+    ></b-modal>
     <b-modal
       id="refusal-info"
       title="승인 거절 사유"
@@ -174,7 +147,7 @@
         <div v-if="company.companyUpdateHistories" class="form-check">
           <input
             type="checkbox"
-            v-model="companyUpdateRefusalDto.refusalReasons.ceoKr"
+            v-model="companyUpdateRefusalReaseonDto.ceoKr"
             v-if="company.companyUpdateHistories[0].ceoKr"
             class="form-check-input"
             id="ceoKr"
@@ -182,16 +155,14 @@
           <label
             v-for="(value, name, index) in company.companyUpdateHistories[0]"
             :key="index"
-          >
-            {{ name | stringTransformer }}
-          </label>
+          >{{ name | stringTransformer }}</label>
         </div>
         <div>
           <label for="refusalDesc" class="d-block">거절이유</label>
           <textarea
             name="refusalDesc"
             id="refusalDesc"
-            v-model="companyUpdateRefusalDto.refusalReasons"
+            v-model="companyUpdateRefusalDto.refusalDesc"
             style="width:100%; height:100px;"
           ></textarea>
         </div>
@@ -206,8 +177,8 @@
     >
       <div class="form-row">
         <div class="col-12 mb-3">
-          <label for="">지점명</label>
-          <input type="text" class="form-control" id="" />
+          <label for>지점명</label>
+          <input type="text" class="form-control" id />
         </div>
         <div class="col-12 mb-3">
           <label>승인 상태</label>
@@ -217,8 +188,7 @@
               v-for="status in approvalStatusSelect"
               :key="status"
               :value="status"
-              >{{ status | enumTransformer }}</option
-            >
+            >{{ status | enumTransformer }}</option>
           </select>
         </div>
       </div>
@@ -243,18 +213,12 @@
             <td>{{ admin.name }}</td>
             <td>{{ admin.phone }}</td>
             <td class="text-center">
-              <button class="btn btn-primary" @click="selectAdmin(admin)">
-                선택
-              </button>
+              <button class="btn btn-primary" @click="selectAdmin(admin)">선택</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div
-        v-if="selectedAdmin.name"
-        class="py-2 px-4 rounded"
-        style="background-color:#f1f1f1"
-      >
+      <div v-if="selectedAdmin.name" class="py-2 px-4 rounded" style="background-color:#f1f1f1">
         선택한 관리자 :
         <b>{{ selectedAdmin.name }}</b>
       </div>
@@ -284,6 +248,8 @@ import {
   CompanyUpdateRefusalDto,
   CompanyDistrictListDto,
   CompanyDistrictDto,
+  CompanyUpdateRefusalReasonDto,
+  CompanyUserUpdateRefusalReasonDto,
 } from '../../../dto';
 import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
@@ -316,13 +282,13 @@ export default class CompanyDetail extends BaseComponent {
   private company = new CompanyDto();
   private companyUpdateDto = new CompanyUpdateDto();
   private companyUpdateRefusalDto = new CompanyUpdateRefusalDto();
+  private companyUpdateRefusalReaseonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 
   findOne(id) {
     // find founder consult detail
     CompanyService.findOne(id).subscribe(res => {
-      console.log(res);
       this.company = res.data;
     });
   }
@@ -338,7 +304,6 @@ export default class CompanyDetail extends BaseComponent {
     }
     this.pagination.limit = 5;
     AdminService.findAll(this.adminListDto, this.pagination).subscribe(res => {
-      console.log(res);
       this.adminList = res.data.items;
       this.adminListCount = res.data.totalCount;
     });
