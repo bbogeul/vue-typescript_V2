@@ -10,33 +10,75 @@
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <div>
-              <b-button
-                variant="primary"
-                @click="updateCompany()"
-                v-b-modal.company-info
+            <!-- <div>
+              <b-button variant="primary" v-b-modal.company-info
                 >수정하기</b-button
               >
-            </div>
+            </div> -->
           </template>
           <template v-slot:body>
-            <ul>
-              <li>업체명 : {{ company.nameKr }}</li>
-              <li>대표 : {{ company.ceoKr }}</li>
-              <li>전화번호 : {{ company.phone }}</li>
-              <li v-if="company.email">이메일 : {{ company.email }}</li>
-              <li v-if="company.fax">팩스 : {{ company.fax }}</li>
-              <li>주소 : {{ company.address }}</li>
-              <li v-if="company.createdAt">
-                생성일 : {{ company.createdAt | dateTransformer }}
-              </li>
-              <li v-if="company.createdAt">
-                승인상태 :
-                <span class="badge badge-pill badge-warning p-2">
-                  {{ company.companyStatus | enumTransformer }}
-                </span>
-              </li>
-            </ul>
+            <div>
+              <div>
+                <ul>
+                  <li>업체명 : {{ company.nameKr }}</li>
+                  <li>대표 : {{ company.ceoKr }}</li>
+                  <li>전화번호 : {{ company.phone }}</li>
+                  <li v-if="company.email">이메일 : {{ company.email }}</li>
+                  <li v-if="company.fax">팩스 : {{ company.fax }}</li>
+                  <li>주소 : {{ company.address }}</li>
+                  <li v-if="company.createdAt">
+                    생성일 : {{ company.createdAt | dateTransformer }}
+                  </li>
+                  <li v-if="company.createdAt">
+                    승인상태 :
+                    <span class="badge badge-pill badge-warning p-2">
+                      {{ company.companyStatus | enumTransformer }}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div
+                v-if="company.companyStatus !== 'APPROVAL'"
+                class="border rounded bg-light p-3 mt-4"
+              >
+                <div>
+                  <h5
+                    class="text-danger"
+                    style="font-size:14px; font-weight:bold;"
+                  >
+                    승인 상태 변경
+                  </h5>
+                </div>
+                <div
+                  v-if="company.companyUpdateHistories[0]"
+                  class="py-2 mt-3 border-top border-bottom"
+                >
+                  <ul>
+                    <li
+                      v-for="(value, name, index) in company
+                        .companyUpdateHistories[0]"
+                      :key="index"
+                    >
+                      {{ name | stringTransformer }} : {{ value }}
+                    </li>
+                  </ul>
+                </div>
+                <div class="mt-2 text-right">
+                  <b-button
+                    variant="primary"
+                    class="mx-1"
+                    @click="updateApproval()"
+                    >승인</b-button
+                  >
+                  <b-button
+                    variant="secondary"
+                    v-b-modal.refusal-info
+                    class="mx-1"
+                    >거절</b-button
+                  >
+                </div>
+              </div>
+            </div>
           </template>
         </BaseCard>
       </div>
@@ -75,7 +117,9 @@
                 </li>
               </ul>
             </div>
-            <div v-else>관리자 없음</div>
+            <div v-else class="empty-data">
+              <p>관리자 없음</p>
+            </div>
           </template>
         </BaseCard>
       </div>
@@ -118,17 +162,29 @@
       @hide="cancelSelection()"
       @ok="updateCompany()"
     >
-      <!-- <div class="form-row" v-if="CompanyUpdateDto">
-        <div class="col-12 mb-3">
-          <label>대표명</label>
-          <input
-            type="text"
-            class="form-control"
-            id="ceoKr"
-            v-model="CompanyUpdateDto.ceoKr"
-          />
+    </b-modal>
+    <b-modal
+      id="refusal-info"
+      title="승인 거절 사유"
+      @cancel="cancelSelection()"
+      @hide="cancelSelection()"
+      @ok="updateRefusal()"
+    >
+      <div>
+        {{ companyUpdateRefusalReasonDto }}
+        <div>
+          <label for="">거절이유</label>
+          <input type="text" v-model="companyUpdateRefusalDto.refusalDesc" />
         </div>
-      </div> -->
+
+        <input
+          type="checkbox"
+          :value="value"
+          v-model="companyUpdateRefusalDto.refusalReasons.ceoKr"
+          v-if="company.companyUpdateHistories[0].ceoKr"
+        />
+        <label for="">대표명</label>
+      </div>
     </b-modal>
     <b-modal
       id="company-district"
@@ -214,6 +270,8 @@ import {
   AdminListDto,
   CompanyDto,
   CompanyUpdateDto,
+  CompanyUpdateRefusalDto,
+  CompanyUpdateRefusalReasonDto,
   CompanyDistrictListDto,
   CompanyDistrictDto,
 } from '../../../dto';
@@ -229,6 +287,7 @@ import {
   APPROVAL_STATUS,
   CONST_APPROVAL_STATUS,
 } from '../../../services/shared';
+import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'CompanyDetail',
@@ -246,6 +305,7 @@ export default class CompanyDetail extends BaseComponent {
 
   private company = new CompanyDto();
   private companyUpdateDto = new CompanyUpdateDto();
+  private companyUpdateRefusalDto = new CompanyUpdateRefusalDto();
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 
@@ -276,7 +336,6 @@ export default class CompanyDetail extends BaseComponent {
 
   updateCompany() {
     if (this.selectedAdmin) {
-      console.log(this.companyUpdateDto.managerNo, this.selectedAdmin.no);
       this.companyUpdateDto.managerNo = this.selectedAdmin.no;
     }
 
@@ -287,6 +346,29 @@ export default class CompanyDetail extends BaseComponent {
       this.cancelSelection();
       this.companyUpdateDto = new CompanyUpdateDto();
       this.findOne(this.$route.params.id);
+      toast.success('수정완료');
+    });
+  }
+
+  // 승인
+  updateApproval() {
+    CompanyService.updateCompanyStatus(
+      this.$route.params.id,
+      'approve-update',
+    ).subscribe(res => {
+      this.findOne(this.$route.params.id);
+      toast.success('승인완료');
+    });
+  }
+  // 거절
+  updateRefusal() {
+    CompanyService.updateCompanyStatus(
+      this.$route.params.id,
+      'refuse-update',
+      this.companyUpdateRefusalDto,
+    ).subscribe(res => {
+      this.findOne(this.$route.params.id);
+      toast.success('승인거절');
     });
   }
 
