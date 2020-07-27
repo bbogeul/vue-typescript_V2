@@ -5,7 +5,6 @@ export class BaseUser extends BaseDto<BaseUser> {
   constructor(user: any) {
     super(user);
   }
-
   no: number;
   phone: string;
   name: string;

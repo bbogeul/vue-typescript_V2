@@ -32,7 +32,7 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
       return;
     }
     const payload = await jwtDecode(token);
-
+    console.log(payload);
     if (!payload) {
       toast.error('payload error');
       JwtStorageService.removeToken();

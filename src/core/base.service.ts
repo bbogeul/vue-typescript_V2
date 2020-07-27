@@ -5,6 +5,8 @@ import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
 import { AxiosObservable } from 'axios-observable/dist/axios-observable.interface';
+import jwtDecode from 'jwt-decode';
+import Vue from 'vue';
 
 // axios에서 사용할 메소드 타입
 type Method =
@@ -26,7 +28,8 @@ type Method =
   | 'LINK'
   | 'unlink'
   | 'UNLINK';
-export class BaseService {
+export class BaseService extends Vue {
+  self = this;
   private __makeArrayParam(value: any) {
     const s: string[] = [];
 
@@ -100,7 +103,8 @@ export class BaseService {
               Object.keys(error.response.data.message[0].constraints)[0]
             ],
           );
-        } else {
+        }
+        if (typeof error.response.data.message === 'string') {
           toast.error(error.response.data.message);
         }
       },
