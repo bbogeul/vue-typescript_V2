@@ -26,6 +26,9 @@ body {
 }
 .btn {
   font-size: 12px;
+  + .btn {
+    margin-left: 0.5rem;
+  }
 }
 .divider {
   width: 100%;
