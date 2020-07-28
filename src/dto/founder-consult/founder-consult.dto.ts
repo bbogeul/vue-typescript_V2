@@ -23,4 +23,5 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   admin?: AdminDto;
   confirmDate?: Date;
   hopeDate?: Date;
+  hopeFoodCategory?: string;
 }

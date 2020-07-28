@@ -43,7 +43,7 @@ import BaseComponent from '@/core/base.component';
     ></b-pagination>
   </div>
   <div v-else class="empty-data">
-    <p>지점 없음</p>
+    지점 없음
   </div>
 </template>
 <script lang="ts">
@@ -73,7 +73,6 @@ export default class CompanyDistrictList extends BaseComponent {
       this.companyDistrictListDto,
       this.pagination,
     ).subscribe(res => {
-      console.log(res);
       this.companyDistrictList = res.data.items;
       this.companyDistrictListCount = res.data.totalCount;
     });

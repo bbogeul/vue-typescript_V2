@@ -86,10 +86,14 @@
         </div>
       </div>
     </div>
-    <h5>
-      검색 결과:
-      <strong class="text-primary">{{ companyUserListTotalCount }}</strong>
-    </h5>
+    <div class="table-top">
+      <div class="total-count">
+        <h5>
+          <span>TOTAL </span>
+          <strong class="text-primary">{{ companyUserListTotalCount }}</strong>
+        </h5>
+      </div>
+    </div>
     <table class="table table-bordered table-hover table-sm text-center">
       <thead>
         <tr>
@@ -102,7 +106,7 @@
           <th
             scope="col"
             v-bind:class="{
-              highlighted: companyUserSearchDto.company,
+              highlighted: companyUserSearchDto.companyNo,
             }"
           >
             COMPANY
@@ -130,7 +134,9 @@
           <th scope="col">CREATED</th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.status }"
+            v-bind:class="{
+              highlighted: companyUserSearchDto.companyUserStatus,
+            }"
           >
             STATUS
           </th>

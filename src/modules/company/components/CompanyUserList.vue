@@ -23,17 +23,40 @@
       <tbody>
         <tr v-for="user in companyUserList" :key="user.no">
           <td>
-            <router-link :to="`/company/company-user/${user.no}`">
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: {
+                  id: user.no,
+                },
+              }"
+            >
               {{ user.no }}
             </router-link>
           </td>
           <td>
-            {{ user.name }}
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: {
+                  id: user.no,
+                },
+              }"
+            >
+              {{ user.name }}
+            </router-link>
           </td>
           <td>{{ user.phone }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <router-link :to="`/company/company-user/${user.no}`">
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: {
+                  id: user.no,
+                },
+              }"
+            >
               <span class="badge badge-pill badge-warning p-2">
                 {{ user.companyUserStatus | enumTransformer }}
               </span>
@@ -53,7 +76,7 @@
     ></b-pagination>
   </div>
   <div v-else class="empty-data">
-    <p>사용자 없음</p>
+    사용자 없음
   </div>
 </template>
 <script lang="ts">
