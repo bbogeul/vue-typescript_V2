@@ -97,10 +97,14 @@
         </div>
       </div>
     </div>
-    <h5>
-      검색 결과:
-      <strong class="text-primary">{{ companyListTotalCount }}</strong>
-    </h5>
+    <div class="table-top">
+      <div class="total-count">
+        <h5>
+          <span>TOTAL </span>
+          <strong class="text-primary">{{ companyListTotalCount }}</strong>
+        </h5>
+      </div>
+    </div>
     <table class="table table-bordered table-hover table-sm text-center">
       <thead>
         <tr>

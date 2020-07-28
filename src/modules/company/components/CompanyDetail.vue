@@ -12,7 +12,7 @@
       >
     </div>
     <div class="row d-flex align-items-stretch">
-      <div class="my-3 col-12 col-lg-6" v-if="company">
+      <div class="my-3 col-12 col-lg-6">
         <BaseCard title="업체 정보">
           <template v-slot:head>
             <!-- <div>
@@ -22,15 +22,15 @@
             </div>-->
           </template>
           <template v-slot:body>
-            <div>
+            <div v-if="company">
               <div>
                 <ul>
-                  <li>업체명 : {{ company.nameKr }}</li>
-                  <li>대표 : {{ company.ceoKr }}</li>
-                  <li>전화번호 : {{ company.phone }}</li>
+                  <li v-if="company.nameKr">업체명 : {{ company.nameKr }}</li>
+                  <li v-if="company.ceoKr">대표 : {{ company.ceoKr }}</li>
+                  <li v-if="company.phone">전화번호 : {{ company.phone }}</li>
                   <li v-if="company.email">이메일 : {{ company.email }}</li>
                   <li v-if="company.fax">팩스 : {{ company.fax }}</li>
-                  <li>주소 : {{ company.address }}</li>
+                  <li v-if="company.address">주소 : {{ company.address }}</li>
                   <li v-if="company.createdAt">
                     생성일 : {{ company.createdAt | dateTransformer }}
                   </li>
@@ -197,13 +197,7 @@
       </div>
     </div>
 
-    <b-modal
-      id="refusal-info"
-      title="승인 거절 사유"
-      @cancel="cancelSelection()"
-      @hide="cancelSelection()"
-      @ok="updateRefusal()"
-    >
+    <b-modal id="refusal-info" title="승인 거절 사유" @ok="updateRefusal()">
       <div v-if="company.companyUpdateHistories">
         <div
           class="form-check"

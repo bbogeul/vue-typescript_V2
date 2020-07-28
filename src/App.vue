@@ -51,6 +51,18 @@ select {
   font: inherit;
 }
 
+.table-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+  .total-count {
+    h5 {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+}
 .table {
   margin-bottom: 0;
   th,

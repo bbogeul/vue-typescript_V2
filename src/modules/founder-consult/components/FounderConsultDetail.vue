@@ -273,8 +273,6 @@
     <b-modal
       id="nanuda-user"
       title="사용자정보 수정"
-      @cancel="cancelSelection()"
-      @hide="cancelSelection()"
       @ok="updateFounderConsult()"
     >
       <div class="form-row">
@@ -297,8 +295,6 @@
     <b-modal
       id="consult-info"
       title="상담 내용 수정"
-      @cancel="cancelSelection()"
-      @hide="cancelSelection()"
       @ok="updateFounderConsult()"
     >
       <div class="form-row">

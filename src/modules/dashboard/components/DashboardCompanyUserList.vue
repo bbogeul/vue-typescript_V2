@@ -9,28 +9,46 @@
         더 보기
       </router-link>
     </div>
-    <table class="table table-bordered" v-if="companyUserListCount > 0">
+    <table
+      class="table table-hover table-bordered"
+      v-if="companyUserListCount > 0"
+    >
       <thead>
         <tr>
           <th scope="col">ID</th>
           <th scope="col">NAME</th>
           <th scope="col">COMPANY</th>
           <th scope="col">PHONE</th>
-
           <th scope="col">STATUS</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="companyUser in companyUserDto" :key="companyUser.no">
-          <th scope="row">{{ companyUser.no }}</th>
+          <th scope="row">
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: { id: companyUser.no },
+              }"
+            >
+              >{{ companyUser.no }}
+            </router-link>
+          </th>
           <td>{{ companyUser.name }}</td>
           <td>{{ companyUser.company.nameKr }}</td>
           <td>{{ companyUser.phone }}</td>
 
           <td>
-            <span class="badge badge-pill badge-warning p-2">{{
-              companyUser.codeManagement.value
-            }}</span>
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: { id: companyUser.no },
+              }"
+            >
+              <span class="badge badge-pill badge-warning p-2">{{
+                companyUser.codeManagement.value
+              }}</span>
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -60,6 +78,7 @@ export default class DashboardCompanyUserList extends BaseComponent {
   private companyUserListDto = new CompanyUserListDto();
   private companyUserListCount = null;
 
+  // TODO: 등록 승인 요청, 수정 승인 요청 건 둘다 노출 필요
   getUserWithUpdateStatus() {
     this.pagination.limit = 5;
     this.companyUserListDto.companyUserStatus = APPROVAL_STATUS.UPDATE_APPROVAL;

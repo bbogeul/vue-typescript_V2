@@ -4,6 +4,16 @@ import { CompanyDto } from '.';
 
 export class CompanyUpdateDto extends BaseDto<CompanyUpdateDto>
   implements Partial<CompanyDto> {
+  nameKr?: string;
+  nameEng?: string;
+  ceoKr?: string;
+  ceoEng?: string;
+  website?: string;
+  fax?: string;
+  phone?: string;
+  address?: string;
+  population?: string;
+  businessNo?: string;
   companyStatus?: APPROVAL_STATUS;
   managerNo?: number;
 }

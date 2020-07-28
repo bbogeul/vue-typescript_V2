@@ -4,7 +4,9 @@
       v-if="companyUser"
       class="d-flex justify-content-between align-items-end mb-2"
     >
-      <h3 class="mb-0">{{ companyUser.name }} - 사용자 정보</h3>
+      <h3 class="mb-0" v-if="companyUser.name">
+        {{ companyUser.name }} - 사용자 정보
+      </h3>
       <router-link to="/company-user" class="btn btn-secondary text-center"
         >목록으로</router-link
       >
@@ -74,7 +76,7 @@
                 </div>
               </div>
             </template>
-            <template v-if="companyUser.companyStatus === 'REFUSED'">
+            <template v-if="companyUser.companyUserStatus === 'REFUSED'">
               <div class="border rounded bg-light p-3 mt-4">
                 <div>
                   <h5
@@ -113,23 +115,16 @@
         </BaseCard>
       </div>
     </div>
-    <b-modal
-      id="refusal-info"
-      title="승인 거절 사유"
-      @cancel="cancelSelection()"
-      @hide="cancelSelection()"
-      @ok="updateRefusal()"
-    >
+    <b-modal id="refusal-info" title="승인 거절 사유" @ok="d()">
       <div v-if="companyUser.companyUserUpdateHistories">
         <div
           class="form-check"
-          v-for="(value, name, index) in companyUser
-            .companyUserUpdateHistories[0]"
-          :key="index"
+          v-for="(value, name) in companyUser.companyUserUpdateHistories[0]"
+          :key="name"
         >
           <input
             type="checkbox"
-            v-model="companyUserUpdateRefusalReaseonDto[name]"
+            v-model="companyUserUpdateRefusalReasonDto[name]"
             v-if="companyUser.companyUserUpdateHistories[0][name]"
             class="form-check-input"
             :id="name"
@@ -141,7 +136,7 @@
           <textarea
             name="refusalDesc"
             id="refusalDesc"
-            v-model="companyUserUpdateRefusalDto.refusalDesc"
+            v-model="companyUserdDto.refusalDesc"
             style="width:100%; height:100px;"
           ></textarea>
         </div>
@@ -176,7 +171,7 @@ export default class CompanyUserDetail extends BaseComponent {
   private company = new CompanyDto();
   private companyUserUpdateDto = new CompanyUserUpdateDto();
   private companyUserUpdateRefusalDto = new CompanyUserUpdateRefusalDto();
-  private companyUserUpdateRefusalReaseonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
+  private companyUserUpdateRefusalReasonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
 
   findOne(id) {
     CompanyUserService.findOne(id).subscribe(res => {

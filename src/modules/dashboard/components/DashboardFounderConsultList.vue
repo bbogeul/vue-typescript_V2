@@ -62,9 +62,16 @@
             </div>
           </td>
           <td>
-            <span class="badge badge-pill badge-warning p-2">{{
-              founderConsult.codeManagement.value
-            }}</span>
+            <router-link
+              :to="{
+                name: 'FounderConsultDetail',
+                params: { id: founderConsult.no },
+              }"
+            >
+              <span class="badge badge-pill badge-warning p-2">{{
+                founderConsult.codeManagement.value
+              }}</span>
+            </router-link>
           </td>
         </tr>
       </tbody>

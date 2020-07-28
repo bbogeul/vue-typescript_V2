@@ -18,16 +18,32 @@
       </thead>
       <tbody v-if="companyListCount > 0">
         <tr v-for="company in companyDto" :key="company.no">
-          <th scope="row">{{ company.no }}</th>
+          <th scope="row">
+            <router-link
+              :to="{
+                name: 'CompanyDetail',
+                params: { id: company.no },
+              }"
+            >
+              {{ company.no }}
+            </router-link>
+          </th>
           <td>{{ company.nameKr }}</td>
           <td>{{ company.ceoKr }}</td>
           <td>{{ company.phone }}</td>
           <td>
-            <span
-              class="badge badge-pill badge-warning p-2"
-              v-if="company.codeManagement"
-              >{{ company.codeManagement.value }}</span
+            <router-link
+              :to="{
+                name: 'CompanyDetail',
+                params: { id: company.no },
+              }"
             >
+              <span
+                class="badge badge-pill badge-warning p-2"
+                v-if="company.codeManagement"
+                >{{ company.codeManagement.value }}</span
+              >
+            </router-link>
           </td>
         </tr>
       </tbody>

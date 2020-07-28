@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div v-if="companyUserListCount > 0">
     <table class="table">
       <thead>
         <tr>
+          <th>
+            NO
+          </th>
           <th>
             NAME
           </th>
@@ -17,22 +20,24 @@
           </th>
         </tr>
       </thead>
-      <tbody v-if="companyUserList">
+      <tbody>
         <tr v-for="user in companyUserList" :key="user.no">
-          <td>{{ user.name }}</td>
+          <td>
+            <router-link :to="`/company/company-user/${user.no}`">
+              {{ user.no }}
+            </router-link>
+          </td>
+          <td>
+            {{ user.name }}
+          </td>
           <td>{{ user.phone }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <span class="badge badge-pill badge-warning p-2">
-              {{ user.companyUserStatus | enumTransformer }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="4" class="empty-data">
-            <p>사용자를 등록해주세요</p>
+            <router-link :to="`/company/company-user/${user.no}`">
+              <span class="badge badge-pill badge-warning p-2">
+                {{ user.companyUserStatus | enumTransformer }}
+              </span>
+            </router-link>
           </td>
         </tr>
       </tbody>
@@ -46,6 +51,9 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
+  </div>
+  <div v-else class="empty-data">
+    <p>사용자 없음</p>
   </div>
 </template>
 <script lang="ts">

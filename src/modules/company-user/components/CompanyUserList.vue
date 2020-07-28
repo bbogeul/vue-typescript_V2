@@ -65,7 +65,7 @@
           <label>사용자 승인 상태</label>
           <select
             class="custom-select"
-            v-model="companyUserSearchDto.companyStatus"
+            v-model="companyUserSearchDto.companyUserStatus"
           >
             <option value>전체</option>
             <option

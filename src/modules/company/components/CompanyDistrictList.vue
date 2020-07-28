@@ -1,7 +1,7 @@
 import BaseComponent from '@/core/base.component';
 
 <template>
-  <div>
+  <div v-if="companyDistrictListCount > 0">
     <table class="table">
       <thead>
         <tr>
@@ -19,7 +19,7 @@ import BaseComponent from '@/core/base.component';
           </th>
         </tr>
       </thead>
-      <tbody v-if="true">
+      <tbody>
         <tr v-for="company in companyDistrictList" :key="company.no">
           <td>{{ company.no }}</td>
           <td>{{ company.nameKr }}</td>
@@ -28,13 +28,6 @@ import BaseComponent from '@/core/base.component';
             <span class="badge badge-pill badge-warning p-2">
               {{ company.companyDistrictStatus | enumTransformer }}
             </span>
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="4" class="empty-data">
-            <p>지점을 등록해주세요</p>
           </td>
         </tr>
       </tbody>
@@ -48,6 +41,9 @@ import BaseComponent from '@/core/base.component';
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
+  </div>
+  <div v-else class="empty-data">
+    <p>지점 없음</p>
   </div>
 </template>
 <script lang="ts">
