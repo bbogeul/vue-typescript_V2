@@ -6,7 +6,7 @@
       :options="options"
       :styles="{ height: '430px' }"
     />
-    <div class="half-circle-spinner" v-else>
+    <div class="half-circle-spinner" v-else style="margin-top: 180px">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
