@@ -27,12 +27,31 @@
                 name: 'CompanyUserDetail',
                 params: { id: companyUser.no },
               }"
+              class="text-primary"
             >
-              >{{ companyUser.no }}
+              {{ companyUser.no }}
             </router-link>
           </th>
-          <td>{{ companyUser.name }}</td>
-          <td>{{ companyUser.company.nameKr }}</td>
+          <td>
+            <router-link
+              :to="{
+                name: 'CompanyUserDetail',
+                params: { id: companyUser.no },
+              }"
+            >
+              {{ companyUser.name }}
+            </router-link>
+          </td>
+          <td>
+            <router-link
+              :to="{
+                name: 'CompanyDetail',
+                params: { id: companyUser.company.no },
+              }"
+            >
+              {{ companyUser.company.nameKr }}
+            </router-link>
+          </td>
           <td>{{ companyUser.phone }}</td>
 
           <td>

@@ -6,10 +6,7 @@
         더 보기
       </router-link>
     </div>
-    <table
-      class="table table-sm table-bordered text-center"
-      v-if="founderConsultListCount"
-    >
+    <table class="table table-hover table-sm table-bordered text-center">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -24,7 +21,7 @@
           <th scope="col">STATUS</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="founderConsultListCount > 0">
         <tr
           v-for="founderConsult in founderConsultList"
           :key="founderConsult.no"
@@ -35,6 +32,7 @@
                 name: 'FounderConsultDetail',
                 params: { id: founderConsult.no },
               }"
+              class="text-primary"
               >{{ founderConsult.no }}</router-link
             >
           </th>
@@ -52,7 +50,16 @@
               :key="company.no"
             >
               <div v-if="company.company.nameKr">
-                {{ company.company.nameKr }}
+                <router-link
+                  :to="{
+                    name: 'CompanyDetail',
+                    params: {
+                      id: company.company.no,
+                    },
+                  }"
+                >
+                  {{ company.company.nameKr }}
+                </router-link>
               </div>
             </div>
           </td>
@@ -75,8 +82,15 @@
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td class="empty-data">
+            상담 신청 내역 없음
+          </td>
+        </tr>
+      </tbody>
     </table>
-    <div class="half-circle-spinner mt-5" v-else>
+    <div class="half-circle-spinner mt-5" v-if="!founderConsultListCount">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>

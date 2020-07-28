@@ -195,7 +195,10 @@
         </h5>
       </div>
     </div>
-    <table class="table table-bordered table-hover table-sm text-center">
+    <table
+      class="table table-bordered table-hover table-sm text-center"
+      v-if="!dataLoading"
+    >
       <thead>
         <tr>
           <th scope="col">NO</th>
@@ -297,7 +300,16 @@
               :key="company.no"
             >
               <div v-if="company.company.nameKr">
-                {{ company.company.nameKr }}
+                <router-link
+                  :to="{
+                    name: 'CompanyDetail',
+                    params: {
+                      id: company.company.no,
+                    },
+                  }"
+                >
+                  {{ company.company.nameKr }}
+                </router-link>
               </div>
             </div>
           </td>
@@ -361,7 +373,7 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <div class="half-circle-spinner mt-5" v-else>
+    <div class="half-circle-spinner mt-5" v-if="dataLoading">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
@@ -410,6 +422,7 @@ export default class FounderConsult extends BaseComponent {
   private genderSelect: GENDER[] = [...CONST_GENDER];
   private spaceTypeList: SpaceTypeDto[] = [];
   private pagination = new Pagination();
+  private dataLoading = false;
 
   // 상태값
   getFounderConsultCodes() {
@@ -444,6 +457,7 @@ export default class FounderConsult extends BaseComponent {
 
   // 검색하기
   search(isPagination?: boolean) {
+    this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;
     }
@@ -451,6 +465,7 @@ export default class FounderConsult extends BaseComponent {
       this.founderConsultSearchDto,
       this.pagination,
     ).subscribe(res => {
+      this.dataLoading = false;
       this.founderConsultList = res.data.items;
       this.founderConsultListTotalCount = res.data.totalCount;
       this.totalPage = Math.ceil(

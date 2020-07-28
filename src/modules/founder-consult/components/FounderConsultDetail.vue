@@ -12,7 +12,7 @@
       <div class="my-3 col-md-4" v-if="founderConsult.nanudaUser">
         <BaseCard title="사용자 정보">
           <template v-slot:head>
-            <div>
+            <div v-if="founderConsult.status !== 'F_DIST_COMPLETE'">
               <b-button
                 variant="primary"
                 @click="updateNanudaUser()"

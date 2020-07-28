@@ -94,7 +94,10 @@
         </h5>
       </div>
     </div>
-    <table class="table table-bordered table-hover table-sm text-center">
+    <table
+      class="table table-bordered table-hover table-sm text-center"
+      v-if="!dataLoading"
+    >
       <thead>
         <tr>
           <th
@@ -185,6 +188,13 @@
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="8" class="empty-data">
+            검색결과가 없습니다.
+          </td>
+        </tr>
+      </tbody>
     </table>
     <b-pagination
       v-model="pagination.page"
@@ -195,7 +205,7 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <div class="half-circle-spinner mt-5" v-else>
+    <div class="half-circle-spinner mt-5" v-if="dataLoading">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
@@ -224,6 +234,7 @@ export default class Company extends BaseComponent {
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
   private totalPage = 0;
+  private dataLoading = false;
 
   // TODO: Create autocomplete box
   getCompanies() {
@@ -243,6 +254,7 @@ export default class Company extends BaseComponent {
   }
 
   search(isPagination?: boolean) {
+    this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;
     }
@@ -250,6 +262,7 @@ export default class Company extends BaseComponent {
       this.companyUserSearchDto,
       this.pagination,
     ).subscribe(res => {
+      this.dataLoading = false;
       this.companyUserListDto = res.data.items;
       this.companyUserListTotalCount = res.data.totalCount;
       this.totalPage = Math.ceil(

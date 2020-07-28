@@ -6,7 +6,7 @@
         더 보기
       </router-link>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-hover table-bordered">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -24,11 +24,21 @@
                 name: 'CompanyDetail',
                 params: { id: company.no },
               }"
+              class="text-primary"
             >
               {{ company.no }}
             </router-link>
           </th>
-          <td>{{ company.nameKr }}</td>
+          <td>
+            <router-link
+              :to="{
+                name: 'CompanyDetail',
+                params: { id: company.no },
+              }"
+            >
+              {{ company.nameKr }}
+            </router-link>
+          </td>
           <td>{{ company.ceoKr }}</td>
           <td>{{ company.phone }}</td>
           <td>

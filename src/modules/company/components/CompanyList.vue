@@ -105,7 +105,10 @@
         </h5>
       </div>
     </div>
-    <table class="table table-bordered table-hover table-sm text-center">
+    <table
+      class="table table-bordered table-hover table-sm text-center"
+      v-if="!dataLoading"
+    >
       <thead>
         <tr>
           <th scope="col" v-bind:class="{ highlighted: companySearchDto.no }">
@@ -156,7 +159,6 @@
           <th scope="col">VIEW</th>
         </tr>
       </thead>
-
       <tbody v-if="companyListTotalCount">
         <tr v-for="companyList in companyListDto" :key="companyList.no">
           <td class="align-middle">
@@ -204,6 +206,13 @@
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="10" class="empty-data">
+            검색결과가 없습니다.
+          </td>
+        </tr>
+      </tbody>
     </table>
     <b-pagination
       v-model="pagination.page"
@@ -214,7 +223,7 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <div class="half-circle-spinner mt-5" v-else>
+    <div class="half-circle-spinner mt-5" v-if="dataLoading">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
@@ -243,6 +252,7 @@ export default class Company extends BaseComponent {
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
   private totalPage = 0;
+  private dataLoading = false;
 
   paginateSearch() {
     this.search(true);
@@ -255,11 +265,13 @@ export default class Company extends BaseComponent {
   }
 
   search(isPagination?: boolean) {
+    this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;
     }
     CompanyService.findAll(this.companySearchDto, this.pagination).subscribe(
       res => {
+        this.dataLoading = false;
         this.companyListDto = res.data.items;
         this.companyListTotalCount = res.data.totalCount;
         this.totalPage = Math.ceil(

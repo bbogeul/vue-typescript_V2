@@ -1,23 +1,14 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-12 col-lg-6">
+      <div class="col-sm-12 col-lg-6 mb-4">
         <DashboardGraph />
       </div>
       <div class="col-sm-12 col-lg-6">
         <DashboardCompanyUserList />
-        <div class="divider mt-4"></div>
-        <DashboardCompanyList />
+        <DashboardCompanyList class="mt-4" />
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-sm-12 col-lg-6">
-        <DashboardCompanyUserList />
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <DashboardCompanyList />
-      </div>
-    </div> -->
     <div class="divider my-4"></div>
     <DashboardFounderConsultList />
   </div>
