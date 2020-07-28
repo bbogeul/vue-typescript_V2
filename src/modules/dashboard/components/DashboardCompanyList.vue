@@ -52,7 +52,6 @@
           <td colspan="5" class="empty-data">승인 수정 요청 내역 없음</td>
         </tr>
       </tbody>
-      <tbody></tbody>
     </table>
   </div>
 </template>

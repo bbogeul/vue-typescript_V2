@@ -9,10 +9,7 @@
         더 보기
       </router-link>
     </div>
-    <table
-      class="table table-hover table-bordered"
-      v-if="companyUserListCount > 0"
-    >
+    <table class="table table-hover table-bordered">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -22,7 +19,7 @@
           <th scope="col">STATUS</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="companyUserListCount > 0">
         <tr v-for="companyUser in companyUserDto" :key="companyUser.no">
           <th scope="row">
             <router-link
@@ -50,6 +47,11 @@
               }}</span>
             </router-link>
           </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="5" class="empty-data">승인 수정 요청 내역 없음</td>
         </tr>
       </tbody>
     </table>
