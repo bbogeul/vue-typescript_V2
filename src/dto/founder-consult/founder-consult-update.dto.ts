@@ -14,4 +14,5 @@ export class FounderConsultUpdateDto extends BaseDto<FounderConsultUpdateDto>
   confirmDate?: Date;
   hopeDate?: Date;
   hopeTime?: AVAILABLE_TIME;
+  hopeFoodCategory?: string;
 }

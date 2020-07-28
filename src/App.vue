@@ -47,6 +47,10 @@ body {
   color: #fff;
 }
 
+a,
+a:hover {
+  color: inherit;
+}
 select {
   font: inherit;
 }
@@ -96,5 +100,6 @@ select {
   align-items: center;
   text-align: center;
   height: 100%;
+  min-height: 100px;
 }
 </style>

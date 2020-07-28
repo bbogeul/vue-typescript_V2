@@ -25,21 +25,39 @@
             <div v-if="company">
               <div>
                 <ul>
-                  <li v-if="company.nameKr">업체명 : {{ company.nameKr }}</li>
-                  <li v-if="company.ceoKr">대표 : {{ company.ceoKr }}</li>
+                  <li v-if="company.no">
+                    업체 ID : <b>{{ company.no }}</b>
+                  </li>
+                  <li v-if="company.nameKr">
+                    업체명 : <b>{{ company.nameKr }}</b>
+                    <span v-if="company.nameEng">({{ company.nameEng }})</span>
+                  </li>
+                  <li v-if="company.businessNo">
+                    사업자 번호 : <b>{{ company.businessNo }}</b>
+                  </li>
+                  <li v-if="company.ceoKr">
+                    대표명 : <b>{{ company.ceoKr }}</b>
+                    <span v-if="company.ceoEng">({{ company.ceoEng }})</span>
+                  </li>
                   <li v-if="company.phone">전화번호 : {{ company.phone }}</li>
                   <li v-if="company.email">이메일 : {{ company.email }}</li>
                   <li v-if="company.fax">팩스 : {{ company.fax }}</li>
                   <li v-if="company.address">주소 : {{ company.address }}</li>
-                  <li v-if="company.createdAt">
-                    생성일 : {{ company.createdAt | dateTransformer }}
+                  <li v-if="company.website">
+                    웹사이트 :
+                    <a :href="company.website" target="_blank">
+                      {{ company.website }}
+                    </a>
                   </li>
                   <li v-if="company.createdAt">
-                    승인상태 :
-                    <span class="badge badge-pill badge-warning p-2">{{
+                    등록일 : {{ company.createdAt | dateTransformer }}
+                  </li>
+                  <li v-if="company.createdAt">
+                    승인 상태 :
+                    <span class="badge badge-pill badge-warning p-2 mr-2">{{
                       company.companyStatus | enumTransformer
                     }}</span>
-                    <span v-if="company.updatedAt">
+                    <span v-if="company.updatedAt" class="d-inline-block">
                       ({{ company.updatedAt | dateTransformer }})
                     </span>
                   </li>
@@ -160,7 +178,7 @@
               </ul>
             </div>
             <div v-else class="empty-data">
-              <p>관리자 없음</p>
+              관리자 없음
             </div>
           </template>
         </BaseCard>

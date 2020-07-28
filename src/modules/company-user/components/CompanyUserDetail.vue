@@ -4,10 +4,10 @@
       v-if="companyUser"
       class="d-flex justify-content-between align-items-end mb-2"
     >
-      <h3 class="mb-0" v-if="companyUser.name">
-        {{ companyUser.name }} - 사용자 정보
-      </h3>
-      <router-link to="/company-user" class="btn btn-secondary text-center"
+      <h3>{{ companyUser.name }} - 사용자 정보</h3>
+      <router-link
+        to="/company/company-user"
+        class="btn btn-secondary text-center"
         >목록으로</router-link
       >
     </div>
@@ -18,17 +18,35 @@
             <div v-if="companyUser">
               <ul>
                 <li v-if="companyUser.company">
-                  업체명 : {{ companyUser.company.nameKr }}
+                  업체명 :
+                  <router-link
+                    :to="{
+                      name: 'CompanyDetail',
+                      params: {
+                        id: companyUser.company.no,
+                      },
+                    }"
+                  >
+                    <b>{{ companyUser.company.nameKr }}</b>
+                  </router-link>
                 </li>
-                <li>사용자명 : {{ companyUser.name }}</li>
+                <li>
+                  사용자 ID : <b>{{ companyUser.no }}</b>
+                </li>
+                <li>
+                  사용자명 : <b>{{ companyUser.name }}</b>
+                </li>
                 <li>휴대폰 번호 : {{ companyUser.phone }}</li>
                 <li>이메일 : {{ companyUser.email }}</li>
-                <li>
-                  승인상태 :
-                  <span class="badge badge-pill badge-warning p-2">{{
+                <li v-if="companyUser.createdAt">
+                  등록일 : {{ companyUser.createdAt | dateTransformer }}
+                </li>
+                <li v-if="companyUser.companyUserStatus">
+                  승인 상태 :
+                  <span class="badge badge-pill badge-warning p-2 mr-2">{{
                     companyUser.companyUserStatus | enumTransformer
                   }}</span>
-                  <span v-if="companyUser.updatedAt">
+                  <span v-if="companyUser.updatedAt" class="d-inline-block">
                     ({{ companyUser.updatedAt | dateTransformer }})
                   </span>
                 </li>
@@ -136,7 +154,7 @@
           <textarea
             name="refusalDesc"
             id="refusalDesc"
-            v-model="companyUserdDto.refusalDesc"
+            v-model="companyUser.refusalDesc"
             style="width:100%; height:100px;"
           ></textarea>
         </div>
@@ -176,7 +194,6 @@ export default class CompanyUserDetail extends BaseComponent {
   findOne(id) {
     CompanyUserService.findOne(id).subscribe(res => {
       this.companyUser = res.data;
-      console.log(res);
     });
   }
 

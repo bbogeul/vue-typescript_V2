@@ -79,6 +79,7 @@
               show
               variant="danger"
               v-if="!founderConsult.nanudaUser.genderInfo"
+              class="mt-3"
               >성별 미입력 상태</b-alert
             >
           </template>
@@ -121,47 +122,68 @@
                 </li>
               </ul>
             </div>
-            <div v-else>관리자 없음</div>
+            <div v-else class="empty-data">관리자 없음</div>
           </template>
         </BaseCard>
       </div>
-      <div class="my-3 col-md-4">
+      <div
+        class="my-3 col-md-4"
+        v-if="founderConsult.space && founderConsult.space.companyDistricts[0]"
+      >
         <BaseCard title="업체 정보">
+          <template v-slot:head>
+            <div></div>
+          </template>
           <template v-slot:body>
             <div v-if="founderConsult.space">
               <ul>
                 <li>
                   업체명:
-                  <b>
-                    {{
-                      founderConsult.space.companyDistricts[0].company.nameKr
-                    }}
-                  </b>
+                  <router-link
+                    :to="{
+                      name: 'CompanyDetail',
+                      params: {
+                        id: founderConsult.space.companyDistricts[0].company.no,
+                      },
+                    }"
+                  >
+                    <b>
+                      {{
+                        founderConsult.space.companyDistricts[0].company.nameKr
+                      }}
+                    </b>
+                  </router-link>
                 </li>
-                <li>
+                <li
+                  v-if="founderConsult.space.companyDistricts[0].company.ceoKr"
+                >
                   대표:
                   <b>{{
                     founderConsult.space.companyDistricts[0].company.ceoKr
                   }}</b>
                 </li>
-                <li>
-                  업체 상태:
-                  <b>
-                    {{
-                      founderConsult.space.companyDistricts[0].company
-                        .codeManagement.value
-                    }}
-                  </b>
-                </li>
-                <li>
-                  웹주소:
-                  <b>
-                    {{
+                <li
+                  v-if="
+                    founderConsult.space.companyDistricts[0].company.website
+                  "
+                >
+                  웹사이트:
+                  <a
+                    :href="
                       founderConsult.space.companyDistricts[0].company.website
-                    }}
-                  </b>
+                    "
+                    target="_blank"
+                  >
+                    <b>
+                      {{
+                        founderConsult.space.companyDistricts[0].company.website
+                      }}
+                    </b>
+                  </a>
                 </li>
-                <li>
+                <li
+                  v-if="founderConsult.space.companyDistricts[0].company.phone"
+                >
                   전화번호:
                   <b>{{
                     founderConsult.space.companyDistricts[0].company.phone
@@ -180,6 +202,16 @@
                   지점명:
                   <b>{{ founderConsult.space.companyDistricts[0].nameKr }}</b>
                 </li>
+                <li>
+                  승인 상태:
+
+                  <span class="badge badge-pill badge-warning p-2 mr-2">
+                    {{
+                      founderConsult.space.companyDistricts[0].company
+                        .codeManagement.value
+                    }}
+                  </span>
+                </li>
               </ul>
             </div>
           </template>
@@ -195,14 +227,26 @@
                   <b>{{ founderConsult.space.no }}</b>
                 </li>
                 <li>
+                  공간 타입 :
+                  <b>{{ founderConsult.space.spaceType.displayName }}</b>
+                </li>
+                <li v-if="founderConsult.space.name">
                   공간이름 :
                   <b>{{ founderConsult.space.name }}</b>
                 </li>
-                <li>
+                <li v-if="founderConsult.space.address">
                   공간주소 :
                   <b>{{ founderConsult.space.address }}</b>
                 </li>
-                <li v-if="founderConsult.space.amenities">
+                <li v-if="founderConsult.space.deposit">
+                  보증금 :
+                  <b>{{ founderConsult.space.deposit }} 만원</b>
+                </li>
+                <li v-if="founderConsult.space.rentalFee">
+                  월 임대료 :
+                  <b>{{ founderConsult.space.rentalFee }} 만원</b>
+                </li>
+                <li v-if="founderConsult.space.amenities.length > 0">
                   공용시설:
                   <b
                     v-for="amenity in founderConsult.space.amenities"
@@ -210,7 +254,7 @@
                     >{{ amenity.amenityName }}</b
                   >
                 </li>
-                <li v-if="founderConsult.space.deliverySpaceOptions">
+                <li v-if="founderConsult.space.deliverySpaceOptions.length > 0">
                   공간옵션 :
                   <b
                     v-for="option in founderConsult.space.deliverySpaceOptions"
@@ -236,19 +280,13 @@
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="founderConsult.codeManagement">
+            <div v-if="founderConsult && founderConsult.codeManagement">
               <ul>
-                <li>
-                  신청 상태:
-                  <span class="badge badge-pill badge-warning p-2">
-                    {{ founderConsult.codeManagement.value }}
-                  </span>
-                </li>
                 <li>
                   상담 신청일 :
                   <b>{{ founderConsult.createdAt | dateTransformer }}</b>
                 </li>
-                <li>
+                <li v-if="founderConsult.changUpExpYn">
                   창업 경험 유무 :
                   <b>{{ founderConsult.changUpExpYn | enumTransformer }}</b>
                 </li>
@@ -257,11 +295,17 @@
                   <b>{{ founderConsult.hopeFoodCategory }}</b>
                 </li>
                 <li>
-                  희망 통화 시간 :
+                  통화 가능 시간 :
                   <b>{{ founderConsult.availableTime.value }}</b>
                 </li>
                 <li v-if="founderConsult.spaceConsultEtc">
                   문의 내용 : {{ founderConsult.spaceConsultEtc }}
+                </li>
+                <li>
+                  신청 상태:
+                  <span class="badge badge-pill badge-warning p-2">
+                    {{ founderConsult.codeManagement.value }}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -277,18 +321,16 @@
     >
       <div class="form-row">
         <div class="mb-3">
-          <label>사용자 성별</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultUpdateDto.gender"
-          >
-            <option
+          <b-form-group label="사용자 성별">
+            <b-form-radio
+              v-model="founderConsultUpdateDto.gender"
               v-for="gender in genderSelect"
               :key="gender.no"
               :value="gender.key"
-              >{{ gender.value }}</option
+              name="gender"
+              >{{ gender.value }}</b-form-radio
             >
-          </select>
+          </b-form-group>
         </div>
       </div>
     </b-modal>
@@ -327,38 +369,40 @@
         </div>
         <div class="col-12 mb-3">
           <label>희망 업종</label>
-          <div>
-            <input
-              type="text"
-              class="form-control"
-              id
+          <template>
+            <b-form-input
+              list="food-category-list"
               v-model="founderConsultUpdateDto.hopeFoodCategory"
-            />
-          </div>
-        </div>
-        <div class="col-12 mb-3">
-          <label>희망시간대 선택</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultUpdateDto.hopeTime"
-          >
-            <option
-              v-for="time in availableTimesSelect"
-              :key="time.no"
-              :value="time.key"
-              >{{ time.value }}</option
-            >
-          </select>
+            ></b-form-input>
+            <datalist id="food-category-list">
+              <option
+                v-for="category in foodCategoryList"
+                :key="category.code"
+                :value="category.nameKr"
+                >{{ category.nameKr }}</option
+              >
+            </datalist>
+          </template>
         </div>
       </div>
     </b-modal>
-    <b-modal id="message-user" title="나누다 사용자에게 문자하기">
-      <p class="my-3">
-        <b v-if="founderConsult.nanudaUser">{{
-          founderConsult.nanudaUser.name
-        }}</b
-        >에게 문자하기
+    <b-modal
+      v-if="founderConsult.nanudaUser"
+      id="message-user"
+      ok-title="전송"
+      cancel-title="취소"
+      :title="`${founderConsult.nanudaUser.name} 사용자에게 문자하기`"
+    >
+      <p class="mb-2">
+        휴대폰 번호 :
+        <b class="text-primary">{{ founderConsult.nanudaUser.phone }}</b>
       </p>
+      <b-form-textarea
+        id="message"
+        placeholder="메세지를 입력해주세요.."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
     </b-modal>
 
     <b-modal
@@ -458,7 +502,9 @@ export default class FounderConsultDetail extends BaseComponent {
 
   // 사용자 정보 수정
   updateNanudaUser() {
-    this.founderConsultUpdateDto.gender = this.founderConsult.nanudaUser.gender;
+    if (this.founderConsult.nanudaUser.gender) {
+      this.founderConsultUpdateDto.gender = this.founderConsult.nanudaUser.gender;
+    }
     this.getGender();
   }
 
@@ -470,6 +516,7 @@ export default class FounderConsultDetail extends BaseComponent {
     this.getFounderConsultCodes();
     this.getAvailableTimes();
     this.findFoodCategory(true);
+    this.getGender();
   }
 
   // 성별
@@ -518,7 +565,6 @@ export default class FounderConsultDetail extends BaseComponent {
     }
     this.pagination.limit = 5;
     AdminService.findAll(this.adminListDto, this.pagination).subscribe(res => {
-      console.log(res);
       this.adminList = res.data.items;
       this.adminListCount = res.data.totalCount;
     });
@@ -528,12 +574,11 @@ export default class FounderConsultDetail extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
-    this.pagination.limit = 5;
+    this.pagination.limit = null;
     FoodCategoryService.findAll(
       this.foodCategoryListDto,
       this.pagination,
     ).subscribe(res => {
-      console.log(res);
       this.foodCategoryList = res.data.items;
       this.foodCategoryListCount = res.data.totalCount;
     });

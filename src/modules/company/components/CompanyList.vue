@@ -129,7 +129,7 @@
             scope="col"
             v-bind:class="{ highlighted: companySearchDto.phone }"
           >
-            PHONE
+            TEL
           </th>
           <th
             scope="col"
@@ -149,7 +149,7 @@
           <th scope="col">CREATED</th>
           <th
             scope="col"
-            v-bind:class="{ highlighted: companySearchDto.status }"
+            v-bind:class="{ highlighted: companySearchDto.companyStatus }"
           >
             STATUS
           </th>

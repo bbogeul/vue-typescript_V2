@@ -45,7 +45,7 @@
           </select>
         </div>
         <div class="col-md-2 mb-3">
-          <label>업체 선택</label>
+          <label>업체명</label>
           <select
             class="custom-select"
             v-model="founderConsultSearchDto.companyNo"
@@ -185,14 +185,20 @@
         </div>
       </div>
     </div>
-    <h5>
-      검색 결과: <strong>{{ founderConsultListTotalCount }}</strong>
-    </h5>
-
+    <div class="table-top">
+      <div class="total-count">
+        <h5>
+          <span>TOTAL </span>
+          <strong class="text-primary">{{
+            founderConsultListTotalCount
+          }}</strong>
+        </h5>
+      </div>
+    </div>
     <table class="table table-bordered table-hover table-sm text-center">
       <thead>
         <tr>
-          <th scope="col">ID</th>
+          <th scope="col">NO</th>
           <th
             scope="col"
             v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
@@ -234,6 +240,14 @@
           </th>
           <th
             scope="col"
+            v-bind:class="{
+              highlighted: founderConsultSearchDto.companyDistrictNameKr,
+            }"
+          >
+            DISTRICT
+          </th>
+          <th
+            scope="col"
             v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
           >
             AVAILABLE TIME
@@ -262,9 +276,9 @@
           v-for="founderConsult in founderConsultList"
           :key="founderConsult.no"
         >
-          <td class="align-middle">
+          <th scope="row" class="align-middle">
             {{ founderConsult.no }}
-          </td>
+          </th>
           <td class="align-middle">{{ founderConsult.spaceNo }}</td>
           <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
           <td class="align-middle">{{ founderConsult.nanudaUser.phone }}</td>
@@ -288,6 +302,16 @@
             </div>
           </td>
           <td class="align-middle">
+            <div
+              v-for="company in founderConsult.space.companyDistricts"
+              :key="company.no"
+            >
+              <div v-if="company.company.nameKr">
+                {{ company.nameKr }}
+              </div>
+            </div>
+          </td>
+          <td class="align-middle">
             <div v-if="founderConsult.availableTime">
               {{ founderConsult.availableTime.value }}
             </div>
@@ -298,7 +322,7 @@
           <td class="align-middle" v-if="founderConsult.admin">
             {{ founderConsult.admin.name }}
           </td>
-          <td class="align-middle" v-else>No manager</td>
+          <td class="align-middle" v-else>-</td>
           <td class="align-middle">
             <span class="badge badge-pill badge-warning p-2">
               {{ founderConsult.codeManagement.value }}
@@ -320,6 +344,13 @@
           </td>
         </tr>
       </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan=" 13" class="empty-data">
+            검색결과가 없습니다.
+          </td>
+        </tr>
+      </tbody>
     </table>
     <b-pagination
       v-model="pagination.page"
@@ -330,7 +361,6 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <div v-else>Nothing here</div>
   </section>
 </template>
 <script lang="ts">
