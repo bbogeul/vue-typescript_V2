@@ -1,11 +1,15 @@
 <template>
-  <div style="height: 400px">
+  <div style="height: 430px">
     <DashboardChart
       v-if="founderConsultGraph"
       :chartData="founderConsultGraph"
       :options="options"
-      :styles="{ height: '400px' }"
+      :styles="{ height: '430px' }"
     />
+    <div class="half-circle-spinner" v-else>
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -31,7 +35,7 @@ export default class DashboardGraph extends Vue {
     });
   }
 
-  mounted() {
+  async mounted() {
     this.getGraph();
   }
 }

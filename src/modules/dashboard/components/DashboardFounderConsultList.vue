@@ -76,8 +76,9 @@
         </tr>
       </tbody>
     </table>
-    <div v-else>
-      <p>Nothing here</p>
+    <div class="half-circle-spinner mt-5" v-else>
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
     </div>
   </section>
 </template>

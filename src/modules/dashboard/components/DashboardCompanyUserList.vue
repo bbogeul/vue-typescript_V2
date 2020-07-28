@@ -82,7 +82,7 @@ export default class DashboardCompanyUserList extends BaseComponent {
 
   // TODO: 등록 승인 요청, 수정 승인 요청 건 둘다 노출 필요
   getUserWithUpdateStatus() {
-    this.pagination.limit = 5;
+    this.pagination.limit = 2;
     this.companyUserListDto.companyUserStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
     CompanyUserService.findAll(
       this.companyUserListDto,

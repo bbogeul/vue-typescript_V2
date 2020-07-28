@@ -179,11 +179,6 @@
           </td>
         </tr>
       </tbody>
-      <tbody v-else>
-        <td colspan="10" class="py-4">
-          검색결과가 없습니다.
-        </td>
-      </tbody>
     </table>
     <b-pagination
       v-model="pagination.page"
@@ -194,6 +189,10 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
+    <div class="half-circle-spinner mt-5" v-else>
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div>
   </section>
 </template>
 <script lang="ts">

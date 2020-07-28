@@ -330,7 +330,10 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <div v-else>Nothing here</div>
+    <div class="half-circle-spinner mt-5" v-else>
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div>
   </section>
 </template>
 <script lang="ts">

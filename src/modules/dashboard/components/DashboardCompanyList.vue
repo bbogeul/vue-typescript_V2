@@ -73,7 +73,7 @@ export default class DashboardCompanyList extends BaseComponent {
   private companyDto: CompanyDto[] = [];
 
   getCompanyUpdateStatusList() {
-    this.pagination.limit = 5;
+    this.pagination.limit = 2;
     this.companyListDto.companyStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
     CompanyService.findAll(this.companyListDto, this.pagination).subscribe(
       res => {
