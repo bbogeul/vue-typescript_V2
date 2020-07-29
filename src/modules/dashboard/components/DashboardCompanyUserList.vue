@@ -17,6 +17,7 @@
           <th scope="col">COMPANY</th>
           <th scope="col">PHONE</th>
           <th scope="col">STATUS</th>
+          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody v-if="companyUserListCount > 0">
@@ -66,11 +67,21 @@
               }}</span>
             </router-link>
           </td>
+          <td>
+            <router-link
+              class="btn btn-sm btn-secondary"
+              :to="{
+                name: 'CompanyUserDetail',
+                params: { id: companyUser.no },
+              }"
+              >상세보기</router-link
+            >
+          </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="5" class="empty-data">승인 수정 요청 내역 없음</td>
+          <td colspan="6" class="empty-data">승인 수정 요청 내역 없음</td>
         </tr>
       </tbody>
     </table>

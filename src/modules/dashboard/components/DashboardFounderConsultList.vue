@@ -19,6 +19,7 @@
           <th scope="col">COMPANY</th>
           <th scope="col">AVAILABLE TIME</th>
           <th scope="col">STATUS</th>
+          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody v-if="founderConsultListCount > 0">
@@ -69,16 +70,19 @@
             </div>
           </td>
           <td>
+            <span class="badge badge-pill badge-warning p-2">{{
+              founderConsult.codeManagement.value
+            }}</span>
+          </td>
+          <td>
             <router-link
+              class="btn btn-sm btn-secondary"
               :to="{
                 name: 'FounderConsultDetail',
                 params: { id: founderConsult.no },
               }"
+              >상세보기</router-link
             >
-              <span class="badge badge-pill badge-warning p-2">{{
-                founderConsult.codeManagement.value
-              }}</span>
-            </router-link>
           </td>
         </tr>
       </tbody>
