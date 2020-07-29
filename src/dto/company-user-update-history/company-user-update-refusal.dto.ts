@@ -1,9 +1,3 @@
-// export class CompanyUserUpdateRefusalReasonDto {
-//   email?: boolean;
-//   phone?: boolean;
-//   name?: boolean;
-//   workCertificate?: boolean;
-// }
 import { BaseDto } from '@/core';
 import { CompanyUserUpdateHistoryDto } from './company-user-update-history.dto';
 import { CompanyUserUpdateRefusalReasonDto } from './company-user-update-refusal-reason.dto';

@@ -53,32 +53,37 @@
               </ul>
             </div>
             <template
-              v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'"
+              v-if="
+                companyUser.companyUserStatus === 'UPDATE_APPROVAL' ||
+                  companyUser.companyUserStatus === 'NEED_APPROVAL'
+              "
             >
               <div class="border rounded bg-light p-3 mt-4">
-                <div>
+                <template
+                  v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'"
+                >
                   <h5
                     class="text-danger"
                     style="font-size:14px; font-weight:bold;"
                   >
                     승인 요청 항목
                   </h5>
-                </div>
-                <div
-                  v-if="companyUser.companyUserUpdateHistories"
-                  class="py-2 mt-3 border-top border-bottom"
-                >
-                  <ul>
-                    <li
-                      v-for="(value, name, index) in companyUser
-                        .companyUserUpdateHistories[0]"
-                      :key="index"
-                    >
-                      {{ name | stringTransformer }} : {{ value }}
-                    </li>
-                  </ul>
-                </div>
-                <div class="mt-2 text-right">
+                  <div
+                    v-if="companyUser.companyUserUpdateHistories"
+                    class="py-2 mt-3 mb-2 border-top border-bottom"
+                  >
+                    <ul>
+                      <li
+                        v-for="(value, name) in companyUser
+                          .companyUserUpdateHistories[0]"
+                        :key="name"
+                      >
+                        {{ name | stringTransformer }} : {{ value }}
+                      </li>
+                    </ul>
+                  </div>
+                </template>
+                <div class="text-right">
                   <b-button
                     variant="primary"
                     class="mx-1"
@@ -110,9 +115,9 @@
                 >
                   <ul>
                     <li
-                      v-for="(value, name, index) in companyUser
+                      v-for="(value, name) in companyUser
                         .companyUserUpdateHistories[0].refusalReasons"
-                      :key="index"
+                      :key="name"
                     >
                       <span :class="{ 'text-danger': value }">{{
                         name | stringTransformer
@@ -133,7 +138,7 @@
         </BaseCard>
       </div>
     </div>
-    <b-modal id="refusal-info" title="승인 거절 사유" @ok="d()">
+    <b-modal id="refusal-info" title="승인 거절 사유" @ok="updateRefusal()">
       <div v-if="companyUser.companyUserUpdateHistories">
         <div
           class="form-check"
@@ -154,7 +159,7 @@
           <textarea
             name="refusalDesc"
             id="refusalDesc"
-            v-model="companyUser.refusalDesc"
+            v-model="companyUserUpdateRefusalDto.refusalDesc"
             style="width:100%; height:100px;"
           ></textarea>
         </div>
@@ -168,10 +173,8 @@ import BaseComponent from '../../../core/base.component';
 import BaseCard from '../../_components/BaseCard.vue';
 import CompanyUserService from '../../../services/company-user.service';
 import {
-  CompanyDto,
   CompanyUserDto,
   CompanyUserUpdateDto,
-  CompanyUpdateRefusalDto,
   CompanyUserUpdateRefusalDto,
   CompanyUserUpdateRefusalReasonDto,
 } from '../../../dto';
@@ -186,7 +189,6 @@ import toast from '../../../../resources/assets/js/services/toast.js';
 })
 export default class CompanyUserDetail extends BaseComponent {
   private companyUser = new CompanyUserDto(BaseUser);
-  private company = new CompanyDto();
   private companyUserUpdateDto = new CompanyUserUpdateDto();
   private companyUserUpdateRefusalDto = new CompanyUserUpdateRefusalDto();
   private companyUserUpdateRefusalReasonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
