@@ -69,7 +69,7 @@
           <th scope="col">ADDRESS</th>
           <th scope="col">DATE</th>
           <th scope="col">STATUS</th>
-          <!-- <th scope="col">VIEW</th> -->
+          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody>
@@ -87,21 +87,22 @@
           <td>
             <span class="badge badge-pill badge-warning p-2">
               {{ district.companyDistrictStatus | enumTransformer }}
+              {{ companyDistrictList.no }}
             </span>
           </td>
-          <!-- <td>
+          <td>
             <router-link
               class="btn btn-sm btn-secondary"
               :to="{
                 name: 'CompanyDistrictDetail',
                 params: {
-                  id: companyDistrictList.no,
+                  id: district.no,
                 },
               }"
             >
               상세보기
             </router-link>
-          </td> -->
+          </td>
         </tr>
       </tbody>
     </table>

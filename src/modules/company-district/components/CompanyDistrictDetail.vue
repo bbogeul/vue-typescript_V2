@@ -4,7 +4,7 @@
       v-if="companyDistrict"
       class="d-flex justify-content-between align-items-end mb-2"
     >
-      <h3>{{ companyDistrict.name }} - 업체 지점 정보</h3>
+      <h3>{{ companyDistrict.nameKr }} - 업체 지점 정보</h3>
       <router-link
         to="/company/company-district"
         class="btn btn-secondary text-center"
@@ -17,6 +17,19 @@
           <template v-slot:body>
             <div v-if="companyDistrict">
               <ul>
+                <li v-if="companyDistrict.company">
+                  업체명 :
+                  <router-link
+                    :to="{
+                      name: 'CompanyDetail',
+                      params: {
+                        id: companyDistrict.company.no,
+                      },
+                    }"
+                  >
+                    <b>{{ companyDistrict.company.nameKr }}</b>
+                  </router-link>
+                </li>
                 <li v-if="companyDistrict.nameKr">
                   업체 지점명 : <b>{{ companyDistrict.nameKr }}</b>
                 </li>
@@ -39,15 +52,24 @@
                 </li>
               </ul>
             </div>
-            <!-- <template
+            <template
               v-if="
                 companyDistrict.companyDistrictStatus === 'UPDATE_APPROVAL' ||
                   companyDistrict.companyDistrictStatus === 'NEED_APPROVAL'
               "
             >
               <div class="border rounded bg-light p-3 mt-4">
-                <template v-if="companyDistrict.companyDistrictStatus === 'UPDATE_APPROVAL'">
-                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 요청 항목</h5>
+                <template
+                  v-if="
+                    companyDistrict.companyDistrictStatus === 'UPDATE_APPROVAL'
+                  "
+                >
+                  <h5
+                    class="text-danger"
+                    style="font-size:14px; font-weight:bold;"
+                  >
+                    승인 요청 항목
+                  </h5>
                   <div
                     v-if="companyDistrict.companyDistrictUpdateHistories"
                     class="py-2 mt-3 mb-2 border-top border-bottom"
@@ -57,22 +79,44 @@
                         v-for="(value, name) in companyDistrict
                           .companyDistrictUpdateHistories[0]"
                         :key="name"
-                      >{{ name | stringTransformer }} : {{ value }}</li>
+                      >
+                        {{ name | stringTransformer }} : {{ value }}
+                      </li>
                     </ul>
                   </div>
                 </template>
                 <div class="text-right">
-                  <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
-                  <b-button variant="secondary" v-b-modal.refusal-info class="mx-1">거절</b-button>
+                  <b-button
+                    variant="primary"
+                    class="mx-1"
+                    @click="updateApproval()"
+                    >승인</b-button
+                  >
+                  <b-button
+                    variant="secondary"
+                    v-b-modal.refusal-info
+                    class="mx-1"
+                    >거절</b-button
+                  >
                 </div>
               </div>
             </template>
-            <template v-if="companyDistrict.companyDistrictStatus === 'REFUSED'">
+            <template
+              v-if="companyDistrict.companyDistrictStatus === 'REFUSED'"
+            >
               <div class="border rounded bg-light p-3 mt-4">
                 <div>
-                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 거절 사유</h5>
+                  <h5
+                    class="text-danger"
+                    style="font-size:14px; font-weight:bold;"
+                  >
+                    승인 거절 사유
+                  </h5>
                 </div>
-                <div v-if="companyDistrict.companyDistrictUpdateHistories" class="py-2 mt-3 border-top">
+                <div
+                  v-if="companyDistrict.companyDistrictUpdateHistories"
+                  class="py-2 mt-3 border-top"
+                >
                   <ul>
                     <li
                       v-for="(value, name) in companyDistrict
@@ -80,22 +124,26 @@
                       :key="name"
                     >
                       <span :class="{ 'text-danger': value }">
-                        {{
-                        name | stringTransformer
-                        }}
+                        {{ name | stringTransformer }}
                       </span>
                     </li>
                   </ul>
                   <p
-                    v-if="companyDistrict.companyDistrictUpdateHistories[0].refusalDesc"
+                    v-if="
+                      companyDistrict.companyDistrictUpdateHistories[0]
+                        .refusalDesc
+                    "
                     class="pt-2 mt-2 border-top"
                   >
                     거절 사유 :
-                    {{ companyDistrict.companyDistrictUpdateHistories[0].refusalDesc }}
+                    {{
+                      companyDistrict.companyDistrictUpdateHistories[0]
+                        .refusalDesc
+                    }}
                   </p>
                 </div>
               </div>
-            </template> -->
+            </template>
           </template>
         </BaseCard>
       </div>
@@ -135,7 +183,12 @@ import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
 import BaseCard from '../../_components/BaseCard.vue';
 import CompanyDistrictService from '../../../services/company-district.service';
-import { CompanyDistrictDto } from '../../../dto';
+import {
+  CompanyDistrictDto,
+  CompanyDistrictUpdateDto,
+  CompanyDistrictUpdateRefusalDto,
+  CompanyDistrictUpdateRefusalReasonDto,
+} from '../../../dto';
 import { BaseUser } from '../../../services/shared/auth';
 import toast from '../../../../resources/assets/js/services/toast.js';
 
@@ -146,10 +199,10 @@ import toast from '../../../../resources/assets/js/services/toast.js';
   },
 })
 export default class CompanyDistrictDetail extends BaseComponent {
-  private companyDistrict = new CompanyDistrictDto(BaseUser);
-  //   private companyDistrictUpdateDto = new CompanyDistrictUpdateDto();
-  //   private companyDistrictUpdateRefusalDto = new CompanyDistrictUpdateRefusalDto();
-  //   private companyDistrictUpdateRefusalReasonDto = (this.companyDistrictUpdateRefusalDto.refusalReasons = new CompanyDistrictUpdateRefusalReasonDto());
+  private companyDistrict = new CompanyDistrictDto();
+  private companyDistrictUpdateDto = new CompanyDistrictUpdateDto();
+  private companyDistrictUpdateRefusalDto = new CompanyDistrictUpdateRefusalDto();
+  private companyDistrictUpdateRefusalReasonDto = (this.companyDistrictUpdateRefusalDto.refusalReasons = new CompanyDistrictUpdateRefusalReasonDto());
 
   findOne(id) {
     CompanyDistrictService.findOne(id).subscribe(res => {
@@ -157,30 +210,32 @@ export default class CompanyDistrictDetail extends BaseComponent {
     });
   }
 
-  // 승인
-  //   updateApproval() {
-  //     CompanyDistrictService.updateCompanyDistrictStatus(
-  //       this.$route.params.id,
-  //       'approve-update',
-  //     ).subscribe(res => {
-  //       this.findOne(this.$route.params.id);
-  //       toast.success('승인완료');
-  //     });
-  //   }
+  //승인
+  updateApproval() {
+    // CompanyDistrictService.updateCompanyDistrictStatus(
+    //   this.$route.params.id,
+    //   'approve-update',
+    // ).subscribe(res => {
+    //   if (res) {
+    //     this.findOne(this.$route.params.id);
+    //     toast.success('승인완료');
+    //   }
+    // });
+  }
 
-  // 거절
-  //   updateRefusal() {
-  //     CompanyDistrictService.updateCompanyDistrictStatus(
-  //       this.$route.params.id,
-  //       'refuse-update',
-  //       this.companyDistrictUpdateRefusalDto,
-  //     ).subscribe(res => {
-  //       if (res) {
-  //         this.findOne(this.$route.params.id);
-  //         toast.success('승인거절');
-  //       }
-  //     });
-  //   }
+  //거절
+  updateRefusal() {
+    // CompanyDistrictService.updateCompanyDistrictStatus(
+    //   this.$route.params.id,
+    //   'refuse-update',
+    //   this.companyDistrictUpdateRefusalDto,
+    // ).subscribe(res => {
+    //   if (res) {
+    //     this.findOne(this.$route.params.id);
+    //     toast.success('승인거절');
+    //   }
+    // });
+  }
 
   created() {
     const id = this.$route.params.id;

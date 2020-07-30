@@ -27,6 +27,27 @@ class CompanyDistrictService extends BaseService {
     );
   }
 
+  /**
+   *
+   * @param companyDistrictNo
+   * @param param
+   * @param companyDistrictUpdateRefusalDto
+   */
+  updateCompanyDistrictStatus(
+    companyDistrictNo,
+    param: string,
+    companyDistrictUpdateRefusalDto?: CompanyDistrictDto,
+  ) {
+    return super.patch<CompanyDistrictDto>(
+      `admin/company-district/${companyDistrictNo}/${param}`,
+      companyDistrictUpdateRefusalDto,
+    );
+  }
+
+  /**
+   *
+   * @param companyDistrict
+   */
   createCompanyDistrict(companyDistrict: CompanyDistrictDto) {
     return super.post<CompanyDistrictDto>(
       'admin/company-district',
