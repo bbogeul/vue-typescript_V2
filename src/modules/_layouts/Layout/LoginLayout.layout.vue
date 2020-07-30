@@ -1,12 +1,7 @@
 <template>
   <section class="body text-center">
     <div class="form-signin" v-on:keyup.enter="signin()">
-      <img
-        class="mb-4 logo"
-        src="https://nanudakitchen.com/_nuxt/img/65bad5b.svg"
-        alt
-        width="72"
-      />
+      <img class="mb-4 logo" src="https://nanudakitchen.com/_nuxt/img/65bad5b.svg" alt width="72" />
 
       <label for="inputPhone" class="sr-only">휴대폰 번호</label>
       <input
@@ -26,17 +21,23 @@
         v-model="signinDto.password"
         required
       />
-
+      <div>
+        <b-form-checkbox
+          id="checkbox-1"
+          v-model="signinDto.rememberMe"
+          name="checkbox-1"
+          :value="true"
+          :unchecked-value="false"
+        >Stay signed in</b-form-checkbox>
+      </div>
       <button
         @click="signin()"
         v-on:keyup.enter="signin()"
-        class="btn btn-lg btn-primary btn-block"
-      >
-        로그인
-      </button>
-      <span style="font-size: 10px; margin-bottom:5px"
-        ><i>기존 나누다키친 관리자 계정으로 로그인 하시면 됩니다</i></span
-      >
+        class="btn btn-lg btn-primary btn-block mt-1"
+      >로그인</button>
+      <span style="font-size: 10px; margin-bottom:5px">
+        <i>기존 나누다키친 관리자 계정으로 로그인 하시면 됩니다</i>
+      </span>
       <p class="mt-5 mb-3 text-muted">
         &copy;
         <a href="https://nanudakitchen.com" target="_blank">위대한 상사 2020</a>
