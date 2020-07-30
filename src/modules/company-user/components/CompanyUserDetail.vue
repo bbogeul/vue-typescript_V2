@@ -1,15 +1,8 @@
 <template>
   <section>
-    <div
-      v-if="companyUser"
-      class="d-flex justify-content-between align-items-end mb-2"
-    >
+    <div v-if="companyUser" class="d-flex justify-content-between align-items-end mb-2">
       <h3>{{ companyUser.name }} - 사용자 정보</h3>
-      <router-link
-        to="/company/company-user"
-        class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
+      <router-link to="/company/company-user" class="btn btn-secondary text-center">목록으로</router-link>
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="col col-12 col-lg-6">
@@ -31,24 +24,27 @@
                   </router-link>
                 </li>
                 <li>
-                  사용자 ID : <b>{{ companyUser.no }}</b>
+                  사용자 ID :
+                  <b>{{ companyUser.no }}</b>
                 </li>
                 <li>
-                  사용자명 : <b>{{ companyUser.name }}</b>
+                  사용자명 :
+                  <b>{{ companyUser.name }}</b>
                 </li>
                 <li>휴대폰 번호 : {{ companyUser.phone }}</li>
                 <li>이메일 : {{ companyUser.email }}</li>
-                <li v-if="companyUser.createdAt">
-                  등록일 : {{ companyUser.createdAt | dateTransformer }}
-                </li>
+                <li v-if="companyUser.createdAt">등록일 : {{ companyUser.createdAt | dateTransformer }}</li>
                 <li v-if="companyUser.companyUserStatus">
                   승인 상태 :
-                  <span class="badge badge-pill badge-warning p-2 mr-2">{{
+                  <span class="badge badge-pill badge-warning p-2 mr-2">
+                    {{
                     companyUser.companyUserStatus | enumTransformer
-                  }}</span>
-                  <span v-if="companyUser.updatedAt" class="d-inline-block">
-                    ({{ companyUser.updatedAt | dateTransformer }})
+                    }}
                   </span>
+                  <span
+                    v-if="companyUser.updatedAt"
+                    class="d-inline-block"
+                  >({{ companyUser.updatedAt | dateTransformer }})</span>
                 </li>
               </ul>
             </div>
@@ -59,15 +55,8 @@
               "
             >
               <div class="border rounded bg-light p-3 mt-4">
-                <template
-                  v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'"
-                >
-                  <h5
-                    class="text-danger"
-                    style="font-size:14px; font-weight:bold;"
-                  >
-                    승인 요청 항목
-                  </h5>
+                <template v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'">
+                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 요청 항목</h5>
                   <div
                     v-if="companyUser.companyUserUpdateHistories"
                     class="py-2 mt-3 mb-2 border-top border-bottom"
@@ -77,51 +66,33 @@
                         v-for="(value, name) in companyUser
                           .companyUserUpdateHistories[0]"
                         :key="name"
-                      >
-                        {{ name | stringTransformer }} : {{ value }}
-                      </li>
+                      >{{ name | stringTransformer }} : {{ value }}</li>
                     </ul>
                   </div>
                 </template>
                 <div class="text-right">
-                  <b-button
-                    variant="primary"
-                    class="mx-1"
-                    @click="updateApproval()"
-                    >승인</b-button
-                  >
-                  <b-button
-                    variant="secondary"
-                    v-b-modal.refusal-info
-                    class="mx-1"
-                    >거절</b-button
-                  >
+                  <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
+                  <b-button variant="secondary" v-b-modal.refusal-info class="mx-1">거절</b-button>
                 </div>
               </div>
             </template>
             <template v-if="companyUser.companyUserStatus === 'REFUSED'">
               <div class="border rounded bg-light p-3 mt-4">
                 <div>
-                  <h5
-                    class="text-danger"
-                    style="font-size:14px; font-weight:bold;"
-                  >
-                    승인 거절 사유
-                  </h5>
+                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 거절 사유</h5>
                 </div>
-                <div
-                  v-if="companyUser.companyUserUpdateHistories"
-                  class="py-2 mt-3 border-top"
-                >
+                <div v-if="companyUser.companyUserUpdateHistories" class="py-2 mt-3 border-top">
                   <ul>
                     <li
                       v-for="(value, name) in companyUser
                         .companyUserUpdateHistories[0].refusalReasons"
                       :key="name"
                     >
-                      <span :class="{ 'text-danger': value }">{{
+                      <span :class="{ 'text-danger': value }">
+                        {{
                         name | stringTransformer
-                      }}</span>
+                        }}
+                      </span>
                     </li>
                   </ul>
                   <p
@@ -217,9 +188,10 @@ export default class CompanyUserDetail extends BaseComponent {
       'refuse-update',
       this.companyUserUpdateRefusalDto,
     ).subscribe(res => {
-      console.log(res);
-      this.findOne(this.$route.params.id);
-      toast.success('승인거절');
+      if (res) {
+        this.findOne(this.$route.params.id);
+        toast.success('승인거절');
+      }
     });
   }
 

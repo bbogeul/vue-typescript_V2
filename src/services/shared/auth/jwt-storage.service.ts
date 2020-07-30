@@ -2,15 +2,15 @@ class JwtStorageService {
   TOKEN_NAME = 'admin_user_access_token';
 
   getToken(): string {
-    return sessionStorage.getItem(this.TOKEN_NAME);
+    return localStorage.getItem(this.TOKEN_NAME);
   }
 
   setToken(token: string): void {
-    sessionStorage.setItem(this.TOKEN_NAME, token);
+    localStorage.setItem(this.TOKEN_NAME, token);
   }
 
   removeToken(): void {
-    sessionStorage.removeItem(this.TOKEN_NAME);
+    localStorage.removeItem(this.TOKEN_NAME);
   }
 }
 
