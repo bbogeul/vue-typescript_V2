@@ -2,32 +2,65 @@ import BaseComponent from '@/core/base.component';
 
 <template>
   <div v-if="companyDistrictListCount > 0">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
-          <th>
+          <th scope="col">
             NO
           </th>
-          <th>
+          <th scope="col">
             NAME
           </th>
-          <th>
+          <th scope="col">
             ADDRESS
           </th>
-          <th>
+          <th scope="col">
             STATUS
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="company in companyDistrictList" :key="company.no">
-          <td>{{ company.no }}</td>
-          <td>{{ company.nameKr }}</td>
-          <td>{{ company.address }}</td>
+        <tr v-for="district in companyDistrictList" :key="district.no">
+          <th scope="row">
+            <router-link
+              :to="{
+                name: 'CompanyDistrictDetail',
+                params: {
+                  id: district.no,
+                },
+              }"
+              class="text-primary"
+            >
+              {{ district.no }}
+            </router-link>
+          </th>
           <td>
-            <span class="badge badge-pill badge-warning p-2">
-              {{ company.companyDistrictStatus | enumTransformer }}
-            </span>
+            <router-link
+              :to="{
+                name: 'CompanyDistrictDetail',
+                params: {
+                  id: district.no,
+                },
+              }"
+            >
+              {{ district.nameKr }}
+            </router-link>
+          </td>
+          <td>{{ district.address }}</td>
+          <td>
+            <router-link
+              :to="{
+                name: 'CompanyDistrictDetail',
+                params: {
+                  id: district.no,
+                },
+              }"
+              class="text-primary"
+            >
+              <span class="badge badge-pill badge-warning p-2">
+                {{ district.companyDistrictStatus | enumTransformer }}
+              </span>
+            </router-link>
           </td>
         </tr>
       </tbody>
