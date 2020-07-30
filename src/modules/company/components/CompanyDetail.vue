@@ -74,9 +74,7 @@
                 "
               >
                 <div class="border rounded bg-light p-3 mt-4">
-                  <template
-                    v-if="company.companyUserStatus === 'UPDATE_APPROVAL'"
-                  >
+                  <template v-if="company.companyStatus === 'UPDATE_APPROVAL'">
                     <h5
                       class="text-danger"
                       style="font-size:14px; font-weight:bold;"
@@ -85,7 +83,7 @@
                     </h5>
                     <div
                       v-if="company.companyUpdateHistories"
-                      class="py-2 mt-3 border-top border-bottom"
+                      class="py-2 mt-3 mb-2 border-top border-bottom"
                     >
                       <ul>
                         <li
