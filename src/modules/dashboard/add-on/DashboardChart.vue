@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Line } from 'vue-chartjs';
+import { Line, Bar } from 'vue-chartjs';
 
 @Component({
   extends: Line,

@@ -5,6 +5,7 @@ import { CodeManagementDto } from '@/services/init/dto';
 import { AdminDto } from '../admin';
 import { SpaceDto } from '../space';
 import { NanudaUserDto } from '../nanuda-user';
+import { CompanyUserDto } from '../company-user';
 
 export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   no: number;
@@ -24,4 +25,9 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   confirmDate?: Date;
   hopeDate?: Date;
   hopeFoodCategory?: string;
+  viewCount?: YN;
+  openedAt?: Date;
+  companyDecisionStatus?: FOUNDER_CONSULT;
+  companyUser?: CompanyUserDto;
+  companyUserNo?: number;
 }

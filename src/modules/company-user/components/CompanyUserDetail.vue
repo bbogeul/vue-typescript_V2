@@ -217,6 +217,7 @@ export default class CompanyUserDetail extends BaseComponent {
       'refuse-update',
       this.companyUserUpdateRefusalDto,
     ).subscribe(res => {
+      console.log(res);
       this.findOne(this.$route.params.id);
       toast.success('승인거절');
     });

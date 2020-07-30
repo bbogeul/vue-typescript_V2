@@ -15,6 +15,7 @@ export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   companyNo?: number;
   companyDistrictNameKr?: string;
   companyDistrictNameEng?: string;
+  companyUserNo?: number;
   spaceTypeNo?: number;
   nanudaUserName?: string;
   gender?: GENDER;
@@ -22,5 +23,8 @@ export class FounderConsultListDto extends BaseDto<FounderConsultListDto>
   confirmDate?: Date;
   hopeDate?: Date;
   address?: string;
+  viewCount?: YN;
+  companyDecisionStatus?: FOUNDER_CONSULT;
+  openedAt?: Date;
   orderByNo?: OrderByValue;
 }

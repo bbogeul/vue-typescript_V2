@@ -32,7 +32,6 @@ router.beforeEach(async (to: Route, from: Route, next: any) => {
       return;
     }
     const payload = await jwtDecode(token);
-    console.log(payload);
     if (!payload) {
       toast.error('payload error');
       JwtStorageService.removeToken();
@@ -75,6 +74,5 @@ router.afterEach((to: Route) => {
   // Finish progress bar
   NProgress.done();
   // set page title
-  console.log(to.meta);
   document.title = getPageTitle(`${to.meta.title} - 나누다 공유 플랫폼`);
 });

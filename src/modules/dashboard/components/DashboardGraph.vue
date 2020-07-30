@@ -29,7 +29,6 @@ export default class DashboardGraph extends Vue {
 
   getGraph() {
     DashboardService.dashboardGraph().subscribe(res => {
-      console.log(res.data);
       this.options = { responsive: true, maintainAspectRatio: false };
       this.founderConsultGraph = res.data;
     });

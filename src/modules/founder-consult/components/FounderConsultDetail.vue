@@ -1,24 +1,15 @@
 <template>
   <section>
     <div class="d-flex justify-content-between align-items-end mb-2">
-      <h3 v-if="founderConsult.space" class="mb-0">
-        {{ founderConsult.space.name }} - 방문 신청
-      </h3>
-      <router-link to="/founder-consult" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
+      <h3 v-if="founderConsult.space" class="mb-0">{{ founderConsult.space.name }} - 방문 신청</h3>
+      <router-link to="/founder-consult" class="btn btn-secondary text-center">목록으로</router-link>
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="my-3 col-md-4" v-if="founderConsult.nanudaUser">
         <BaseCard title="사용자 정보">
           <template v-slot:head>
             <div v-if="founderConsult.status !== 'F_DIST_COMPLETE'">
-              <b-button
-                variant="primary"
-                @click="updateNanudaUser()"
-                v-b-modal.nanuda-user
-                >수정하기</b-button
-              >
+              <b-button variant="primary" @click="updateNanudaUser()" v-b-modal.nanuda-user>수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
@@ -42,12 +33,7 @@
                     <b>{{ founderConsult.nanudaUser.phone }}</b>
                   </span>
                   <span class="mx-2">
-                    <b-button
-                      size="sm"
-                      variant="info"
-                      pill
-                      v-b-modal.message-user
-                    >
+                    <b-button size="sm" variant="info" pill v-b-modal.message-user>
                       <b-icon icon="envelope"></b-icon>
                       <span class="d-none">문자전송</span>
                     </b-button>
@@ -55,9 +41,7 @@
                 </li>
                 <li v-if="founderConsult.nanudaUser.genderInfo">
                   성별:
-                  <b>
-                    {{ founderConsult.nanudaUser.genderInfo.value }}
-                  </b>
+                  <b>{{ founderConsult.nanudaUser.genderInfo.value }}</b>
                 </li>
                 <!-- <li>
                   
@@ -68,7 +52,7 @@
                   마지막 로그인 날짜:
                   <b>
                     {{
-                      founderConsult.nanudaUser.lastLoginAt | dateTransformer
+                    founderConsult.nanudaUser.lastLoginAt | dateTransformer
                     }}
                   </b>
                 </li>
@@ -80,8 +64,7 @@
               variant="danger"
               v-if="!founderConsult.nanudaUser.genderInfo"
               class="mt-3"
-              >성별 미입력 상태</b-alert
-            >
+            >성별 미입력 상태</b-alert>
           </template>
         </BaseCard>
       </div>
@@ -89,12 +72,7 @@
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button
-                variant="primary"
-                @click="findAdmin()"
-                v-b-modal.admin-list
-                >수정하기</b-button
-              >
+              <b-button variant="primary" @click="findAdmin()" v-b-modal.admin-list>수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
@@ -149,18 +127,18 @@
                   >
                     <b>
                       {{
-                        founderConsult.space.companyDistricts[0].company.nameKr
+                      founderConsult.space.companyDistricts[0].company.nameKr
                       }}
                     </b>
                   </router-link>
                 </li>
-                <li
-                  v-if="founderConsult.space.companyDistricts[0].company.ceoKr"
-                >
+                <li v-if="founderConsult.space.companyDistricts[0].company.ceoKr">
                   대표:
-                  <b>{{
+                  <b>
+                    {{
                     founderConsult.space.companyDistricts[0].company.ceoKr
-                  }}</b>
+                    }}
+                  </b>
                 </li>
                 <li
                   v-if="
@@ -176,25 +154,25 @@
                   >
                     <b>
                       {{
-                        founderConsult.space.companyDistricts[0].company.website
+                      founderConsult.space.companyDistricts[0].company.website
                       }}
                     </b>
                   </a>
                 </li>
-                <li
-                  v-if="founderConsult.space.companyDistricts[0].company.phone"
-                >
+                <li v-if="founderConsult.space.companyDistricts[0].company.phone">
                   전화번호:
-                  <b>{{
+                  <b>
+                    {{
                     founderConsult.space.companyDistricts[0].company.phone
-                  }}</b>
+                    }}
+                  </b>
                 </li>
                 <li>
                   사업 등록번호:
                   <b>
                     {{
-                      founderConsult.space.companyDistricts[0].company
-                        .businessNo
+                    founderConsult.space.companyDistricts[0].company
+                    .businessNo
                     }}
                   </b>
                 </li>
@@ -204,11 +182,10 @@
                 </li>
                 <li>
                   승인 상태:
-
                   <span class="badge badge-pill badge-warning p-2 mr-2">
                     {{
-                      founderConsult.space.companyDistricts[0].company
-                        .codeManagement.value
+                    founderConsult.space.companyDistricts[0].company
+                    .codeManagement.value
                     }}
                   </span>
                 </li>
@@ -251,16 +228,14 @@
                   <b
                     v-for="amenity in founderConsult.space.amenities"
                     :key="amenity.no"
-                    >{{ amenity.amenityName }}</b
-                  >
+                  >{{ amenity.amenityName }}</b>
                 </li>
                 <li v-if="founderConsult.space.deliverySpaceOptions.length > 0">
                   공간옵션 :
                   <b
                     v-for="option in founderConsult.space.deliverySpaceOptions"
                     :key="option.no"
-                    >{{ option.deliverySpaceOptionName }}</b
-                  >
+                  >{{ option.deliverySpaceOptionName }}</b>
                 </li>
               </ul>
             </div>
@@ -271,12 +246,7 @@
         <BaseCard title="상담 상세 정보">
           <template v-slot:head>
             <div>
-              <b-button
-                variant="primary"
-                @click="updateConsultInfo()"
-                v-b-modal.consult-info
-                >수정하기</b-button
-              >
+              <b-button variant="primary" @click="updateConsultInfo()" v-b-modal.consult-info>수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
@@ -298,14 +268,38 @@
                   통화 가능 시간 :
                   <b>{{ founderConsult.availableTime.value }}</b>
                 </li>
-                <li v-if="founderConsult.spaceConsultEtc">
-                  문의 내용 : {{ founderConsult.spaceConsultEtc }}
-                </li>
+                <li
+                  v-if="founderConsult.spaceConsultEtc"
+                >문의 내용 : {{ founderConsult.spaceConsultEtc }}</li>
                 <li>
                   신청 상태:
-                  <span class="badge badge-pill badge-warning p-2">
-                    {{ founderConsult.codeManagement.value }}
-                  </span>
+                  <span
+                    class="badge badge-pill badge-warning p-2"
+                  >{{ founderConsult.codeManagement.value }}</span>
+                </li>
+                <li
+                  v-if="founderConsult.companyDecisionStatusCode && founderConsult.space.companyDistricts.length > 0"
+                >
+                  업체 지정 상태:
+                  <span
+                    class="badge badge-pill badge-primary p-2"
+                  >{{ founderConsult.companyDecisionStatusCode.value }}</span>
+                </li>
+                <li v-if="founderConsult.space.companyDistricts.length > 0">
+                  열람 상태:
+                  <b>{{ founderConsult.viewCount | enumTransformer }}</b>
+                </li>
+                <li
+                  v-if="founderConsult.viewCount === 'Y' && founderConsult.space.companyDistricts.length > 0"
+                >
+                  열람 시간:
+                  <b>{{founderConsult.openedAt | dateTransformer}}</b>
+                </li>
+                <li
+                  v-if="founderConsult.companyUser && founderConsult.viewCount === 'Y' && founderConsult.space.companyDistricts.length > 0"
+                >
+                  열람한 사용자:
+                  <b>{{founderConsult.companyUser.name}}</b>
                 </li>
               </ul>
             </div>
@@ -314,11 +308,7 @@
       </div>
     </div>
     <!-- for the text message -->
-    <b-modal
-      id="nanuda-user"
-      title="사용자정보 수정"
-      @ok="updateFounderConsult()"
-    >
+    <b-modal id="nanuda-user" title="사용자정보 수정" @ok="updateFounderConsult()">
       <div class="form-row">
         <div class="mb-3">
           <b-form-group label="사용자 성별">
@@ -328,31 +318,22 @@
               :key="gender.no"
               :value="gender.key"
               name="gender"
-              >{{ gender.value }}</b-form-radio
-            >
+            >{{ gender.value }}</b-form-radio>
           </b-form-group>
         </div>
       </div>
     </b-modal>
-    <b-modal
-      id="consult-info"
-      title="상담 내용 수정"
-      @ok="updateFounderConsult()"
-    >
+    <b-modal id="consult-info" title="상담 내용 수정" @ok="updateFounderConsult()">
       <div class="form-row">
         <div class="col-12 mb-3">
           <label>신청 상태</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultUpdateDto.status"
-          >
+          <select class="custom-select" v-model="founderConsultUpdateDto.status">
             <option value selected>전체</option>
             <option
               v-for="status in founderConsultStatusSelect"
               :key="status.no"
               :value="status.key"
-              >{{ status.value }}</option
-            >
+            >{{ status.value }}</option>
           </select>
         </div>
         <div class="col-12 mb-3">
@@ -363,8 +344,7 @@
               :key="yn"
               :value="yn"
               name="changUpExpYn"
-              >{{ yn | enumTransformer }}</b-form-radio
-            >
+            >{{ yn | enumTransformer }}</b-form-radio>
           </b-form-group>
         </div>
         <div class="col-12 mb-3">
@@ -379,8 +359,7 @@
                 v-for="category in foodCategoryList"
                 :key="category.code"
                 :value="category.nameKr"
-                >{{ category.nameKr }}</option
-              >
+              >{{ category.nameKr }}</option>
             </datalist>
           </template>
         </div>
@@ -397,12 +376,7 @@
         휴대폰 번호 :
         <b class="text-primary">{{ founderConsult.nanudaUser.phone }}</b>
       </p>
-      <b-form-textarea
-        id="message"
-        placeholder="메세지를 입력해주세요.."
-        rows="3"
-        max-rows="6"
-      ></b-form-textarea>
+      <b-form-textarea id="message" placeholder="메세지를 입력해주세요.." rows="3" max-rows="6"></b-form-textarea>
     </b-modal>
 
     <b-modal
@@ -425,18 +399,12 @@
             <td>{{ admin.name }}</td>
             <td>{{ admin.phone }}</td>
             <td class="text-center">
-              <button class="btn btn-primary" @click="selectAdmin(admin)">
-                선택
-              </button>
+              <button class="btn btn-primary" @click="selectAdmin(admin)">선택</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div
-        v-if="selectedAdmin.name"
-        class="py-2 px-4 rounded"
-        style="background-color:#f1f1f1"
-      >
+      <div v-if="selectedAdmin.name" class="py-2 px-4 rounded" style="background-color:#f1f1f1">
         선택한 관리자 :
         <b>{{ selectedAdmin.name }}</b>
       </div>

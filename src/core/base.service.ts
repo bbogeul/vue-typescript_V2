@@ -77,9 +77,7 @@ export class BaseService extends Vue {
       return value;
     }
     Object.keys(value).map(prop => {
-      console.log(prop);
       if (value[prop] === '') {
-        console.log(value);
         delete value[prop];
       }
     });
@@ -97,7 +95,6 @@ export class BaseService extends Vue {
         return response;
       },
       error => {
-        console.log(error.response);
         if (typeof error.response.data.message === 'object') {
           toast.error(
             error.response.data.message[0].constraints[

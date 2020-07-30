@@ -15,48 +15,32 @@
         </div>
         <div class="col-md-2 mb-3">
           <label>사용자명</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="founderConsultSearchDto.nanudaUserName"
-          />
+          <input type="text" class="form-control" v-model="founderConsultSearchDto.nanudaUserName" />
         </div>
         <div class="col-md-2 mb-3">
           <label>사용자 휴대폰 번호</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="founderConsultSearchDto.phone"
-          />
+          <input type="text" class="form-control" v-model="founderConsultSearchDto.phone" />
         </div>
         <div class="col-md-1 mb-3">
           <label>사용자 성별</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.gender"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.gender">
             <option value selected>전체</option>
             <option
               v-for="gender in genderSelect"
               :key="gender"
               :value="gender"
-              >{{ gender | enumTransformer }}</option
-            >
+            >{{ gender | enumTransformer }}</option>
           </select>
         </div>
         <div class="col-md-2 mb-3">
           <label>업체명</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.companyNo"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.companyNo">
             <option value selected>전체</option>
             <option
               v-for="company in companySelect"
               :key="company.no"
               :value="company.no"
-              >{{ company.nameKr }}</option
-            >
+            >{{ company.nameKr }}</option>
           </select>
         </div>
         <div class="col-md-2 mb-3">
@@ -69,18 +53,13 @@
         </div>
         <div class="col-md-1 mb-3">
           <label>공간 유형</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.spaceTypeNo"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.spaceTypeNo">
             <option value selected>전체</option>
             <option
               v-for="spaceType in spaceTypeList"
               :key="spaceType.no"
               :value="spaceType.no"
-            >
-              {{ spaceType.displayName }}
-            </option>
+            >{{ spaceType.displayName }}</option>
           </select>
         </div>
       </div>
@@ -88,73 +67,47 @@
       <div class="form-row">
         <div class="col-md-4 mb-3">
           <label>공간 주소</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="founderConsultSearchDto.address"
-          />
+          <input type="text" class="form-control" v-model="founderConsultSearchDto.address" />
         </div>
         <div class="col-md-2 mb-3">
           <label>관리자명</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="founderConsultSearchDto.adminUserName"
-          />
+          <input type="text" class="form-control" v-model="founderConsultSearchDto.adminUserName" />
         </div>
 
         <div class="col-md-2 mb-3">
           <label>희망시간대 선택</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.hopeTime"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.hopeTime">
             <option value selected>전체</option>
             <option
               v-for="time in availableTimesSelect"
               :key="time.no"
               :value="time.key"
-              >{{ time.value }}</option
-            >
+            >{{ time.value }}</option>
           </select>
         </div>
         <div class="col-md-2 mb-3">
           <label>신청 상태값 선택</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.status"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.status">
             <option value selected>전체</option>
             <option
               v-for="status in founderConsultStatusSelect"
               :key="status.no"
               :value="status.key"
-              >{{ status.value }}</option
-            >
+            >{{ status.value }}</option>
           </select>
         </div>
         <div class="col-md-1 mb-3">
           <label>창업 경험 유무</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.changUpExpYn"
-          >
+          <select class="custom-select" v-model="founderConsultSearchDto.changUpExpYn">
             <option value selected>전체</option>
-            <option v-for="yn in delYn" :key="yn" :value="yn">
-              {{ yn | enumTransformer }}
-            </option>
+            <option v-for="yn in delYn" :key="yn" :value="yn">{{ yn | enumTransformer }}</option>
           </select>
         </div>
         <div class="col-md-1 mb-3">
-          <label>공간 소우 유무</label>
-          <select
-            class="custom-select"
-            v-model="founderConsultSearchDto.spaceOwnYn"
-          >
+          <label>열람 유무</label>
+          <select class="custom-select" v-model="founderConsultSearchDto.viewCount">
             <option value selected>전체</option>
-            <option v-for="yn in delYn" :key="yn" :value="yn">
-              {{ yn | enumTransformer }}
-            </option>
+            <option v-for="yn in delYn" :key="yn" :value="yn">{{ yn | enumTransformer }}</option>
           </select>
         </div>
       </div>
@@ -177,7 +130,8 @@
             class="mb-2"
           ></b-form-datepicker>
         </div>
-      </div> -->
+      </div>-->
+
       <div class="text-center">
         <div class="btn-group mb-4">
           <button class="btn btn-primary" @click="clearOut()">초기화</button>
@@ -188,117 +142,70 @@
     <div class="table-top">
       <div class="total-count">
         <h5>
-          <span>TOTAL </span>
-          <strong class="text-primary">{{
+          <span>TOTAL</span>
+          <strong class="text-primary">
+            {{
             founderConsultListTotalCount
-          }}</strong>
+            }}
+          </strong>
         </h5>
       </div>
     </div>
-    <table
-      class="table table-bordered table-hover table-sm text-center"
-      v-if="!dataLoading"
-    >
+    <table class="table table-bordered table-hover table-sm text-center" v-if="!dataLoading">
       <thead>
         <tr>
           <th scope="col">NO</th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
-          >
-            SPACE ID
-          </th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }">SPACE ID</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: founderConsultSearchDto.nanudaUserName,
             }"
-          >
-            USER NAME
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.phone }"
-          >
-            USER PHONE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.gender }"
-          >
-            GENDER
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.address }"
-          >
-            ADDRESS
-          </th>
+          >USER NAME</th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.phone }">USER PHONE</th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.gender }">GENDER</th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.address }">ADDRESS</th>
 
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }"
-          >
-            COMPANY
-          </th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }">COMPANY</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: founderConsultSearchDto.companyDistrictNameKr,
             }"
-          >
-            DISTRICT
-          </th>
+          >DISTRICT</th>
           <th
             scope="col"
             v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
-          >
-            AVAILABLE TIME
-          </th>
+          >AVAILABLE TIME</th>
           <th scope="col">CREATED</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: founderConsultSearchDto.adminUserName,
             }"
-          >
-            ADMIN
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.status }"
-          >
-            STATUS
-          </th>
+          >ADMIN</th>
+          <th scope="col" v-bind:class="{ highlighted: founderConsultSearchDto.status }">STATUS</th>
           <th scope="col">VIEW</th>
         </tr>
       </thead>
 
       <tbody v-if="founderConsultListTotalCount">
-        <tr
-          v-for="founderConsult in founderConsultList"
-          :key="founderConsult.no"
-        >
-          <th scope="row" class="align-middle">
-            {{ founderConsult.no }}
-          </th>
+        <tr v-for="founderConsult in founderConsultList" :key="founderConsult.no">
+          <th scope="row" class="align-middle">{{ founderConsult.no }}</th>
           <td class="align-middle">{{ founderConsult.spaceNo }}</td>
           <td class="align-middle">{{ founderConsult.nanudaUser.name }}</td>
           <td class="align-middle">{{ founderConsult.nanudaUser.phone }}</td>
           <td class="align-middle">
-            <div v-if="founderConsult.nanudaUser.genderInfo">
-              {{ founderConsult.nanudaUser.genderInfo.value }}
-            </div>
+            <div
+              v-if="founderConsult.nanudaUser.genderInfo"
+            >{{ founderConsult.nanudaUser.genderInfo.value }}</div>
           </td>
           <td class="align-middle text-left">
             {{ founderConsult.space.address }}
             {{ founderConsult.space.detailAddress }}
           </td>
           <td class="align-middle" v-if="founderConsult.space.companyDistricts">
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
+            <div v-for="company in founderConsult.space.companyDistricts" :key="company.no">
               <div v-if="company.company.nameKr">
                 <router-link
                   :to="{
@@ -307,38 +214,25 @@
                       id: company.company.no,
                     },
                   }"
-                >
-                  {{ company.company.nameKr }}
-                </router-link>
+                >{{ company.company.nameKr }}</router-link>
               </div>
             </div>
           </td>
           <td class="align-middle">
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
-              <div v-if="company.company.nameKr">
-                {{ company.nameKr }}
-              </div>
+            <div v-for="company in founderConsult.space.companyDistricts" :key="company.no">
+              <div v-if="company.company.nameKr">{{ company.nameKr }}</div>
             </div>
           </td>
           <td class="align-middle">
-            <div v-if="founderConsult.availableTime">
-              {{ founderConsult.availableTime.value }}
-            </div>
+            <div v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</div>
           </td>
-          <td class="align-middle">
-            {{ founderConsult.createdAt | dateTransformer }}
-          </td>
-          <td class="align-middle" v-if="founderConsult.admin">
-            {{ founderConsult.admin.name }}
-          </td>
+          <td class="align-middle">{{ founderConsult.createdAt | dateTransformer }}</td>
+          <td class="align-middle" v-if="founderConsult.admin">{{ founderConsult.admin.name }}</td>
           <td class="align-middle" v-else>-</td>
           <td class="align-middle">
-            <span class="badge badge-pill badge-warning p-2">
-              {{ founderConsult.codeManagement.value }}
-            </span>
+            <span
+              class="badge badge-pill badge-warning p-2"
+            >{{ founderConsult.codeManagement.value }}</span>
           </td>
           <td class="align-middle">
             <router-link
@@ -350,17 +244,13 @@
                   id: founderConsult.no,
                 },
               }"
-            >
-              상세보기
-            </router-link>
+            >상세보기</router-link>
           </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan=" 13" class="empty-data">
-            검색결과가 없습니다.
-          </td>
+          <td colspan=" 13" class="empty-data">검색결과가 없습니다.</td>
         </tr>
       </tbody>
     </table>
