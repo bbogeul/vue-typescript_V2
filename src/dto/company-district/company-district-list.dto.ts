@@ -5,6 +5,7 @@ import { APPROVAL_STATUS } from '@/services/shared';
 
 export class CompanyDistrictListDto extends BaseDto<CompanyDistrictListDto>
   implements Partial<CompanyDistrictDto> {
+  no: number;
   companyNo?: number;
   nameKr?: string;
   nameEng?: string;

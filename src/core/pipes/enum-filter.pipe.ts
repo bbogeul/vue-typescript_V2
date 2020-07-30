@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { YN } from '@/common';
-import { GENDER, APPROVAL_STATUS } from '@/services/shared';
+import { GENDER, APPROVAL_STATUS, COMPANY_USER } from '@/services/shared';
 export const EnumPipeTransformer = () =>
   Vue.filter('enumTransformer', (value: string): string => {
     if (!value) {
@@ -34,5 +34,12 @@ export const EnumPipeTransformer = () =>
     }
     if (value === APPROVAL_STATUS.RE_REQUEST) {
       return '재요청';
+    }
+
+    if (value === COMPANY_USER.ADMIN_COMPANY_USER) {
+      return '슈퍼';
+    }
+    if (value === COMPANY_USER.NORMAL_COMPANY_USER) {
+      return '일반';
     }
   });

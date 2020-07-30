@@ -1,8 +1,15 @@
 <template>
   <section>
-    <div v-if="company" class="d-flex justify-content-between align-items-end mb-2">
-      <h3 v-if="company.nameKr" class="mb-0">{{ company.nameKr }} - 업체 정보</h3>
-      <router-link to="/company" class="btn btn-secondary text-center">목록으로</router-link>
+    <div
+      v-if="company"
+      class="d-flex justify-content-between align-items-end mb-2"
+    >
+      <h3 v-if="company.nameKr" class="mb-0">
+        {{ company.nameKr }} - 업체 정보
+      </h3>
+      <router-link to="/company" class="btn btn-secondary text-center"
+        >목록으로</router-link
+      >
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="my-3 col-12 col-lg-6">
@@ -42,52 +49,85 @@
                   <li v-if="company.address">주소 : {{ company.address }}</li>
                   <li v-if="company.website">
                     웹사이트 :
-                    <a :href="company.website" target="_blank">{{ company.website }}</a>
+                    <a :href="company.website" target="_blank">{{
+                      company.website
+                    }}</a>
                   </li>
-                  <li v-if="company.createdAt">등록일 : {{ company.createdAt | dateTransformer }}</li>
+                  <li v-if="company.createdAt">
+                    등록일 : {{ company.createdAt | dateTransformer }}
+                  </li>
                   <li v-if="company.createdAt">
                     승인 상태 :
                     <span class="badge badge-pill badge-warning p-2 mr-2">
-                      {{
-                      company.companyStatus | enumTransformer
-                      }}
+                      {{ company.companyStatus | enumTransformer }}
                     </span>
-                    <span
-                      v-if="company.updatedAt"
-                      class="d-inline-block"
-                    >({{ company.updatedAt | dateTransformer }})</span>
+                    <span v-if="company.updatedAt" class="d-inline-block"
+                      >({{ company.updatedAt | dateTransformer }})</span
+                    >
                   </li>
                 </ul>
               </div>
-              <template v-if="company.companyStatus === 'UPDATE_APPROVAL'">
+              <template
+                v-if="
+                  company.companyStatus === 'UPDATE_APPROVAL' ||
+                    company.companyStatus === 'NEED_APPROVAL'
+                "
+              >
                 <div class="border rounded bg-light p-3 mt-4">
-                  <div>
-                    <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 요청 항목</h5>
-                  </div>
-                  <div
-                    v-if="company.companyUpdateHistories"
-                    class="py-2 mt-3 border-top border-bottom"
+                  <template
+                    v-if="company.companyUserStatus === 'UPDATE_APPROVAL'"
                   >
-                    <ul>
-                      <li
-                        v-for="(value, name, index) in company
-                          .companyUpdateHistories[0]"
-                        :key="index"
-                      >{{ name | stringTransformer }} : {{ value }}</li>
-                    </ul>
-                  </div>
-                  <div class="mt-2 text-right">
-                    <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
-                    <b-button variant="secondary" v-b-modal.refusal-info class="mx-1">거절</b-button>
+                    <h5
+                      class="text-danger"
+                      style="font-size:14px; font-weight:bold;"
+                    >
+                      승인 요청 항목
+                    </h5>
+                    <div
+                      v-if="company.companyUpdateHistories"
+                      class="py-2 mt-3 border-top border-bottom"
+                    >
+                      <ul>
+                        <li
+                          v-for="(value, name, index) in company
+                            .companyUpdateHistories[0]"
+                          :key="index"
+                        >
+                          {{ name | stringTransformer }} : {{ value }}
+                        </li>
+                      </ul>
+                    </div>
+                  </template>
+                  <div class="text-right">
+                    <b-button
+                      variant="primary"
+                      class="mx-1"
+                      @click="updateApproval()"
+                      >승인</b-button
+                    >
+                    <b-button
+                      variant="secondary"
+                      v-b-modal.refusal-info
+                      class="mx-1"
+                      >거절</b-button
+                    >
                   </div>
                 </div>
               </template>
               <template v-if="company.companyStatus === 'REFUSED'">
                 <div class="border rounded bg-light p-3 mt-4">
                   <div>
-                    <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 거절 사유</h5>
+                    <h5
+                      class="text-danger"
+                      style="font-size:14px; font-weight:bold;"
+                    >
+                      승인 거절 사유
+                    </h5>
                   </div>
-                  <div v-if="company.companyUpdateHistories" class="py-2 mt-3 border-top">
+                  <div
+                    v-if="company.companyUpdateHistories"
+                    class="py-2 mt-3 border-top"
+                  >
                     <ul>
                       <li
                         v-for="(value, name, index) in company
@@ -95,9 +135,7 @@
                         :key="index"
                       >
                         <span :class="{ 'text-danger': value }">
-                          {{
-                          name | stringTransformer
-                          }}
+                          {{ name | stringTransformer }}
                         </span>
                       </li>
                     </ul>
@@ -119,7 +157,12 @@
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button variant="primary" v-b-modal.admin-list @click="findAdmin()">수정하기</b-button>
+              <b-button
+                variant="primary"
+                v-b-modal.admin-list
+                @click="findAdmin()"
+                >수정하기</b-button
+              >
             </div>
           </template>
           <template v-slot:body>
@@ -228,7 +271,8 @@
               v-for="status in approvalStatusSelect"
               :key="status"
               :value="status"
-            >{{ status | enumTransformer }}</option>
+              >{{ status | enumTransformer }}</option
+            >
           </select>
         </div>
       </div>
@@ -253,12 +297,18 @@
             <td>{{ admin.name }}</td>
             <td>{{ admin.phone }}</td>
             <td class="text-center">
-              <button class="btn btn-primary" @click="selectAdmin(admin)">선택</button>
+              <button class="btn btn-primary" @click="selectAdmin(admin)">
+                선택
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div v-if="selectedAdmin.name" class="py-2 px-4 rounded" style="background-color:#f1f1f1">
+      <div
+        v-if="selectedAdmin.name"
+        class="py-2 px-4 rounded"
+        style="background-color:#f1f1f1"
+      >
         선택한 관리자 :
         <b>{{ selectedAdmin.name }}</b>
       </div>

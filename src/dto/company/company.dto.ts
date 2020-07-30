@@ -11,14 +11,15 @@ export class CompanyDto extends BaseDto<CompanyDto> {
   adminNo?: number;
   nameKr: string;
   nameEng?: string;
-  ceoKr?: string;
+  ceoKr: string;
   ceoEng?: string;
   population?: string;
   address: string;
   website?: string;
-  email?: string;
+  email: string;
   fax?: string;
   phone: string;
+  managerNo?: number;
   companyStatus: APPROVAL_STATUS;
   companyUsers?: CompanyUserDto[];
   codeManagement?: CodeManagementDto[];

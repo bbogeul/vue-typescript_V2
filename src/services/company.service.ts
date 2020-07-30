@@ -48,5 +48,9 @@ class CompanyService extends BaseService {
       companyUpdateRefusalDto,
     );
   }
+
+  createCompany(company: CompanyDto) {
+    return super.post<CompanyDto>('admin/company', company);
+  }
 }
 export default new CompanyService();

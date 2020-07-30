@@ -1,8 +1,8 @@
-import { BaseDto } from "@/core";
-import { APPROVAL_STATUS } from "@/services/shared";
+import { BaseDto } from '@/core';
+import { APPROVAL_STATUS } from '@/services/shared';
 
 export class CompanyDistrictDto extends BaseDto<CompanyDistrictDto> {
-  no?: number;
+  no: number;
   companyNo?: number;
   nameKr?: string;
   nameEng?: string;

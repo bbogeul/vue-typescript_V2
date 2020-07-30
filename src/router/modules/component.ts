@@ -80,6 +80,21 @@ const componentsRouter: RouteConfig[] = [
           title: '업체 지점 관리',
         },
       },
+      {
+        path: '/company/company-district/:id([0-9]+)',
+        name: 'CompanyDistrictDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/company-district/components/CompanyDistrictDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: '업체 지점 관리',
+        },
+      },
     ],
   },
   // {

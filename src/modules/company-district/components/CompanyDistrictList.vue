@@ -2,28 +2,32 @@
   <div>
     <div class="title d-flex justify-content-between align-items-end mb-2">
       <h3>업체 지점 관리</h3>
-      <div>
-        <!-- <b-button variant="primary" @click="createCompanyDistrict()"
-          >등록하기</b-button
-        >-->
-      </div>
     </div>
     <div class="divider"></div>
-    <div class="search-box my-4">
-      <b-form-row v-on:keyup.enter="search()">
-        <b-col sm="12" lg="3">
+    <div class="search-box my-4" v-on:keyup.enter="search()">
+      <b-form-row>
+        <b-col sm="12" lg="3" class="mb-3">
           <label>지점 ID</label>
-          <b-form-input type="text" v-model="companyDistrictListDto.no"></b-form-input>
+          <b-form-input
+            type="text"
+            v-model="companyDistrictListDto.no"
+          ></b-form-input>
         </b-col>
-        <b-col sm="12" lg="3">
+        <b-col sm="12" lg="3" class="mb-3">
           <label>지점명</label>
-          <b-form-input type="text" v-model="companyDistrictListDto.nameKr"></b-form-input>
+          <b-form-input
+            type="text"
+            v-model="companyDistrictListDto.nameKr"
+          ></b-form-input>
         </b-col>
-        <b-col sm="12" lg="3">
+        <b-col sm="12" lg="3" class="mb-3">
           <label>주소</label>
-          <b-form-input type="text" v-model="companyDistrictListDto.address"></b-form-input>
+          <b-form-input
+            type="text"
+            v-model="companyDistrictListDto.address"
+          ></b-form-input>
         </b-col>
-        <b-col sm="12" lg="3">
+        <b-col sm="12" lg="3" class="mb-3">
           <label>지점 승인 상태</label>
           <b-form-select v-model="companyDistrictListDto.companyDistrictStatus">
             <b-select-option value>전체</b-select-option>
@@ -31,16 +35,33 @@
               v-for="status in approvalStatus"
               :key="status"
               :value="status"
-            >{{ status | enumTransformer }}</b-form-select-option>
+              >{{ status | enumTransformer }}</b-form-select-option
+            >
           </b-form-select>
         </b-col>
       </b-form-row>
-      <b-row align-h="center" class="mt-4">
-        <b-button variant="primary" @click="clearOut()">초기화</b-button>
-        <b-button variant="success" @click="search()">검색</b-button>
+      <b-row align-h="center">
+        <b-btn-group>
+          <b-button variant="primary" @click="clearOut()">초기화</b-button>
+          <b-button variant="success" @click="search()">검색</b-button>
+        </b-btn-group>
       </b-row>
     </div>
-    <table class="table table-hover border-top border-secondary table-border">
+    <div class="table-top">
+      <div class="total-count">
+        <h5>
+          <span>TOTAL</span>
+          <strong class="text-primary">{{ companyDistrictListCount }}</strong>
+        </h5>
+      </div>
+      <b-button
+        variant="primary"
+        v-b-modal.add_company_district
+        @click="clearOutCompanyDistrctDto()"
+        >업체 지점 추가</b-button
+      >
+    </div>
+    <table class="table table-sm table-hover table-bordered table-border">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -48,6 +69,7 @@
           <th scope="col">ADDRESS</th>
           <th scope="col">DATE</th>
           <th scope="col">STATUS</th>
+          <!-- <th scope="col">VIEW</th> -->
         </tr>
       </thead>
       <tbody>
@@ -56,17 +78,30 @@
           <td>{{ district.nameKr }}</td>
           <td>{{ district.address }}</td>
           <td>
-            등록일 : {{ district.createdAt | dateTransformer }}
-            <br />
-            <span class="text-primary">수정일 : {{ district.updatedAt | dateTransformer }}</span>
+            {{ district.createdAt | dateTransformer }}
+            <!-- <br />
+            <span class="text-primary"
+              >수정일 : {{ district.updatedAt | dateTransformer }}</span
+            > -->
           </td>
           <td>
             <span class="badge badge-pill badge-warning p-2">
-              {{
-              district.companyDistrictStatus | enumTransformer
-              }}
+              {{ district.companyDistrictStatus | enumTransformer }}
             </span>
           </td>
+          <!-- <td>
+            <router-link
+              class="btn btn-sm btn-secondary"
+              :to="{
+                name: 'CompanyDistrictDetail',
+                params: {
+                  id: companyDistrictList.no,
+                },
+              }"
+            >
+              상세보기
+            </router-link>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -79,12 +114,80 @@
       @input="search(true)"
       class="mt-4 justify-content-center"
     ></b-pagination>
+    <b-modal
+      id="add_company_district"
+      title="업체 지점 추가하기"
+      size="xl"
+      @ok="createCompanyDidstrict()"
+    >
+      <div class="form-row">
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체 지점명</label>
+          <input
+            type="text"
+            v-model="companyDistrictCreateDto.nameKr"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체 지점명(영문)</label>
+          <input
+            type="text"
+            v-model="companyDistrictCreateDto.nameEng"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>주소</label>
+          <input
+            type="text"
+            v-model="companyDistrictCreateDto.address"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체 지점 승인 상태</label>
+          <select
+            class="custom-select"
+            v-model="companyDistrictCreateDto.companyStatus"
+          >
+            <option value>전체</option>
+            <option
+              v-for="status in approvalStatus"
+              :key="status"
+              :value="status"
+              >{{ status | enumTransformer }}</option
+            >
+          </select>
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label for></label>
+          <label>업체 선택</label>
+          <select
+            class="custom-select"
+            v-model="companyDistrictCreateDto.companyNo"
+          >
+            <option
+              v-for="company in companySelect"
+              :key="company.no"
+              :value="company.no"
+              >{{ company.nameKr }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 <script lang="ts">
 import BaseComponent from '../../../core/base.component';
 import { Component, Vue } from 'vue-property-decorator';
-import { CompanyDistrictDto, CompanyDistrictListDto } from '../../../dto';
+import {
+  CompanyDto,
+  CompanyDistrictDto,
+  CompanyDistrictListDto,
+} from '../../../dto';
+import CompanyService from '../../../services/company.service';
 import CompanyDistrictService from '../../../services/company-district.service';
 import { Pagination } from '../../../common';
 import { CodeManagementDto } from '../../../services/init/dto';
@@ -104,6 +207,14 @@ export default class CompanyDistrictList extends BaseComponent {
   private companyDistrictListDto = new CompanyDistrictListDto();
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
+  private companyDistrictCreateDto = new CompanyDistrictDto();
+  private companySelect: CompanyDto[] = [];
+
+  getCompanies() {
+    CompanyService.findForSelect().subscribe(res => {
+      this.companySelect = res.data;
+    });
+  }
 
   search(isPagination?: boolean) {
     if (!isPagination) {
@@ -119,11 +230,27 @@ export default class CompanyDistrictList extends BaseComponent {
   }
 
   clearOut() {
-    console.log('초기화');
+    this.pagination = new Pagination();
+    this.companyDistrictListDto = new CompanyDistrictListDto();
+    this.search();
+  }
+
+  createCompanyDidstrict() {
+    CompanyDistrictService.createCompanyDistrict(
+      this.companyDistrictCreateDto,
+    ).subscribe(res => {
+      this.search();
+      this.getCompanies();
+    });
+  }
+
+  clearOutCompanyDistrctDto() {
+    this.companyDistrictCreateDto = new CompanyDistrictDto();
   }
 
   created() {
     this.search();
+    this.getCompanies();
   }
 }
 </script>

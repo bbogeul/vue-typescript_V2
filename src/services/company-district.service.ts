@@ -16,5 +16,22 @@ class CompanyDistrictService extends BaseService {
       paginate,
     );
   }
+
+  /**
+   *
+   * @param companyNo
+   */
+  findOne(companyDistrictNo) {
+    return super.get<CompanyDistrictDto>(
+      `admin/company-district/${companyDistrictNo}`,
+    );
+  }
+
+  createCompanyDistrict(companyDistrict: CompanyDistrictDto) {
+    return super.post<CompanyDistrictDto>(
+      'admin/company-district',
+      companyDistrict,
+    );
+  }
 }
 export default new CompanyDistrictService();

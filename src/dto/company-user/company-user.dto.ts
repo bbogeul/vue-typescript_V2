@@ -4,6 +4,9 @@ export class CompanyUserDto extends BaseUser {
   name: string;
   email: string;
   phone: string;
-  companyAdminRole: COMPANY_USER;
+  password: string;
+  passwordConfirm: string;
+  companyNo: number;
+  authCode: COMPANY_USER;
   companyUserStatus: APPROVAL_STATUS;
 }
