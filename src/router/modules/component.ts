@@ -34,6 +34,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
+          title: '업체관리',
         },
       },
       {
@@ -62,6 +63,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
+          title: '업체 사용자 관리',
         },
       },
       {
@@ -147,6 +149,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
+          title: '방문자 신청',
         },
       },
     ],

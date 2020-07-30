@@ -30,19 +30,25 @@ class CompanyUserService extends BaseService {
   }
 
   /**
-   *
+   * update company user info
    * @param companyUserNo
    * @param CompanyUserUpdateDto
    */
-  update(companyUserNo, CompanyUserUpdateDto: CompanyUserUpdateDto) {
+  update(companyUserNo: string, CompanyUserUpdateDto: CompanyUserUpdateDto) {
     return super.patch(
       `admin/company-user/${companyUserNo}`,
       CompanyUserUpdateDto,
     );
   }
 
+  /**
+   * update status
+   * @param companyUserNo
+   * @param param
+   * @param companyUserUpdateRefusalDto
+   */
   updateCompanyUserStatus(
-    companyUserNo,
+    companyUserNo: string,
     param: string,
     companyUserUpdateRefusalDto?: CompanyUserUpdateRefusalDto,
   ) {
@@ -50,6 +56,14 @@ class CompanyUserService extends BaseService {
       `admin/company-user/${companyUserNo}/${param}`,
       companyUserUpdateRefusalDto,
     );
+  }
+
+  /**
+   * create company user
+   * @param companyUser
+   */
+  createCompanyUser(companyUser: CompanyUserDto) {
+    return super.post<CompanyUserDto>('admin/company-user', companyUser);
   }
 }
 export default new CompanyUserService();

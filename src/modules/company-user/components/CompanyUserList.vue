@@ -8,72 +8,47 @@
           @click="createCompany()"
           >업체 등록</b-button
         >
-      </div> -->
+      </div>-->
     </div>
     <div class="divider"></div>
     <div v-on:keyup.enter="search()">
       <div class="form-row">
         <div class="col-md-2 mb-2">
           <label for="username">사용자 ID</label>
-          <input
-            type="text"
-            class="form-control"
-            id="username"
-            v-model="companyUserSearchDto.no"
-          />
+          <input type="text" class="form-control" id="username" v-model="companyUserSearchDto.no" />
         </div>
         <div class="col-md-2 mb-3">
           <label>업체 선택</label>
-          <select
-            class="custom-select"
-            v-model="companyUserSearchDto.companyNo"
-          >
+          <select class="custom-select" v-model="companyUserSearchDto.companyNo">
             <option value selected>전체</option>
             <option
               v-for="company in companySelect"
               :key="company.no"
               :value="company.no"
-              >{{ company.nameKr }}</option
-            >
+            >{{ company.nameKr }}</option>
           </select>
         </div>
         <div class="col-md-2 mb-3">
           <label>사용자명</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="companyUserSearchDto.name"
-          />
+          <input type="text" class="form-control" v-model="companyUserSearchDto.name" />
         </div>
         <div class="col-md-3 mb-3">
           <label>사용자 전화번호</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="companyUserSearchDto.phone"
-          />
+          <input type="text" class="form-control" v-model="companyUserSearchDto.phone" />
         </div>
         <div class="col-md-3 mb-3">
           <label>사용자 이메일</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="companyUserSearchDto.email"
-          />
+          <input type="text" class="form-control" v-model="companyUserSearchDto.email" />
         </div>
         <div class="col-md-2 mb-3">
           <label>사용자 승인 상태</label>
-          <select
-            class="custom-select"
-            v-model="companyUserSearchDto.companyUserStatus"
-          >
+          <select class="custom-select" v-model="companyUserSearchDto.companyUserStatus">
             <option value>전체</option>
             <option
               v-for="status in approvalStatus"
               :key="status"
               :value="status"
-              >{{ status | enumTransformer }}</option
-            >
+            >{{ status | enumTransformer }}</option>
           </select>
         </div>
       </div>
@@ -89,88 +64,51 @@
     <div class="table-top">
       <div class="total-count">
         <h5>
-          <span>TOTAL </span>
+          <span>TOTAL</span>
           <strong class="text-primary">{{ companyUserListTotalCount }}</strong>
         </h5>
       </div>
+      <b-button variant="primary" v-b-modal.add_company_user>업체 관리자 추가</b-button>
     </div>
-    <table
-      class="table table-bordered table-hover table-sm text-center"
-      v-if="!dataLoading"
-    >
+    <table class="table table-bordered table-hover table-sm text-center" v-if="!dataLoading">
       <thead>
         <tr>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.no }"
-          >
-            ID
-          </th>
+          <th scope="col" v-bind:class="{ highlighted: companyUserSearchDto.no }">ID</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyUserSearchDto.companyNo,
             }"
-          >
-            COMPANY
-          </th>
+          >COMPANY</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyUserSearchDto.name,
             }"
-          >
-            NAME
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.phone }"
-          >
-            PHONE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.email }"
-          >
-            EMAIL
-          </th>
+          >NAME</th>
+          <th scope="col" v-bind:class="{ highlighted: companyUserSearchDto.phone }">PHONE</th>
+          <th scope="col" v-bind:class="{ highlighted: companyUserSearchDto.email }">EMAIL</th>
           <th scope="col">CREATED</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyUserSearchDto.companyUserStatus,
             }"
-          >
-            STATUS
-          </th>
+          >STATUS</th>
           <th scope="col">VIEW</th>
         </tr>
       </thead>
 
       <tbody v-if="companyUserListTotalCount">
         <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
+          <td class="align-middle">{{ companyUser.no }}</td>
+          <td class="align-middle">{{ companyUser.company.nameKr }}</td>
+          <td class="align-middle">{{ companyUser.name }}</td>
+          <td class="align-middle">{{ companyUser.phone }}</td>
+          <td class="align-middle">{{ companyUser.email }}</td>
+          <td class="align-middle">{{ companyUser.createdAt | dateTransformer }}</td>
           <td class="align-middle">
-            {{ companyUser.no }}
-          </td>
-          <td class="align-middle">
-            {{ companyUser.company.nameKr }}
-          </td>
-          <td class="align-middle">
-            {{ companyUser.name }}
-          </td>
-          <td class="align-middle">
-            {{ companyUser.phone }}
-          </td>
-          <td class="align-middle">
-            {{ companyUser.email }}
-          </td>
-          <td class="align-middle">
-            {{ companyUser.createdAt | dateTransformer }}
-          </td>
-          <td class="align-middle">
-            <span class="badge badge-pill badge-warning p-2">
-              {{ companyUser.codeManagement.value }}
-            </span>
+            <span class="badge badge-pill badge-warning p-2">{{ companyUser.codeManagement.value }}</span>
           </td>
           <td class="align-middle">
             <router-link
@@ -182,17 +120,13 @@
                   id: companyUser.no,
                 },
               }"
-            >
-              상세보기
-            </router-link>
+            >상세보기</router-link>
           </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="8" class="empty-data">
-            검색결과가 없습니다.
-          </td>
+          <td colspan="8" class="empty-data">검색결과가 없습니다.</td>
         </tr>
       </tbody>
     </table>
@@ -209,6 +143,45 @@
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
+    <b-modal id="add_company_user" title="업체 사용자 추가하기" size="xl">
+      <div class="form-row">
+        <div class="col-md-6">
+          <label for="companyUserName">사용자 이름</label>
+          <input type="text" v-model="companyUserCreateDto.name" class="form-control" />
+        </div>
+        <div class="col-md-6">
+          <label for="companyUserName">사용자 전회번호</label>
+          <input type="text" v-model="companyUserCreateDto.phone" class="form-control" />
+        </div>
+      </div>
+      <div class="form-row mt-3">
+        <div class="col-md-6">
+          <label for="password">비밀번호</label>
+          <input type="password" class="form-control" v-model="companyUserCreateDto.password" />
+        </div>
+        <div class="col-md-6">
+          <label for="password">비밀번호 확인</label>
+          <input
+            type="password"
+            class="form-control"
+            v-model="companyUserCreateDto.passwordConfirm"
+          />
+        </div>
+      </div>
+      <div class="form-row mt-3">
+        <div class="col-md-4">
+          <label for></label>
+          <label>업체 선택</label>
+          <select class="custom-select" v-model="companyUserCreateDto.companyNo">
+            <option
+              v-for="company in companySelect"
+              :key="company.no"
+              :value="company.no"
+            >{{ company.nameKr }}</option>
+          </select>
+        </div>
+      </div>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
@@ -221,7 +194,10 @@ import CompanyService from '../../../services/company.service';
 import {
   CONST_APPROVAL_STATUS,
   APPROVAL_STATUS,
+  COMPANY_USER,
+  CONST_COMPANY_USER,
 } from '../../../services/shared';
+import { BaseUser } from '../../../services/shared/auth';
 
 @Component({
   name: 'CompanyList',
@@ -229,11 +205,13 @@ import {
 export default class Company extends BaseComponent {
   private companyUserSearchDto = new CompanyUserListDto();
   private companyUserListDto: CompanyUserDto[] = Array<CompanyUserDto>();
-  private companyUserListTotalCount = 0;
+  private companyUserListTotalCount = null;
   private companySelect: CompanyDto[] = [];
+  private companyUserCreateDto = new CompanyUserDto(BaseUser);
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
-  private totalPage = 0;
+  private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
+  private totalPage = null;
   private dataLoading = false;
 
   // TODO: Create autocomplete box
@@ -253,6 +231,10 @@ export default class Company extends BaseComponent {
     this.search();
   }
 
+  clearOutCompanyUserDto() {
+    this.companyUserCreateDto = new CompanyUserDto(BaseUser);
+  }
+
   search(isPagination?: boolean) {
     this.dataLoading = true;
     if (!isPagination) {
@@ -269,6 +251,16 @@ export default class Company extends BaseComponent {
         this.companyUserListTotalCount / this.pagination.limit,
       );
     });
+  }
+
+  // 사용자 생성
+  createCompanyUser() {
+    CompanyUserService.createCompanyUser(this.companyUserCreateDto).subscribe(
+      res => {
+        this.search();
+        this.getCompanies();
+      },
+    );
   }
 
   created() {

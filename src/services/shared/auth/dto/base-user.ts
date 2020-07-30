@@ -11,4 +11,6 @@ export class BaseUser extends BaseDto<BaseUser> {
   email: string;
   authCode: COMPANY_USER;
   companyUserStatus: APPROVAL_STATUS;
+  password?: string;
+  passwordConfirm?: string;
 }
