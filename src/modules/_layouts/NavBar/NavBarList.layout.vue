@@ -8,34 +8,37 @@
             v-for="children in item.children"
             :key="children.path"
           >
-            <template v-if="!children.meta.detailPage">{{
+            <template v-if="!children.meta.detailPage">
+              {{
               children.name
-            }}</template>
+              }}
+            </template>
           </b-dropdown-item>
         </b-nav-item-dropdown>
       </div>
     </ul>
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          v-if="admin"
-          >{{ admin.name }}</a
-        >
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">마이 프로필</a>
+    <div>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            v-if="admin"
+          >{{ admin.name }}</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">마이 프로필</a>
 
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" @click="logout()">로그아웃</a>
-        </div>
-      </li>
-    </ul>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" @click="logout()">로그아웃</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script lang="ts">
