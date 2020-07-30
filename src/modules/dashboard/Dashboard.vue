@@ -1,12 +1,20 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-12 col-lg-6 mb-4">
+      <div class="col-sm-12 col-lg-6 mb-5">
         <DashboardGraph />
       </div>
       <div class="col-sm-12 col-lg-6">
+        <DashboardCityGraph />
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="row mt-4">
+      <div class="col-sm-12 col-lg-6 mb-4">
         <DashboardCompanyUserList />
-        <DashboardCompanyList class="mt-4" />
+      </div>
+      <div class="col-sm-12 col-lg-6 mb-4">
+        <DashboardCompanyList />
       </div>
     </div>
     <div class="divider my-4"></div>
@@ -20,6 +28,7 @@ import DashboardFounderConsultList from './components/DashboardFounderConsultLis
 import DashboardCompanyUserList from './components/DashboardCompanyUserList.vue';
 import DashboardCompanyList from './components/DashboardCompanyList.vue';
 import DashboardGraph from './components/DashboardGraph.vue';
+import DashboardCityGraph from './components/DashboardCityGraph.vue';
 
 @Component({
   name: 'Dashboard',
@@ -28,6 +37,7 @@ import DashboardGraph from './components/DashboardGraph.vue';
     DashboardCompanyUserList,
     DashboardCompanyList,
     DashboardGraph,
+    DashboardCityGraph,
   },
 })
 export default class Dashboard extends BaseComponent {}

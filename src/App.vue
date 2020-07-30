@@ -33,7 +33,7 @@ body {
 .divider {
   width: 100%;
   height: 1px;
-  background-color: grey;
+  background-color: rgb(167, 167, 167);
   margin-bottom: 10px;
 }
 .badge {
