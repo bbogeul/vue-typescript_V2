@@ -246,6 +246,12 @@
         <BaseCard title="상담 상세 정보">
           <template v-slot:head>
             <div>
+              <b-button
+                variant="danger"
+                @click="updateConsultInfo()"
+                v-b-modal.reverse-read
+                v-if="founderConsult.viewCount === 'Y'"
+              >미열람 처리</b-button>
               <b-button variant="primary" @click="updateConsultInfo()" v-b-modal.consult-info>수정하기</b-button>
             </div>
           </template>
@@ -379,6 +385,23 @@
       <b-form-textarea id="message" placeholder="메세지를 입력해주세요.." rows="3" max-rows="6"></b-form-textarea>
     </b-modal>
 
+    <!-- 열람 상태 미열람 모달 -->
+    <b-modal
+      id="reverse-read"
+      title="상담 미열람 처리"
+      header-bg-variant="danger"
+      header-text-variant="light"
+      ok-title="미열람 처리하기"
+      ok-variant="danger"
+      @ok="reverseReadStatus()"
+    >
+      <b-container>
+        <p class="text-center">
+          <b>미열람 처리하시겠습니까?</b>
+        </p>
+      </b-container>
+    </b-modal>
+    <!-- 관리자 수정하기 -->
     <b-modal
       id="admin-list"
       title="관리자 수정하기"
@@ -485,6 +508,14 @@ export default class FounderConsultDetail extends BaseComponent {
     this.getAvailableTimes();
     this.findFoodCategory(true);
     this.getGender();
+  }
+
+  reverseReadStatus() {
+    FounderConsultService.reverseReadStatus(this.$route.params.id).subscribe(
+      res => {
+        this.findOne(this.$route.params.id);
+      },
+    );
   }
 
   // 성별

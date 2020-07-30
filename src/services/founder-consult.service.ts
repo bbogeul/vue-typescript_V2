@@ -36,9 +36,19 @@ class FounderConsultService extends BaseService {
    * @param founderConsultUpdateDto
    */
   update(founderConsultNo, founderConsultUpdateDto: FounderConsultUpdateDto) {
-    return super.patch(
+    return super.patch<FounderConsultDto>(
       `admin/founder-consult/${founderConsultNo}`,
       founderConsultUpdateDto,
+    );
+  }
+
+  /**
+   * reverse read status
+   * @param founderConsultNo
+   */
+  reverseReadStatus(founderConsultNo: string) {
+    return super.patch<FounderConsultDto>(
+      `admin/founder-consult/${founderConsultNo}/reverse-read-status`,
     );
   }
 }
