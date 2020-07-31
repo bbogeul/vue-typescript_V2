@@ -6,6 +6,7 @@ export * from './company-district';
 export * from './company-district-update-history';
 export * from './admin';
 export * from './founder-consult';
+export * from './graph';
 export * from './space';
 export * from './nanuda-user';
 export * from './space-type';

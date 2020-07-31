@@ -8,6 +8,7 @@ import {
 } from '../../environments';
 import { CONST_ADMIN_USER } from '@/services/shared';
 import componentsRouter from './modules/component';
+import nonNavBarRouter from './modules/non-navbar-component';
 
 let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
@@ -48,6 +49,7 @@ export const constantRoutes: RouteConfig[] = [
   // component routers
   // 가독성 위해서 분리
   ...componentsRouter,
+  ...nonNavBarRouter,
 ];
 
 const createRouter = () =>
