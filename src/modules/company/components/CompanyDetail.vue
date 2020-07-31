@@ -121,21 +121,25 @@
                     company.companyUpdateHistories
                 "
               >
-                <div class="border rounded bg-light p-3 mt-4">
+                <div
+                  class="border rounded bg-light p-3 mt-4"
+                  v-if="
+                    company.companyUpdateHistories[0].refusalReasons ||
+                      company.companyUpdateHistories[0].refusalDesc
+                  "
+                >
                   <div>
                     <h5
                       class="text-danger"
                       style="font-size:14px; font-weight:bold;"
+                      v-if="company.companyUpdateHistories[0].refusalReasons"
                     >
                       승인 거절 사유
                     </h5>
                   </div>
                   <div v-if="company.companyUpdateHistories[0]">
                     <ul
-                      v-if="
-                        company.companyUpdateHistories[0].refusalReasons
-                          .length > 0
-                      "
+                      v-if="company.companyUpdateHistories[0].refusalReasons"
                       class="py-2 mt-3 border-top border-bottom"
                     >
                       <li
