@@ -37,7 +37,7 @@ export const EnumPipeTransformer = () =>
     }
 
     if (value === COMPANY_USER.ADMIN_COMPANY_USER) {
-      return '슈퍼';
+      return '마스터';
     }
     if (value === COMPANY_USER.NORMAL_COMPANY_USER) {
       return '일반';

@@ -68,6 +68,9 @@ select {
       font-size: 14px;
       margin: 0;
     }
+    .text-primary {
+      margin-left: 0.25rem;
+    }
   }
 }
 .table {

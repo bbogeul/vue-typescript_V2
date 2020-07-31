@@ -112,7 +112,12 @@
                   </div>
                 </div>
               </template>
-              <template v-if="company.companyStatus === 'REFUSED'">
+              <template
+                v-if="
+                  company.companyStatus === 'REFUSED' &&
+                    company.companyUpdateHistories
+                "
+              >
                 <div class="border rounded bg-light p-3 mt-4">
                   <div>
                     <h5
@@ -128,9 +133,9 @@
                   >
                     <ul>
                       <li
-                        v-for="(value, name, index) in company
+                        v-for="(value, name) in company
                           .companyUpdateHistories[0].refusalReasons"
-                        :key="index"
+                        :key="name"
                       >
                         <span :class="{ 'text-danger': value }">
                           {{ name | stringTransformer }}
@@ -192,13 +197,7 @@
       </div>
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="지점 정보">
-          <template v-slot:head>
-            <!-- <div>
-              <b-button variant="primary" v-b-modal.company-district
-                >추가하기</b-button
-              >
-            </div>-->
-          </template>
+          <template v-slot:head> </template>
           <template v-slot:body>
             <div>
               <CompanyDistrictList />
@@ -208,13 +207,7 @@
       </div>
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 사용자 정보">
-          <template v-slot:head>
-            <!-- <div>
-              <b-button variant="primary" v-b-modal.company-user
-                >추가하기</b-button
-              >
-            </div>-->
-          </template>
+          <template v-slot:head> </template>
           <template v-slot:body>
             <CompanyUserList />
           </template>
@@ -226,8 +219,8 @@
       <div v-if="company.companyUpdateHistories">
         <div
           class="form-check"
-          v-for="(value, name, index) in company.companyUpdateHistories[0]"
-          :key="index"
+          v-for="(value, name) in company.companyUpdateHistories[0]"
+          :key="name"
         >
           <input
             type="checkbox"
@@ -380,11 +373,6 @@ export default class CompanyDetail extends BaseComponent {
     });
   }
 
-  // 지점 추가
-  createCompanyDistrcit() {
-    console.log('지점 추가');
-  }
-
   findAdmin(isPagination: boolean) {
     if (!isPagination) {
       this.pagination.page = 1;
@@ -419,10 +407,13 @@ export default class CompanyDetail extends BaseComponent {
       this.$route.params.id,
       'approve-update',
     ).subscribe(res => {
-      this.findOne(this.$route.params.id);
-      toast.success('승인완료');
+      if (res) {
+        this.findOne(this.$route.params.id);
+        toast.success('승인완료');
+      }
     });
   }
+
   // 거절
   updateRefusal() {
     CompanyService.updateCompanyStatus(

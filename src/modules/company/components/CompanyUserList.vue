@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr v-for="user in companyUserList" :key="user.no">
-          <td>
+          <th scope="row">
             <router-link
               :to="{
                 name: 'CompanyUserDetail',
@@ -30,10 +30,11 @@
                   id: user.no,
                 },
               }"
+              class="text-primary"
             >
               {{ user.no }}
             </router-link>
-          </td>
+          </th>
           <td>
             <router-link
               :to="{
