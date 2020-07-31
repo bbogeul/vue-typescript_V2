@@ -14,6 +14,7 @@ export class CompanyDto extends BaseDto<CompanyDto> {
   ceoKr: string;
   ceoEng?: string;
   population?: string;
+  businessNo?: string;
   address: string;
   website?: string;
   email: string;

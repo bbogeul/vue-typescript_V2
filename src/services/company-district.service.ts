@@ -1,6 +1,10 @@
 import { BaseService } from '@/core';
 import { Pagination } from '@/common';
-import { CompanyDistrictDto, CompanyDistrictListDto } from '@/dto';
+import {
+  CompanyDistrictDto,
+  CompanyDistrictListDto,
+  CompanyDistrictUpdateRefusalDto,
+} from '@/dto';
 
 class CompanyDistrictService extends BaseService {
   /**
@@ -36,7 +40,7 @@ class CompanyDistrictService extends BaseService {
   updateCompanyDistrictStatus(
     companyDistrictNo,
     param: string,
-    companyDistrictUpdateRefusalDto?: CompanyDistrictDto,
+    companyDistrictUpdateRefusalDto?: CompanyDistrictUpdateRefusalDto,
   ) {
     return super.patch<CompanyDistrictDto>(
       `admin/company-district/${companyDistrictNo}/${param}`,

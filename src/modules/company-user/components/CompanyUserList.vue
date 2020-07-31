@@ -284,7 +284,6 @@
           </select>
         </div>
         <div class="col-12 col-md-6">
-          <label for></label>
           <label>관리자 등급</label>
           <select class="custom-select" v-model="companyUserCreateDto.authCode">
             <option

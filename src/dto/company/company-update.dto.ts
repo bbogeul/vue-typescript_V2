@@ -11,6 +11,7 @@ export class CompanyUpdateDto extends BaseDto<CompanyUpdateDto>
   website?: string;
   fax?: string;
   phone?: string;
+  email?: string;
   address?: string;
   population?: string;
   businessNo?: string;

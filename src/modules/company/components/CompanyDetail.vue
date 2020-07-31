@@ -15,11 +15,14 @@
       <div class="my-3 col-12 col-lg-6">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <!-- <div>
-              <b-button variant="primary" v-b-modal.company-info
+            <div v-if="company.companyStatus === 'APPROVAL'">
+              <b-button
+                variant="primary"
+                v-b-modal.company_info
+                @click="findCompanyInfo()"
                 >수정하기</b-button
               >
-            </div>-->
+            </div>
           </template>
           <template v-slot:body>
             <div v-if="company">
@@ -82,7 +85,7 @@
                       승인 요청 항목
                     </h5>
                     <div
-                      v-if="company.companyUpdateHistories"
+                      v-if="company.companyUpdateHistories[0]"
                       class="py-2 mt-3 mb-2 border-top border-bottom"
                     >
                       <ul>
@@ -127,11 +130,14 @@
                       승인 거절 사유
                     </h5>
                   </div>
-                  <div
-                    v-if="company.companyUpdateHistories"
-                    class="py-2 mt-3 border-top"
-                  >
-                    <ul>
+                  <div v-if="company.companyUpdateHistories[0]">
+                    <ul
+                      v-if="
+                        company.companyUpdateHistories[0].refusalReasons
+                          .length > 0
+                      "
+                      class="py-2 mt-3 border-top border-bottom"
+                    >
                       <li
                         v-for="(value, name) in company
                           .companyUpdateHistories[0].refusalReasons"
@@ -144,9 +150,8 @@
                     </ul>
                     <p
                       v-if="company.companyUpdateHistories[0].refusalDesc"
-                      class="pt-2 mt-2 border-top"
+                      class="mt-2"
                     >
-                      거절 사유 :
                       {{ company.companyUpdateHistories[0].refusalDesc }}
                     </p>
                   </div>
@@ -162,7 +167,7 @@
             <div>
               <b-button
                 variant="primary"
-                v-b-modal.admin-list
+                v-b-modal.admin_list
                 @click="findAdmin()"
                 >수정하기</b-button
               >
@@ -207,7 +212,6 @@
       </div>
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="업체 사용자 정보">
-          <template v-slot:head> </template>
           <template v-slot:body>
             <CompanyUserList />
           </template>
@@ -269,7 +273,7 @@
       </div>
     </b-modal>
     <b-modal
-      id="admin-list"
+      id="admin_list"
       title="관리자 수정하기"
       @cancel="cancelSelection()"
       @hide="cancelSelection()"
@@ -312,6 +316,82 @@
         @input="paginateSearch"
         class="mt-4 justify-content-center"
       ></b-pagination>
+    </b-modal>
+    <b-modal id="company_info" title="업체 정보 수정" @ok="updateCompany()">
+      <div class="form-row">
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체명</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.nameKr"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체명(영문)</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.nameEng"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>대표명</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.ceoKr"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>대표명(영문)</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.ceoEng"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>사업자 번호</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.businessNo"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>이메일</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.email"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>팩스</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.fax"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>주소</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.address"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>웹사이트</label>
+          <input
+            type="text"
+            v-model="companyUpdateDto.website"
+            class="form-control"
+          />
+        </div>
+      </div>
     </b-modal>
   </section>
 </template>
@@ -384,6 +464,19 @@ export default class CompanyDetail extends BaseComponent {
     });
   }
 
+  findCompanyInfo() {
+    this.companyUpdateDto.nameKr = this.company.nameKr;
+    this.companyUpdateDto.nameEng = this.company.nameEng;
+    this.companyUpdateDto.ceoKr = this.company.ceoKr;
+    this.companyUpdateDto.ceoEng = this.company.ceoEng;
+    this.companyUpdateDto.website = this.company.website;
+    this.companyUpdateDto.address = this.company.address;
+    this.companyUpdateDto.email = this.company.email;
+    this.companyUpdateDto.businessNo = this.company.businessNo;
+    this.companyUpdateDto.fax = this.company.fax;
+    this.findOne(this.$route.params.id);
+  }
+
   updateCompany() {
     if (this.selectedAdmin) {
       this.companyUpdateDto.managerNo = this.selectedAdmin.no;
@@ -393,11 +486,11 @@ export default class CompanyDetail extends BaseComponent {
       this.$route.params.id,
       this.companyUpdateDto,
     ).subscribe(res => {
-      console.log(this.companyUpdateDto);
-      this.cancelSelection();
-      this.companyUpdateDto = new CompanyUpdateDto();
-      this.findOne(this.$route.params.id);
-      toast.success('수정완료');
+      if (res) {
+        this.companyUpdateDto = new CompanyUpdateDto();
+        this.findOne(this.$route.params.id);
+        toast.success('수정완료');
+      }
     });
   }
 

@@ -17,6 +17,15 @@
           <template v-slot:body>
             <div v-if="companyDistrict">
               <ul>
+                <li v-if="companyDistrict.no">
+                  지점 ID : <b>{{ companyDistrict.no }}</b>
+                </li>
+                <li v-if="companyDistrict.nameKr">
+                  지점명 : <b>{{ companyDistrict.nameKr }}</b>
+                </li>
+                <li v-if="companyDistrict.address">
+                  주소 : <b>{{ companyDistrict.address }}</b>
+                </li>
                 <li v-if="companyDistrict.company">
                   업체명 :
                   <router-link
@@ -29,12 +38,6 @@
                   >
                     <b>{{ companyDistrict.company.nameKr }}</b>
                   </router-link>
-                </li>
-                <li v-if="companyDistrict.nameKr">
-                  업체 지점명 : <b>{{ companyDistrict.nameKr }}</b>
-                </li>
-                <li v-if="companyDistrict.address">
-                  주소 : <b>{{ companyDistrict.address }}</b>
                 </li>
                 <li v-if="companyDistrict.createdAt">
                   등록일 : {{ companyDistrict.createdAt | dateTransformer }}
@@ -92,12 +95,12 @@
                     @click="updateApproval()"
                     >승인</b-button
                   >
-                  <b-button
+                  <!-- <b-button
                     variant="secondary"
                     v-b-modal.refusal-info
                     class="mx-1"
                     >거절</b-button
-                  >
+                  > -->
                 </div>
               </div>
             </template>
@@ -114,10 +117,15 @@
                   </h5>
                 </div>
                 <div
-                  v-if="companyDistrict.companyDistrictUpdateHistories"
-                  class="py-2 mt-3 border-top"
+                  v-if="companyDistrict.companyDistrictUpdateHistories[0]"
+                  class="py-2 mt-3 border-top border-bottom"
                 >
-                  <ul>
+                  <ul
+                    v-if="
+                      companyDistrict.companyDistrictUpdateHistories[0]
+                        .refusalReasons.length > 0
+                    "
+                  >
                     <li
                       v-for="(value, name) in companyDistrict
                         .companyDistrictUpdateHistories[0].refusalReasons"
@@ -133,9 +141,8 @@
                       companyDistrict.companyDistrictUpdateHistories[0]
                         .refusalDesc
                     "
-                    class="pt-2 mt-2 border-top"
+                    class="mt-2"
                   >
-                    거절 사유 :
                     {{
                       companyDistrict.companyDistrictUpdateHistories[0]
                         .refusalDesc
@@ -212,30 +219,30 @@ export default class CompanyDistrictDetail extends BaseComponent {
 
   //승인
   updateApproval() {
-    // CompanyDistrictService.updateCompanyDistrictStatus(
-    //   this.$route.params.id,
-    //   'approve-update',
-    // ).subscribe(res => {
-    //   if (res) {
-    //     this.findOne(this.$route.params.id);
-    //     toast.success('승인완료');
-    //   }
-    // });
+    CompanyDistrictService.updateCompanyDistrictStatus(
+      this.$route.params.id,
+      'approve-update',
+    ).subscribe(res => {
+      if (res) {
+        this.findOne(this.$route.params.id);
+        toast.success('승인완료');
+      }
+    });
   }
 
   //거절
-  updateRefusal() {
-    // CompanyDistrictService.updateCompanyDistrictStatus(
-    //   this.$route.params.id,
-    //   'refuse-update',
-    //   this.companyDistrictUpdateRefusalDto,
-    // ).subscribe(res => {
-    //   if (res) {
-    //     this.findOne(this.$route.params.id);
-    //     toast.success('승인거절');
-    //   }
-    // });
-  }
+  // updateRefusal() {
+  //   CompanyDistrictService.updateCompanyDistrictStatus(
+  //     this.$route.params.id,
+  //     'refuse-update',
+  //     this.companyDistrictUpdateRefusalDto,
+  //   ).subscribe(res => {
+  //     if (res) {
+  //       this.findOne(this.$route.params.id);
+  //       toast.success('승인거절');
+  //     }
+  //   });
+  // }
 
   created() {
     const id = this.$route.params.id;

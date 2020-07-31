@@ -1,8 +1,15 @@
 <template>
   <section>
-    <div v-if="companyUser" class="d-flex justify-content-between align-items-end mb-2">
+    <div
+      v-if="companyUser"
+      class="d-flex justify-content-between align-items-end mb-2"
+    >
       <h3>{{ companyUser.name }} - 사용자 정보</h3>
-      <router-link to="/company/company-user" class="btn btn-secondary text-center">목록으로</router-link>
+      <router-link
+        to="/company/company-user"
+        class="btn btn-secondary text-center"
+        >목록으로</router-link
+      >
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="col col-12 col-lg-6">
@@ -10,6 +17,14 @@
           <template v-slot:body>
             <div v-if="companyUser">
               <ul>
+                <li>
+                  사용자 ID :
+                  <b>{{ companyUser.no }}</b>
+                </li>
+                <li>
+                  사용자명 :
+                  <b>{{ companyUser.name }}</b>
+                </li>
                 <li v-if="companyUser.company">
                   업체명 :
                   <router-link
@@ -23,28 +38,22 @@
                     <b>{{ companyUser.company.nameKr }}</b>
                   </router-link>
                 </li>
-                <li>
-                  사용자 ID :
-                  <b>{{ companyUser.no }}</b>
-                </li>
-                <li>
-                  사용자명 :
-                  <b>{{ companyUser.name }}</b>
-                </li>
                 <li>휴대폰 번호 : {{ companyUser.phone }}</li>
                 <li>이메일 : {{ companyUser.email }}</li>
-                <li v-if="companyUser.createdAt">등록일 : {{ companyUser.createdAt | dateTransformer }}</li>
+                <li>
+                  관리자 등급 : {{ companyUser.authCode | enumTransformer }}
+                </li>
+                <li v-if="companyUser.createdAt">
+                  등록일 : {{ companyUser.createdAt | dateTransformer }}
+                </li>
                 <li v-if="companyUser.companyUserStatus">
                   승인 상태 :
                   <span class="badge badge-pill badge-warning p-2 mr-2">
-                    {{
-                    companyUser.companyUserStatus | enumTransformer
-                    }}
+                    {{ companyUser.companyUserStatus | enumTransformer }}
                   </span>
-                  <span
-                    v-if="companyUser.updatedAt"
-                    class="d-inline-block"
-                  >({{ companyUser.updatedAt | dateTransformer }})</span>
+                  <span v-if="companyUser.updatedAt" class="d-inline-block"
+                    >({{ companyUser.updatedAt | dateTransformer }})</span
+                  >
                 </li>
               </ul>
             </div>
@@ -55,8 +64,16 @@
               "
             >
               <div class="border rounded bg-light p-3 mt-4">
-                <template v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'">
-                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 요청 항목</h5>
+                <template
+                  v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'"
+                >
+                  <h5
+                    class="text-danger"
+                    style="font-size:14px; font-weight:bold;"
+                    v-if="companyUser.companyUserUpdateHistories"
+                  >
+                    승인 요청 항목
+                  </h5>
                   <div
                     v-if="companyUser.companyUserUpdateHistories"
                     class="py-2 mt-3 mb-2 border-top border-bottom"
@@ -66,26 +83,43 @@
                         v-for="(value, name) in companyUser
                           .companyUserUpdateHistories[0]"
                         :key="name"
-                      >{{ name | stringTransformer }} : {{ value }}</li>
+                      >
+                        {{ name | stringTransformer }} : {{ value }}
+                      </li>
                     </ul>
                   </div>
                 </template>
                 <div class="text-right">
-                  <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
-                  <b-button variant="secondary" v-b-modal.refusal-info class="mx-1">거절</b-button>
+                  <b-button
+                    variant="primary"
+                    class="mx-1"
+                    @click="updateApproval()"
+                    >승인</b-button
+                  >
+                  <b-button
+                    variant="secondary"
+                    v-b-modal.refusal-info
+                    class="mx-1"
+                    >거절</b-button
+                  >
                 </div>
               </div>
             </template>
             <!-- TODO: this wasn't the smartest way to border out markups Ria. Checking this logic tomorrow -->
             <template v-if="companyUser.companyUserStatus === 'REFUSED'">
               <div class="border rounded bg-light p-3 mt-4">
-                <div>
-                  <h5 class="text-danger" style="font-size:14px; font-weight:bold;">승인 거절 사유</h5>
-                </div>
-                <div v-if="companyUser.companyUserUpdateHistories" class="py-2 mt-3 border-top">
+                <div v-if="companyUser.companyUserUpdateHistories[0]">
+                  <h5
+                    class="text-danger"
+                    style="font-size:14px; font-weight:bold;"
+                  >
+                    승인 거절 사유
+                  </h5>
                   <ul
-                    v-if="Object.keys( companyUser
-                        .companyUserUpdateHistories[0].refusalReasons).length > 0"
+                    class="py-2 mt-3 border-top border-bottom"
+                    v-if="
+                      companyUser.companyUserUpdateHistories[0].refusalReasons
+                    "
                   >
                     <li
                       v-for="(value, name) in companyUser
@@ -93,17 +127,14 @@
                       :key="name"
                     >
                       <span :class="{ 'text-danger': value }">
-                        {{
-                        name | stringTransformer
-                        }}
+                        {{ name | stringTransformer }}
                       </span>
                     </li>
                   </ul>
                   <p
                     v-if="companyUser.companyUserUpdateHistories[0].refusalDesc"
-                    class="pt-2 mt-2 border-top"
+                    class="mt-2"
                   >
-                    거절 사유 :
                     {{ companyUser.companyUserUpdateHistories[0].refusalDesc }}
                   </p>
                 </div>
@@ -113,6 +144,25 @@
         </BaseCard>
       </div>
     </div>
+    <b-modal
+      id="company-user-info"
+      title="사용자 정보 수정"
+      @ok="updateUserInfo()"
+    >
+      <div>
+        <div class="col-12 col-md-6">
+          <label>관리자 등급</label>
+          <select class="custom-select" v-model="companyUserUpdateDto.authCode">
+            <option
+              v-for="role in companyUserAdminRole"
+              :key="role"
+              :value="role"
+              >{{ role | enumTransformer }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </b-modal>
     <b-modal id="refusal-info" title="승인 거절 사유" @ok="updateRefusal()">
       <div v-if="companyUser.companyUserUpdateHistories">
         <div
@@ -155,6 +205,12 @@ import {
 } from '../../../dto';
 import { BaseUser } from '../../../services/shared/auth';
 import toast from '../../../../resources/assets/js/services/toast.js';
+import {
+  APPROVAL_STATUS,
+  CONST_APPROVAL_STATUS,
+  COMPANY_USER,
+  CONST_COMPANY_USER,
+} from '../../../services/shared';
 
 @Component({
   name: 'CompanyUserDetail',
@@ -167,6 +223,7 @@ export default class CompanyUserDetail extends BaseComponent {
   private companyUserUpdateDto = new CompanyUserUpdateDto();
   private companyUserUpdateRefusalDto = new CompanyUserUpdateRefusalDto();
   private companyUserUpdateRefusalReasonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
+  private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
 
   findOne(id) {
     CompanyUserService.findOne(id).subscribe(res => {
@@ -174,14 +231,28 @@ export default class CompanyUserDetail extends BaseComponent {
     });
   }
 
+  // // 사용자 정보 수정
+  // updateUserInfo() {
+  //   CompanyUserService.update(
+  //     this.$route.params.id,
+  //     this.companyUserUpdateDto,
+  //   ).subscribe(res => {
+  //     if (res) {
+  //       this.findOne(this.$route.params.id);
+  //     }
+  //   });
+  // }
+
   // 승인
   updateApproval() {
     CompanyUserService.updateCompanyUserStatus(
       this.$route.params.id,
       'approve-update',
     ).subscribe(res => {
-      this.findOne(this.$route.params.id);
-      toast.success('승인완료');
+      if (res) {
+        this.findOne(this.$route.params.id);
+        toast.success('승인완료');
+      }
     });
   }
 

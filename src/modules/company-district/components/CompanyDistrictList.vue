@@ -6,30 +6,47 @@
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">
       <b-form-row>
-        <b-col sm="12" lg="3" class="mb-3">
+        <b-col sm="12" lg="1" class="mb-3">
           <label>지점 ID</label>
           <b-form-input
             type="text"
-            v-model="companyDistrictListDto.no"
+            v-model="companyDistrictSearchDto.no"
           ></b-form-input>
+        </b-col>
+        <b-col>
+          <label>업체명</label>
+          <select
+            class="custom-select"
+            v-model="companyDistrictSearchDto.companyNo"
+          >
+            <option value selected>전체</option>
+            <option
+              v-for="company in companySelect"
+              :key="company.no"
+              :value="company.no"
+              >{{ company.nameKr }}</option
+            >
+          </select>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>지점명</label>
           <b-form-input
             type="text"
-            v-model="companyDistrictListDto.nameKr"
+            v-model="companyDistrictSearchDto.nameKr"
           ></b-form-input>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>주소</label>
           <b-form-input
             type="text"
-            v-model="companyDistrictListDto.address"
+            v-model="companyDistrictSearchDto.address"
           ></b-form-input>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>지점 승인 상태</label>
-          <b-form-select v-model="companyDistrictListDto.companyDistrictStatus">
+          <b-form-select
+            v-model="companyDistrictSearchDto.companyDistrictStatus"
+          >
             <b-select-option value>전체</b-select-option>
             <b-form-select-option
               v-for="status in approvalStatus"
@@ -64,17 +81,63 @@
     <table class="table table-sm table-hover table-bordered table-border">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">NAME</th>
-          <th scope="col">ADDRESS</th>
-          <th scope="col">DATE</th>
-          <th scope="col">STATUS</th>
-          <th scope="col">VIEW</th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.no,
+            }"
+          >
+            ID
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.companyNo,
+            }"
+          >
+            COMPANY
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.nameKr,
+            }"
+          >
+            NAME
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.address,
+            }"
+          >
+            ADDRESS
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.createdAt,
+            }"
+          >
+            CREATED
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{
+              highlighted: companyDistrictSearchDto.companyDistrictStatus,
+            }"
+          >
+            STATUS
+          </th>
+          <th scope="col">
+            VIEW
+          </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="companyDistrictListCount > 0">
         <tr v-for="district in companyDistrictList" :key="district.no">
           <td>{{ district.no }}</td>
+          <td>{{ district.company.nameKr }}</td>
           <td>{{ district.nameKr }}</td>
           <td>{{ district.address }}</td>
           <td>
@@ -102,6 +165,13 @@
             >
               상세보기
             </router-link>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr>
+          <td colspan="7" class="empty-data">
+            검색결과가 없습니다.
           </td>
         </tr>
       </tbody>
@@ -205,7 +275,7 @@ export default class CompanyDistrictList extends BaseComponent {
     CompanyDistrictDto
   >();
   private companyDistrictListCount = 0;
-  private companyDistrictListDto = new CompanyDistrictListDto();
+  private companyDistrictSearchDto = new CompanyDistrictListDto();
   private pagination = new Pagination();
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
   private companyDistrictCreateDto = new CompanyDistrictDto();
@@ -222,7 +292,7 @@ export default class CompanyDistrictList extends BaseComponent {
       this.pagination.page = 1;
     }
     CompanyDistrictService.findAll(
-      this.companyDistrictListDto,
+      this.companyDistrictSearchDto,
       this.pagination,
     ).subscribe(res => {
       this.companyDistrictList = res.data.items;
@@ -232,7 +302,7 @@ export default class CompanyDistrictList extends BaseComponent {
 
   clearOut() {
     this.pagination = new Pagination();
-    this.companyDistrictListDto = new CompanyDistrictListDto();
+    this.companyDistrictSearchDto = new CompanyDistrictListDto();
     this.search();
   }
 

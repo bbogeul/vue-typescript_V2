@@ -3,19 +3,19 @@
     <table class="table">
       <thead>
         <tr>
-          <th>
+          <th scope="col">
             NO
           </th>
-          <th>
+          <th scope="col">
             NAME
           </th>
-          <th>
+          <th scope="col">
             PHONE
           </th>
-          <th>
+          <th scope="col">
             EMAIL
           </th>
-          <th>
+          <th scope="col">
             STATUS
           </th>
         </tr>
@@ -44,6 +44,11 @@
                 },
               }"
             >
+              <strong
+                class="text-danger"
+                v-if="user.authCode === 'ADMIN_COMPANY_USER'"
+                >M</strong
+              >
               {{ user.name }}
             </router-link>
           </td>
@@ -86,6 +91,7 @@ import BaseComponent from '../../../core/base.component';
 import { CompanyUserListDto, CompanyUserDto } from '../../../dto';
 import CompanyUserService from '../../../services/company-user.service';
 import { Pagination } from '@/common';
+import { COMPANY_USER, CONST_COMPANY_USER } from '../../../services/shared';
 
 @Component({
   name: 'CompanyUserList',
@@ -95,6 +101,7 @@ export default class CompanyUserList extends BaseComponent {
   private companyUserListDto = new CompanyUserListDto();
   private companyUserList: CompanyUserDto[] = [];
   private companyUserListCount = 0;
+  private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
 
   findUser(isPagination: boolean) {
     if (!isPagination) {

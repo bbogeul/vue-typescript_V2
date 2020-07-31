@@ -232,99 +232,109 @@
       size="xl"
       @ok="createCompany()"
     >
-      <div class="form-row">
-        <div class="col-12 col-md-6 mt-2">
-          <label>업체명</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.nameKr"
-            class="form-control"
-          />
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <div class="form-row">
+          <div class="col-12 col-md-6 mt-2">
+            <label>업체명</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.nameKr"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>업체명(영문)</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.nameEng"
+              class="form-control"
+            />
+          </div>
         </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>업체명(영문)</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.nameEng"
-            class="form-control"
-          />
+        <div class="form-row">
+          <div class="col-12 col-md-6 mt-2">
+            <label>전회번호</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.phone"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>이메일</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.email"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>FAX</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.fax"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>주소</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.address"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>대표명</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.ceoKr"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>대표명(영문)</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.ceoEng"
+              class="form-control"
+            />
+          </div>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="col-12 col-md-6 mt-2">
-          <label>전회번호</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.phone"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>이메일</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.email"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>FAX</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.fax"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>주소</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.address"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>대표명</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.ceoKr"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>대표명(영문)</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.ceoEng"
-            class="form-control"
-          />
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="col-12 col-md-6 mt-2">
-          <label>웹사이트</label>
-          <input
-            type="text"
-            v-model="companyCreateDto.website"
-            class="form-control"
-          />
-        </div>
-        <div class="col-12 col-md-6 mt-2">
-          <label>업체 승인 상태</label>
-          <select
-            class="custom-select"
-            v-model="companyCreateDto.companyStatus"
-          >
-            <option value>전체</option>
-            <option
-              v-for="status in approvalStatus"
-              :key="status"
-              :value="status"
-              >{{ status | enumTransformer }}</option
+        <div class="form-row">
+          <div class="col-12 col-md-6 mt-2">
+            <label>웹사이트</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.website"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 com-md-6 mt-2">
+            <label>사업자번호</label>
+            <input
+              type="text"
+              v-model="companyCreateDto.businessNo"
+              class="form-control"
+            />
+          </div>
+          <div class="col-12 col-md-6 mt-2">
+            <label>업체 승인 상태</label>
+            <select
+              class="custom-select"
+              v-model="companyCreateDto.companyStatus"
             >
-          </select>
+              <option value>전체</option>
+              <option
+                v-for="status in approvalStatus"
+                :key="status"
+                :value="status"
+                >{{ status | enumTransformer }}</option
+              >
+            </select>
+          </div>
         </div>
-      </div>
+      </form>
     </b-modal>
   </section>
 </template>
@@ -384,7 +394,9 @@ export default class Company extends BaseComponent {
   // 업체 생성
   createCompany() {
     CompanyService.createCompany(this.companyCreateDto).subscribe(res => {
-      this.search();
+      if (res) {
+        this.search();
+      }
     });
   }
 
