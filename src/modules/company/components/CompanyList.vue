@@ -310,7 +310,7 @@
               class="form-control"
             />
           </div>
-          <div class="col-12 com-md-6 mt-2">
+          <div class="col-12 col-md-6 mt-2">
             <label>사업자번호</label>
             <input
               type="text"
