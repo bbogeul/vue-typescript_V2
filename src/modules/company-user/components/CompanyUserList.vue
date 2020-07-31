@@ -70,8 +70,6 @@
           </select>
         </div>
       </div>
-      <!-- second row -->
-      <div class="form-row"></div>
       <div class="text-center">
         <div class="btn-group mb-4">
           <button class="btn btn-primary" @click="clearOut()">초기화</button>
@@ -150,7 +148,14 @@
         <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
           <td class="align-middle">{{ companyUser.no }}</td>
           <td class="align-middle">{{ companyUser.company.nameKr }}</td>
-          <td class="align-middle">{{ companyUser.name }}</td>
+          <td class="align-middle">
+            <strong
+              class="text-danger"
+              v-if="companyUser.authCode === companyUserAdminRole[0]"
+              >M</strong
+            >
+            {{ companyUser.name }}
+          </td>
           <td class="align-middle">{{ companyUser.phone }}</td>
           <td class="align-middle">{{ companyUser.email }}</td>
           <td class="align-middle">
