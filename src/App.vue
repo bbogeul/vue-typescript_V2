@@ -85,6 +85,22 @@ select {
   }
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+h4 {
+  font-size: 1.125rem;
+}
+h5 {
+  font-size: 1rem;
+}
+
 .table {
   margin-bottom: 0;
   th,

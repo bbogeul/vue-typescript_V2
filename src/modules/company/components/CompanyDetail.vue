@@ -26,142 +26,57 @@
           </template>
           <template v-slot:body>
             <div v-if="company">
-              <div>
-                <ul>
-                  <li v-if="company.no">
-                    업체 ID :
-                    <b>{{ company.no }}</b>
-                  </li>
-                  <li v-if="company.nameKr">
-                    업체명 :
-                    <b>{{ company.nameKr }}</b>
-                    <span v-if="company.nameEng">({{ company.nameEng }})</span>
-                  </li>
-                  <li v-if="company.businessNo">
-                    사업자 번호 :
-                    <b>{{ company.businessNo }}</b>
-                  </li>
-                  <li v-if="company.ceoKr">
-                    대표명 :
-                    <b>{{ company.ceoKr }}</b>
-                    <span v-if="company.ceoEng">({{ company.ceoEng }})</span>
-                  </li>
-                  <li v-if="company.phone">전화번호 : {{ company.phone }}</li>
-                  <li v-if="company.email">이메일 : {{ company.email }}</li>
-                  <li v-if="company.fax">팩스 : {{ company.fax }}</li>
-                  <li v-if="company.address">주소 : {{ company.address }}</li>
-                  <li v-if="company.website">
-                    웹사이트 :
-                    <a :href="company.website" target="_blank">{{
-                      company.website
-                    }}</a>
-                  </li>
-                  <li v-if="company.createdAt">
-                    등록일 : {{ company.createdAt | dateTransformer }}
-                  </li>
-                  <li v-if="company.createdAt">
-                    승인 상태 :
-                    <span class="badge badge-pill badge-warning p-2 mr-2">
-                      {{ company.companyStatus | enumTransformer }}
-                    </span>
-                    <span v-if="company.updatedAt" class="d-inline-block"
-                      >({{ company.updatedAt | dateTransformer }})</span
-                    >
-                  </li>
-                </ul>
-              </div>
-              <template
-                v-if="
-                  company.companyStatus === 'UPDATE_APPROVAL' ||
-                    company.companyStatus === 'NEED_APPROVAL'
-                "
-              >
-                <div class="border rounded bg-light p-3 mt-4">
-                  <template v-if="company.companyStatus === 'UPDATE_APPROVAL'">
-                    <h5
-                      class="text-danger"
-                      style="font-size:14px; font-weight:bold;"
-                    >
-                      승인 요청 항목
-                    </h5>
-                    <div
-                      v-if="company.companyUpdateHistories[0]"
-                      class="py-2 mt-3 mb-2 border-top border-bottom"
-                    >
-                      <ul>
-                        <li
-                          v-for="(value, name, index) in company
-                            .companyUpdateHistories[0]"
-                          :key="index"
-                        >
-                          {{ name | stringTransformer }} : {{ value }}
-                        </li>
-                      </ul>
-                    </div>
-                  </template>
-                  <div class="text-right">
-                    <b-button
-                      variant="primary"
-                      class="mx-1"
-                      @click="updateApproval()"
-                      >승인</b-button
-                    >
-                    <b-button
-                      variant="secondary"
-                      v-b-modal.refusal-info
-                      class="mx-1"
-                      >거절</b-button
-                    >
-                  </div>
-                </div>
-              </template>
-              <template
-                v-if="
-                  company.companyStatus === 'REFUSED' &&
-                    company.companyUpdateHistories
-                "
-              >
-                <div
-                  class="border rounded bg-light p-3 mt-4"
-                  v-if="
-                    company.companyUpdateHistories[0].refusalReasons ||
-                      company.companyUpdateHistories[0].refusalDesc
-                  "
-                >
-                  <div>
-                    <h5
-                      class="text-danger"
-                      style="font-size:14px; font-weight:bold;"
-                      v-if="company.companyUpdateHistories[0].refusalReasons"
-                    >
-                      승인 거절 사유
-                    </h5>
-                  </div>
-                  <div v-if="company.companyUpdateHistories[0]">
-                    <ul
-                      v-if="company.companyUpdateHistories[0].refusalReasons"
-                      class="py-2 mt-3 border-top border-bottom"
-                    >
-                      <li
-                        v-for="(value, name) in company
-                          .companyUpdateHistories[0].refusalReasons"
-                        :key="name"
-                      >
-                        <span :class="{ 'text-danger': value }">
-                          {{ name | stringTransformer }}
-                        </span>
-                      </li>
-                    </ul>
-                    <p
-                      v-if="company.companyUpdateHistories[0].refusalDesc"
-                      class="mt-2"
-                    >
-                      {{ company.companyUpdateHistories[0].refusalDesc }}
-                    </p>
-                  </div>
-                </div>
-              </template>
+              <ul>
+                <li v-if="company.no">
+                  업체 ID :
+                  <b>{{ company.no }}</b>
+                </li>
+                <li v-if="company.nameKr">
+                  업체명 :
+                  <b>{{ company.nameKr }}</b>
+                  <span v-if="company.nameEng">({{ company.nameEng }})</span>
+                </li>
+                <li v-if="company.businessNo">
+                  사업자 번호 :
+                  <b>{{ company.businessNo }}</b>
+                </li>
+                <li v-if="company.ceoKr">
+                  대표명 :
+                  <b>{{ company.ceoKr }}</b>
+                  <span v-if="company.ceoEng">({{ company.ceoEng }})</span>
+                </li>
+                <li v-if="company.phone">전화번호 : {{ company.phone }}</li>
+                <li v-if="company.email">이메일 : {{ company.email }}</li>
+                <li v-if="company.fax">팩스 : {{ company.fax }}</li>
+                <li v-if="company.address">주소 : {{ company.address }}</li>
+                <li v-if="company.website">
+                  웹사이트 :
+                  <a :href="company.website" target="_blank">{{
+                    company.website
+                  }}</a>
+                </li>
+                <li v-if="company.createdAt">
+                  등록일 : {{ company.createdAt | dateTransformer }}
+                </li>
+                <li v-if="company.createdAt">
+                  승인 상태 :
+                  <span class="badge badge-pill badge-warning p-2 mr-2">
+                    {{ company.companyStatus | enumTransformer }}
+                  </span>
+                  <span v-if="company.updatedAt" class="d-inline-block"
+                    >({{ company.updatedAt | dateTransformer }})</span
+                  >
+                </li>
+              </ul>
             </div>
+            <ApprovalCard
+              :data="company"
+              :dto="companyUpdateRefusalReasonDto"
+              status="companyStatus"
+              histories="companyUpdateHistories"
+              @approval="updateApproval()"
+              @refusal="updateRefusal()"
+            />
           </template>
         </BaseCard>
       </div>
@@ -222,34 +137,6 @@
         </BaseCard>
       </div>
     </div>
-
-    <b-modal id="refusal-info" title="승인 거절 사유" @ok="updateRefusal()">
-      <div v-if="company.companyUpdateHistories">
-        <div
-          class="form-check"
-          v-for="(value, name) in company.companyUpdateHistories[0]"
-          :key="name"
-        >
-          <input
-            type="checkbox"
-            v-model="companyUpdateRefusalReaseonDto[name]"
-            v-if="company.companyUpdateHistories[0][name]"
-            class="form-check-input"
-            :id="name"
-          />
-          <label :for="name">{{ name | stringTransformer }}</label>
-        </div>
-        <div>
-          <label for="refusalDesc" class="d-block">거절이유</label>
-          <textarea
-            name="refusalDesc"
-            id="refusalDesc"
-            v-model="companyUpdateRefusalDto.refusalDesc"
-            style="width:100%; height:100px;"
-          ></textarea>
-        </div>
-      </div>
-    </b-modal>
     <b-modal
       id="company-district"
       title="지점 추가하기"
@@ -401,6 +288,7 @@
 </template>
 
 <script lang="ts">
+import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
 import { CodeManagementDto } from '../../../services/init/dto';
@@ -432,6 +320,7 @@ import toast from '../../../../resources/assets/js/services/toast.js';
 @Component({
   name: 'CompanyDetail',
   components: {
+    ApprovalCard,
     BaseCard,
     CompanyDistrictList,
     CompanyUserList,
@@ -446,7 +335,7 @@ export default class CompanyDetail extends BaseComponent {
   private company = new CompanyDto();
   private companyUpdateDto = new CompanyUpdateDto();
   private companyUpdateRefusalDto = new CompanyUpdateRefusalDto();
-  private companyUpdateRefusalReaseonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUpdateRefusalReasonDto());
+  private companyUpdateRefusalReasonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUpdateRefusalReasonDto());
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
 

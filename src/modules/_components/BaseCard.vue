@@ -39,8 +39,6 @@ export default class BaseCard extends BaseComponent {
     .card-title {
       margin-bottom: 0;
       line-height: 1;
-      font-size: 1rem;
-      font-weight: bold;
     }
   }
   .card-body {

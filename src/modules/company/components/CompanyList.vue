@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="title d-flex justify-content-between align-items-end mb-2">
+    <div class="title pb-2 mb-2">
       <h3>업체 관리</h3>
     </div>
     <div class="divider"></div>

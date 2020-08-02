@@ -1,12 +1,12 @@
 <template>
   <section>
-    <div class="title d-flex justify-content-between align-items-end mb-2">
+    <div class="title pb-2 mb-2">
       <h3>업체 사용자 관리</h3>
     </div>
     <div class="divider"></div>
-    <div v-on:keyup.enter="search()">
-      <div class="form-row">
-        <div class="col-md-2 mb-2">
+    <div class="serach-box my-4" v-on:keyup.enter="search()">
+      <b-form-row>
+        <b-col cols="6" md="2" class="mb-2">
           <label for="username">사용자 ID</label>
           <input
             type="text"
@@ -14,8 +14,8 @@
             id="username"
             v-model="companyUserSearchDto.no"
           />
-        </div>
-        <div class="col-md-2 mb-3">
+        </b-col>
+        <b-col cols="6" md="2" class="mb-3">
           <label>업체 선택</label>
           <select
             class="custom-select"
@@ -29,32 +29,32 @@
               >{{ company.nameKr }}</option
             >
           </select>
-        </div>
-        <div class="col-md-2 mb-3">
+        </b-col>
+        <b-col cols="6" md="2" class="mb-3">
           <label>사용자명</label>
           <input
             type="text"
             class="form-control"
             v-model="companyUserSearchDto.name"
           />
-        </div>
-        <div class="col-md-3 mb-3">
+        </b-col>
+        <b-col cols="6" md="3" class="mb-3">
           <label>사용자 전화번호</label>
           <input
             type="text"
             class="form-control"
             v-model="companyUserSearchDto.phone"
           />
-        </div>
-        <div class="col-md-3 mb-3">
+        </b-col>
+        <b-col cols="6" md="3" class="mb-3">
           <label>사용자 이메일</label>
           <input
             type="text"
             class="form-control"
             v-model="companyUserSearchDto.email"
           />
-        </div>
-        <div class="col-md-2 mb-3">
+        </b-col>
+        <b-col cols="6" md="2" class="mb-3">
           <label>사용자 승인 상태</label>
           <select
             class="custom-select"
@@ -68,8 +68,8 @@
               >{{ status | enumTransformer }}</option
             >
           </select>
-        </div>
-      </div>
+        </b-col>
+      </b-form-row>
       <div class="text-center">
         <div class="btn-group mb-4">
           <button class="btn btn-primary" @click="clearOut()">초기화</button>
@@ -140,15 +140,15 @@
           >
             STATUS
           </th>
-          <th scope="col">VIEW</th>
+          <th scope="col"></th>
         </tr>
       </thead>
 
       <tbody v-if="companyUserListTotalCount">
         <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
-          <td class="align-middle">{{ companyUser.no }}</td>
-          <td class="align-middle">{{ companyUser.company.nameKr }}</td>
-          <td class="align-middle">
+          <th scope="row">{{ companyUser.no }}</th>
+          <td>{{ companyUser.company.nameKr }}</td>
+          <td>
             <strong
               class="text-danger"
               v-if="companyUser.authCode === companyUserAdminRole[0]"
@@ -156,17 +156,17 @@
             >
             {{ companyUser.name }}
           </td>
-          <td class="align-middle">{{ companyUser.phone }}</td>
-          <td class="align-middle">{{ companyUser.email }}</td>
-          <td class="align-middle">
+          <td>{{ companyUser.phone }}</td>
+          <td>{{ companyUser.email }}</td>
+          <td>
             {{ companyUser.createdAt | dateTransformer }}
           </td>
-          <td class="align-middle">
+          <td>
             <span class="badge badge-pill badge-warning p-2">{{
               companyUser.codeManagement.value
             }}</span>
           </td>
-          <td class="align-middle">
+          <td>
             <router-link
               v-if="companyUser.no"
               class="btn btn-sm btn-secondary"

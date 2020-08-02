@@ -1,10 +1,10 @@
 <template>
   <section>
-    <div class="title mb-2">
+    <div class="title pb-2 mb-2">
       <h3>방문자 신청 관리</h3>
     </div>
     <div class="divider"></div>
-    <div v-on:keyup.enter="search()">
+    <div class="search-box my-4" v-on:keyup.enter="search()">
       <div class="form-row">
         <div class="col-6 col-lg-1 mb-3">
           <label for="space_id">공간 ID</label>
@@ -188,231 +188,221 @@
         </h5>
       </div>
     </div>
-    <table
-      class="table table-bordered table-hover table-sm table-responsive text-center"
-      v-if="!dataLoading"
-    >
-      <thead>
-        <tr>
-          <th scope="col">NO</th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
-          >
-            SPACE ID
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
-          >
-            SPACE TYPE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: founderConsultSearchDto.nanudaUserName,
-            }"
-          >
-            USER NAME
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.phone }"
-          >
-            USER PHONE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.gender }"
-          >
-            GENDER
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.address }"
-          >
-            ADDRESS
-          </th>
-
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }"
-          >
-            COMPANY
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: founderConsultSearchDto.companyDistrictNameKr,
-            }"
-          >
-            DISTRICT
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
-          >
-            AVAILABLE TIME
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.changUpExpYn }"
-          >
-            EXPERIENCE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.viewCount }"
-          >
-            VIEW
-          </th>
-          <th scope="col">CREATED</th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: founderConsultSearchDto.adminUserName,
-            }"
-          >
-            ADMIN
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: founderConsultSearchDto.status }"
-          >
-            STATUS
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-
-      <tbody v-if="founderConsultListCount">
-        <tr
-          v-for="founderConsult in founderConsultList"
-          :key="founderConsult.no"
-        >
-          <th scope="row">
-            <router-link
-              :to="{
-                name: 'FounderConsultDetail',
-                params: {
-                  id: founderConsult.no,
-                },
+    <div v-if="!dataLoading">
+      <table
+        class="table table-bordered table-hover table-sm table-responsive text-center"
+        v-if="founderConsultListCount"
+      >
+        <thead>
+          <tr>
+            <th scope="col">NO</th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
+            >
+              SPACE ID
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
+            >
+              SPACE TYPE
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: founderConsultSearchDto.nanudaUserName,
               }"
-              class="text-primary"
             >
+              USER NAME
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.phone }"
+            >
+              USER PHONE
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.gender }"
+            >
+              GENDER
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.address }"
+            >
+              ADDRESS
+            </th>
+
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }"
+            >
+              COMPANY
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: founderConsultSearchDto.companyDistrictNameKr,
+              }"
+            >
+              DISTRICT
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
+            >
+              AVAILABLE TIME
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: founderConsultSearchDto.changUpExpYn,
+              }"
+            >
+              EXPERIENCE
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.viewCount }"
+            >
+              VIEW
+            </th>
+            <th scope="col">CREATED</th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: founderConsultSearchDto.adminUserName,
+              }"
+            >
+              ADMIN
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: founderConsultSearchDto.status }"
+            >
+              STATUS
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            v-for="founderConsult in founderConsultList"
+            :key="founderConsult.no"
+          >
+            <th scope="row">
               {{ founderConsult.no }}
-            </router-link>
-          </th>
-          <td>
-            {{ founderConsult.spaceNo }}
-          </td>
-          <!-- TODO: space type value 출력 필요  -->
-          <td>{{ founderConsult.space.spaceTypeNo }}</td>
-          <td>{{ founderConsult.nanudaUser.name }}</td>
-          <td>{{ founderConsult.nanudaUser.phone }}</td>
-          <td>
-            <div v-if="founderConsult.nanudaUser.genderInfo">
-              {{ founderConsult.nanudaUser.genderInfo.value }}
-            </div>
-          </td>
-          <td class="text-left">
-            <div v-if="founderConsult.space">
-              {{ founderConsult.space.address }}
-              {{ founderConsult.space.detailAddress }}
-            </div>
-          </td>
-          <td v-if="founderConsult.space.companyDistricts">
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
-              <div v-if="company.company.nameKr">
-                <router-link
-                  :to="{
-                    name: 'CompanyDetail',
-                    params: {
-                      id: company.company.no,
-                    },
-                  }"
-                  >{{ company.company.nameKr }}</router-link
-                >
+            </th>
+            <td>
+              {{ founderConsult.spaceNo }}
+            </td>
+            <!-- TODO: space type value 출력 필요  -->
+            <td>{{ founderConsult.space.spaceTypeNo }}</td>
+            <td>{{ founderConsult.nanudaUser.name }}</td>
+            <td>{{ founderConsult.nanudaUser.phone }}</td>
+            <td>
+              <div v-if="founderConsult.nanudaUser.genderInfo">
+                {{ founderConsult.nanudaUser.genderInfo.value }}
               </div>
-            </div>
-          </td>
-          <td>
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
-              <div v-if="company.company.nameKr">{{ company.nameKr }}</div>
-            </div>
-          </td>
-          <td>
-            <div v-if="founderConsult.availableTime">
-              {{ founderConsult.availableTime.value }}
-            </div>
-          </td>
-          <td>
-            <b-badge
-              v-if="founderConsult.changUpExpYn"
-              :variant="
-                founderConsult.changUpExpYn === 'Y' ? 'success' : 'danger'
-              "
-            >
-              {{ founderConsult.changUpExpYn }}
-            </b-badge>
-            <div v-else>
-              -
-            </div>
-          </td>
-          <td>
-            <div v-if="founderConsult.viewCount">
+            </td>
+            <td class="text-left">
+              <div v-if="founderConsult.space">
+                {{ founderConsult.space.address }}
+                {{ founderConsult.space.detailAddress }}
+              </div>
+            </td>
+            <td v-if="founderConsult.space.companyDistricts">
+              <div
+                v-for="company in founderConsult.space.companyDistricts"
+                :key="company.no"
+              >
+                <div v-if="company.company.nameKr">
+                  <router-link
+                    :to="{
+                      name: 'CompanyDetail',
+                      params: {
+                        id: company.company.no,
+                      },
+                    }"
+                    >{{ company.company.nameKr }}</router-link
+                  >
+                </div>
+              </div>
+            </td>
+            <td>
+              <div
+                v-for="company in founderConsult.space.companyDistricts"
+                :key="company.no"
+              >
+                <div v-if="company.company.nameKr">{{ company.nameKr }}</div>
+              </div>
+            </td>
+            <td>
+              <div v-if="founderConsult.availableTime">
+                {{ founderConsult.availableTime.value }}
+              </div>
+            </td>
+            <td>
               <b-badge
+                v-if="founderConsult.changUpExpYn"
                 :variant="
-                  founderConsult.viewCount === 'Y' ? 'success' : 'danger'
+                  founderConsult.changUpExpYn === 'Y' ? 'success' : 'danger'
                 "
               >
-                {{ founderConsult.viewCount }}
+                {{ founderConsult.changUpExpYn }}
               </b-badge>
-            </div>
-          </td>
-          <td>
-            {{ founderConsult.createdAt | dateTransformer }}
-          </td>
-          <td>
-            <div v-if="founderConsult.admin">
-              {{ founderConsult.admin.name }}
-            </div>
-            <div v-else>
-              -
-            </div>
-          </td>
-          <td>
-            <b-badge variant="warning" class="badge-pill p-2">{{
-              founderConsult.codeManagement.value
-            }}</b-badge>
-          </td>
-          <td>
-            <router-link
-              v-if="founderConsult.space"
-              class="btn btn-sm btn-secondary"
-              :to="{
-                name: 'FounderConsultDetail',
-                params: {
-                  id: founderConsult.no,
-                },
-              }"
-              >상세보기</router-link
-            >
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan=" 13" class="empty-data">검색결과가 없습니다.</td>
-        </tr>
-      </tbody>
-    </table>
+              <div v-else>
+                -
+              </div>
+            </td>
+            <td>
+              <div v-if="founderConsult.viewCount">
+                <b-badge
+                  :variant="
+                    founderConsult.viewCount === 'Y' ? 'success' : 'danger'
+                  "
+                >
+                  {{ founderConsult.viewCount }}
+                </b-badge>
+              </div>
+            </td>
+            <td>
+              {{ founderConsult.createdAt | dateTransformer }}
+            </td>
+            <td>
+              <div v-if="founderConsult.admin">
+                {{ founderConsult.admin.name }}
+              </div>
+              <div v-else>
+                -
+              </div>
+            </td>
+            <td>
+              <b-badge variant="warning" class="badge-pill p-2">{{
+                founderConsult.codeManagement.value
+              }}</b-badge>
+            </td>
+            <td>
+              <router-link
+                v-if="founderConsult.space"
+                class="btn btn-sm btn-secondary text-nowrap"
+                :to="{
+                  name: 'FounderConsultDetail',
+                  params: {
+                    id: founderConsult.no,
+                  },
+                }"
+                >상세보기</router-link
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-else class="empty-data border">검색결과가 없습니다.</div>
+    </div>
     <b-pagination
       v-model="pagination.page"
       v-if="founderConsultListCount"

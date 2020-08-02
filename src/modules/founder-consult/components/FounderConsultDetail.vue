@@ -266,15 +266,13 @@
                 </li>
                 <li v-if="founderConsult.space.amenities.length > 0">
                   공용시설 :
-                  <div class="mt-1">
-                    <b-badge
-                      variant="info"
-                      v-for="amenity in founderConsult.space.amenities"
-                      :key="amenity.no"
-                      class="m-1"
-                      >{{ amenity.amenityName }}</b-badge
-                    >
-                  </div>
+                  <b-badge
+                    variant="info"
+                    v-for="amenity in founderConsult.space.amenities"
+                    :key="amenity.no"
+                    class="m-1"
+                    >{{ amenity.amenityName }}</b-badge
+                  >
                 </li>
                 <li v-if="founderConsult.space.deliverySpaceOptions.length > 0">
                   공간옵션 :

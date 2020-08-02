@@ -57,89 +57,14 @@
                 </li>
               </ul>
             </div>
-            <template
-              v-if="
-                companyUser.companyUserStatus === 'UPDATE_APPROVAL' ||
-                  companyUser.companyUserStatus === 'NEED_APPROVAL'
-              "
-            >
-              <div class="border rounded bg-light p-3 mt-4">
-                <template
-                  v-if="companyUser.companyUserStatus === 'UPDATE_APPROVAL'"
-                >
-                  <h5
-                    class="text-danger"
-                    style="font-size:14px; font-weight:bold;"
-                    v-if="companyUser.companyUserUpdateHistories"
-                  >
-                    승인 요청 항목
-                  </h5>
-                  <div
-                    v-if="companyUser.companyUserUpdateHistories"
-                    class="py-2 mt-3 mb-2 border-top border-bottom"
-                  >
-                    <ul>
-                      <li
-                        v-for="(value, name) in companyUser
-                          .companyUserUpdateHistories[0]"
-                        :key="name"
-                      >
-                        {{ name | stringTransformer }} : {{ value }}
-                      </li>
-                    </ul>
-                  </div>
-                </template>
-                <div class="text-right">
-                  <b-button
-                    variant="primary"
-                    class="mx-1"
-                    @click="updateApproval()"
-                    >승인</b-button
-                  >
-                  <b-button
-                    variant="secondary"
-                    v-b-modal.refusal-info
-                    class="mx-1"
-                    >거절</b-button
-                  >
-                </div>
-              </div>
-            </template>
-            <!-- TODO: this wasn't the smartest way to border out markups Ria. Checking this logic tomorrow -->
-            <template v-if="companyUser.companyUserStatus === 'REFUSED'">
-              <div class="border rounded bg-light p-3 mt-4">
-                <div v-if="companyUser.companyUserUpdateHistories[0]">
-                  <h5
-                    class="text-danger"
-                    style="font-size:14px; font-weight:bold;"
-                  >
-                    승인 거절 사유
-                  </h5>
-                  <ul
-                    class="py-2 mt-3 border-top border-bottom"
-                    v-if="
-                      companyUser.companyUserUpdateHistories[0].refusalReasons
-                    "
-                  >
-                    <li
-                      v-for="(value, name) in companyUser
-                        .companyUserUpdateHistories[0].refusalReasons"
-                      :key="name"
-                    >
-                      <span :class="{ 'text-danger': value }">
-                        {{ name | stringTransformer }}
-                      </span>
-                    </li>
-                  </ul>
-                  <p
-                    v-if="companyUser.companyUserUpdateHistories[0].refusalDesc"
-                    class="mt-2"
-                  >
-                    {{ companyUser.companyUserUpdateHistories[0].refusalDesc }}
-                  </p>
-                </div>
-              </div>
-            </template>
+            <ApprovalCard
+              :data="companyUser"
+              :dto="companyUserUpdateRefusalReasonDto"
+              status="companyUserStatus"
+              histories="companyUserUpdateHistories"
+              @approval="updateApproval()"
+              @refusal="updateRefusal()"
+            />
           </template>
         </BaseCard>
       </div>
@@ -163,36 +88,10 @@
         </div>
       </div>
     </b-modal>
-    <b-modal id="refusal-info" title="승인 거절 사유" @ok="updateRefusal()">
-      <div v-if="companyUser.companyUserUpdateHistories">
-        <div
-          class="form-check"
-          v-for="(value, name) in companyUser.companyUserUpdateHistories[0]"
-          :key="name"
-        >
-          <input
-            type="checkbox"
-            v-model="companyUserUpdateRefusalReasonDto[name]"
-            v-if="companyUser.companyUserUpdateHistories[0][name]"
-            class="form-check-input"
-            :id="name"
-          />
-          <label :for="name">{{ name | stringTransformer }}</label>
-        </div>
-        <div>
-          <label for="refusalDesc" class="d-block">거절이유</label>
-          <textarea
-            name="refusalDesc"
-            id="refusalDesc"
-            v-model="companyUserUpdateRefusalDto.refusalDesc"
-            style="width:100%; height:100px;"
-          ></textarea>
-        </div>
-      </div>
-    </b-modal>
   </section>
 </template>
 <script lang="ts">
+import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
 import BaseCard from '../../_components/BaseCard.vue';
@@ -215,6 +114,7 @@ import {
 @Component({
   name: 'CompanyUserDetail',
   components: {
+    ApprovalCard,
     BaseCard,
   },
 })
