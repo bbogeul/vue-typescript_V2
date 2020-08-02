@@ -18,6 +18,7 @@ import {
   DatePipeTransformer,
   EnumPipeTransformer,
   StringPipeTransformer,
+  ViewPipeTransformer,
 } from './core';
 
 let env = new Environment();
@@ -35,6 +36,7 @@ Vue.component('MainLayout', MainLayout);
 DatePipeTransformer();
 EnumPipeTransformer();
 StringPipeTransformer();
+ViewPipeTransformer();
 
 // bootstrap
 Vue.use(BootstrapVue);

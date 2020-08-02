@@ -24,6 +24,17 @@ body {
   background-color: #f1f1f1;
   padding: 10px 0 40px;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
 .btn {
   font-size: 12px;
   + .btn {
@@ -73,6 +84,7 @@ select {
     }
   }
 }
+
 .table {
   margin-bottom: 0;
   th,
@@ -84,6 +96,7 @@ select {
     th {
       border-top: 0;
       border-bottom: 0;
+      vertical-align: middle;
     }
   }
   .empty-data {

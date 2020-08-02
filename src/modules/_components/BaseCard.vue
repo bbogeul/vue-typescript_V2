@@ -1,7 +1,9 @@
 <template>
   <div class="card">
     <div class="card-head" v-show="!hideTitle">
-      <h4 class="card-title">{{ title }}</h4>
+      <h4 class="card-title">
+        <span>{{ title }}</span>
+      </h4>
       <slot name="head"></slot>
     </div>
     <div class="card-body">
@@ -46,25 +48,12 @@ export default class BaseCard extends BaseComponent {
     ul {
       padding: 0;
       margin: 0;
+      list-style: none;
 
       li {
         list-style: none;
         position: relative;
-        padding-left: 10px;
         margin: 5px 0;
-        &:before {
-          display: inline-block;
-          content: '';
-          position: absolute;
-          left: 0;
-          top: 50%;
-          transform: translate(-50%);
-          vertical-align: top;
-          width: 4px;
-          height: 4px;
-          border: 1px solid #646464;
-          transform: rotate(45deg);
-        }
       }
     }
   }
