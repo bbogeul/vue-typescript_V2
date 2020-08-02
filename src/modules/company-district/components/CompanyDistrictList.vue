@@ -8,52 +8,36 @@
       <b-form-row>
         <b-col sm="12" lg="1" class="mb-3">
           <label>지점 ID</label>
-          <b-form-input
-            type="text"
-            v-model="companyDistrictSearchDto.no"
-          ></b-form-input>
+          <b-form-input type="text" v-model="companyDistrictSearchDto.no"></b-form-input>
         </b-col>
         <b-col>
           <label>업체명</label>
-          <select
-            class="custom-select"
-            v-model="companyDistrictSearchDto.companyNo"
-          >
+          <select class="custom-select" v-model="companyDistrictSearchDto.companyNo">
             <option value selected>전체</option>
             <option
               v-for="company in companySelect"
               :key="company.no"
               :value="company.no"
-              >{{ company.nameKr }}</option
-            >
+            >{{ company.nameKr }}</option>
           </select>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>지점명</label>
-          <b-form-input
-            type="text"
-            v-model="companyDistrictSearchDto.nameKr"
-          ></b-form-input>
+          <b-form-input type="text" v-model="companyDistrictSearchDto.nameKr"></b-form-input>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>주소</label>
-          <b-form-input
-            type="text"
-            v-model="companyDistrictSearchDto.address"
-          ></b-form-input>
+          <b-form-input type="text" v-model="companyDistrictSearchDto.address"></b-form-input>
         </b-col>
         <b-col sm="12" lg="3" class="mb-3">
           <label>지점 승인 상태</label>
-          <b-form-select
-            v-model="companyDistrictSearchDto.companyDistrictStatus"
-          >
+          <b-form-select v-model="companyDistrictSearchDto.companyDistrictStatus">
             <b-select-option value>전체</b-select-option>
             <b-form-select-option
               v-for="status in approvalStatus"
               :key="status"
               :value="status"
-              >{{ status | enumTransformer }}</b-form-select-option
-            >
+            >{{ status | enumTransformer }}</b-form-select-option>
           </b-form-select>
         </b-col>
       </b-form-row>
@@ -74,9 +58,8 @@
       <b-button
         variant="primary"
         v-b-modal.add_company_district
-        @click="clearOutCompanyDistrctDto()"
-        >업체 지점 추가</b-button
-      >
+        @click="clearOutCompanyDistrictDto()"
+      >업체 지점 추가</b-button>
     </div>
     <table class="table table-sm table-hover table-bordered table-border">
       <thead>
@@ -86,52 +69,38 @@
             v-bind:class="{
               highlighted: companyDistrictSearchDto.no,
             }"
-          >
-            ID
-          </th>
+          >ID</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyDistrictSearchDto.companyNo,
             }"
-          >
-            COMPANY
-          </th>
+          >COMPANY</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyDistrictSearchDto.nameKr,
             }"
-          >
-            NAME
-          </th>
+          >NAME</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyDistrictSearchDto.address,
             }"
-          >
-            ADDRESS
-          </th>
+          >ADDRESS</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyDistrictSearchDto.createdAt,
             }"
-          >
-            CREATED
-          </th>
+          >CREATED</th>
           <th
             scope="col"
             v-bind:class="{
               highlighted: companyDistrictSearchDto.companyDistrictStatus,
             }"
-          >
-            STATUS
-          </th>
-          <th scope="col">
-            VIEW
-          </th>
+          >STATUS</th>
+          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody v-if="companyDistrictListCount > 0">
@@ -145,7 +114,7 @@
             <!-- <br />
             <span class="text-primary"
               >수정일 : {{ district.updatedAt | dateTransformer }}</span
-            > -->
+            >-->
           </td>
           <td>
             <span class="badge badge-pill badge-warning p-2">
@@ -162,17 +131,13 @@
                   id: district.no,
                 },
               }"
-            >
-              상세보기
-            </router-link>
+            >상세보기</router-link>
           </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td colspan="7" class="empty-data">
-            검색결과가 없습니다.
-          </td>
+          <td colspan="7" class="empty-data">검색결과가 없습니다.</td>
         </tr>
       </tbody>
     </table>
@@ -185,65 +150,40 @@
       @input="search(true)"
       class="mt-4 justify-content-center"
     ></b-pagination>
-    <b-modal
-      id="add_company_district"
-      title="업체 지점 추가하기"
-      size="xl"
-      @ok="createCompanyDidstrict()"
-    >
+    <b-modal id="add_company_district" title="업체 지점 추가하기" size="xl" @ok="createCompanyDidstrict()">
       <div class="form-row">
         <div class="col-12 col-md-6 mt-2">
           <label>업체 지점명</label>
-          <input
-            type="text"
-            v-model="companyDistrictCreateDto.nameKr"
-            class="form-control"
-          />
+          <input type="text" v-model="companyDistrictCreateDto.nameKr" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>업체 지점명(영문)</label>
-          <input
-            type="text"
-            v-model="companyDistrictCreateDto.nameEng"
-            class="form-control"
-          />
+          <input type="text" v-model="companyDistrictCreateDto.nameEng" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>주소</label>
-          <input
-            type="text"
-            v-model="companyDistrictCreateDto.address"
-            class="form-control"
-          />
+          <input type="text" v-model="companyDistrictCreateDto.address" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>업체 지점 승인 상태</label>
-          <select
-            class="custom-select"
-            v-model="companyDistrictCreateDto.companyStatus"
-          >
+          <select class="custom-select" v-model="companyDistrictCreateDto.companyStatus">
             <option value>전체</option>
             <option
               v-for="status in approvalStatus"
               :key="status"
               :value="status"
-              >{{ status | enumTransformer }}</option
-            >
+            >{{ status | enumTransformer }}</option>
           </select>
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label for></label>
           <label>업체 선택</label>
-          <select
-            class="custom-select"
-            v-model="companyDistrictCreateDto.companyNo"
-          >
+          <select class="custom-select" v-model="companyDistrictCreateDto.companyNo">
             <option
               v-for="company in companySelect"
               :key="company.no"
               :value="company.no"
-              >{{ company.nameKr }}</option
-            >
+            >{{ company.nameKr }}</option>
           </select>
         </div>
       </div>
@@ -315,7 +255,7 @@ export default class CompanyDistrictList extends BaseComponent {
     });
   }
 
-  clearOutCompanyDistrctDto() {
+  clearOutCompanyDistrictDto() {
     this.companyDistrictCreateDto = new CompanyDistrictDto();
   }
 
