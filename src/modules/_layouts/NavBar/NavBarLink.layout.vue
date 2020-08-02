@@ -1,7 +1,9 @@
 <template>
   <div>
     <!-- <a :href="to" v-if="resolvePath(to)" target="_blank" rel="noopener"></a> -->
-    <router-link class="navbar-link" :to="to"><slot /></router-link>
+    <router-link class="navbar-link" :to="to">
+      <slot />
+    </router-link>
   </div>
 </template>
 <script lang="ts">

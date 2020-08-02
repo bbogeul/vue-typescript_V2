@@ -72,6 +72,13 @@ export enum NANUDA_USER {
 }
 export const CONST_NANUDA_USER = Object.values(NANUDA_USER);
 
+export enum NOTICE_BOARD {
+  'NORMAL_NOTICE' = 'NORMAL_NOTICE',
+  'EVENT_NOTICE' = 'EVENT_NOTICE',
+  'TERMS_CHANGE_NOTICE' = 'TERMS_CHANGE_NOTICE',
+}
+export const CONST_NOTICE_BOARD = Object.values(NOTICE_BOARD);
+
 export enum POPUP {
   'IMAGE' = 'IMAGE',
   'NOTIFICATION' = 'NOTIFICATION',

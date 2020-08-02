@@ -97,41 +97,6 @@ const componentsRouter: RouteConfig[] = [
       },
     ],
   },
-  // {
-  //   path: '/company-user',
-  //   name: '업체 사용자 관리',
-  //   component: () => import('../../modules/company-user/CompanyUser.vue'),
-  //   children: [
-  //     {
-  //       path: '/company-user',
-  //       name: '업체 사용자 관리',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserList.vue'
-  //         ),
-  //       meta: {
-  //         authRequired: true,
-  //         layout: 'MainLayout',
-  //         roles: [...CONST_ADMIN_USER],
-  //         title: '업체 사용자 관리',
-  //       },
-  //     },
-  //     {
-  //       path: '/company-user/:id',
-  //       name: 'CompanyUserDetail',
-  //       component: () =>
-  //         import(
-  //           /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserDetail.vue'
-  //         ),
-  //       meta: {
-  //         authRequired: true,
-  //         layout: 'MainLayout',
-  //         roles: [...CONST_ADMIN_USER],
-  //         detailPage: true,
-  //       },
-  //     },
-  //   ],
-  // },
   {
     path: '/founder-consult',
     name: '방문자 신청',
@@ -165,6 +130,43 @@ const componentsRouter: RouteConfig[] = [
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
           title: '방문자 신청',
+        },
+      },
+    ],
+  },
+  {
+    path: '/notice-board',
+    name: '공지사항',
+    component: () => import('../../modules/notice-board/NoticeBoard.vue'),
+    children: [
+      {
+        path: '/notice-board',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/notice-board/components/NoticeBoardList.vue'
+          ),
+        name: '공지사항 관리',
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '공지사항 관리',
+        },
+      },
+      {
+        path: '/notice-board/create',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/notice-board/components/NoticeBoardCreate.vue'
+          ),
+        name: '공지사항 생성',
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '공지사항 생성',
         },
       },
     ],
