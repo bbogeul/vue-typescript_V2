@@ -64,7 +64,6 @@
             </div>
             <ApprovalCard
               :data="companyDistrict"
-              :dto="null"
               status="companyDistrictStatus"
               histories="companyDistrictUpdateHistories"
               @approval="updateApproval()"

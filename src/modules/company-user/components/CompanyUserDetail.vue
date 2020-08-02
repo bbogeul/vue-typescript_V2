@@ -59,7 +59,8 @@
             </div>
             <ApprovalCard
               :data="companyUser"
-              :dto="companyUserUpdateRefusalReasonDto"
+              :dto="companyUserUpdateRefusalDto"
+              :reasonDto="companyUserUpdateRefusalReasonDto"
               status="companyUserStatus"
               histories="companyUserUpdateHistories"
               @approval="updateApproval()"

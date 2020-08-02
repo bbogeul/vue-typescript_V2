@@ -79,7 +79,7 @@
         >
           <input
             type="checkbox"
-            v-model="dto[name]"
+            v-model="reasonDto[name]"
             v-if="data[histories][0][name]"
             class="form-check-input"
             :id="name"
@@ -91,7 +91,7 @@
           <textarea
             name="refusalDesc"
             id="refusalDesc"
-            v-model="dto.refusalDesc"
+            v-model="dto['refusalDesc']"
             style="width:100%; height:100px;"
           ></textarea>
         </div>
@@ -107,12 +107,16 @@ import BaseComponent from '../../core/base.component';
 @Component({
   name: 'ApprovalCard',
 })
-export default class ApprovalCard<T> extends BaseComponent {
+export default class ApprovalCard extends BaseComponent {
   @Prop() data!: {
-    type: T[];
+    type: object;
   };
 
   @Prop() dto?: {
+    type: object;
+  };
+
+  @Prop() reasonDto?: {
     type: object;
   };
   @Prop() readonly status!: {
