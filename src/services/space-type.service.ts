@@ -2,7 +2,7 @@ import { BaseService } from '@/core';
 import { SpaceTypeDto } from '@/dto';
 
 class SpaceTypeService extends BaseService {
-  getAll() {
+  findForSelect() {
     return super.get<SpaceTypeDto[]>('admin/space-type');
   }
 }

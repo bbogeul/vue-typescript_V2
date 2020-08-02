@@ -15,6 +15,10 @@ class FoodCategoryService extends BaseService {
       pagination,
     );
   }
+
+  findForSelect() {
+    return super.get<FoodCategoryDto[]>('admin/food-category');
+  }
 }
 
 export default new FoodCategoryService();

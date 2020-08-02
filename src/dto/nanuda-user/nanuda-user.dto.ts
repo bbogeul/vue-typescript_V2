@@ -9,4 +9,5 @@ export class NanudaUserDto extends BaseUser {
   infoYn?: YN;
   serviceYn?: YN;
   gender?: GENDER;
+  remainVisitCount?: number;
 }

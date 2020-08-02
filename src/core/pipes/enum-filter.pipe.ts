@@ -7,10 +7,10 @@ export const EnumPipeTransformer = () =>
       return;
     }
     if (value === YN.YES) {
-      return 'Yes';
+      return 'Y';
     }
     if (value === YN.NO) {
-      return 'No';
+      return 'N';
     }
     // 성별
     if (value === GENDER.M) {
