@@ -3,17 +3,17 @@
     <ul class="navbar-nav mr-auto">
       <div v-for="item in items" :key="item.path">
         <b-nav-item-dropdown :text="item.name" left>
-          <b-dropdown-item
-            :to="children.path"
-            v-for="children in item.children"
-            :key="children.path"
-          >
-            <template v-if="!children.meta.detailPage">
-              {{
-              children.name
-              }}
-            </template>
-          </b-dropdown-item>
+          <template>
+            <div v-for="children in item.children" :key="children.path">
+              <b-dropdown-item v-if="!children.meta.detailPage" :to="children.path">
+                <template>
+                  {{
+                  children.name
+                  }}
+                </template>
+              </b-dropdown-item>
+            </div>
+          </template>
         </b-nav-item-dropdown>
       </div>
     </ul>
@@ -82,12 +82,7 @@ export default class NavBarList extends BaseComponent {
     });
   }
 
-  load(items) {
-    console.log(items);
-  }
-
   created() {
-    console.log(this.activeRoutes());
     AdminService.findMe().subscribe(res => {
       this.admin = res.data;
     });

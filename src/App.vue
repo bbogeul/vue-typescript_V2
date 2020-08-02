@@ -108,4 +108,9 @@ select {
   height: 100%;
   min-height: 100px;
 }
+
+// font color
+.red-text {
+  color: red;
+}
 </style>

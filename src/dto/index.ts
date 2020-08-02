@@ -9,4 +9,5 @@ export * from './founder-consult';
 export * from './graph';
 export * from './space';
 export * from './nanuda-user';
+export * from './notice-board';
 export * from './space-type';
