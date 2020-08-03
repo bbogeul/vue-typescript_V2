@@ -65,5 +65,9 @@ class CompanyUserService extends BaseService {
   createCompanyUser(companyUser: CompanyUserDto) {
     return super.post<CompanyUserDto>('admin/company-user', companyUser);
   }
+
+  deleteCompanyUser(companyUserNo: string) {
+    return super.delete<CompanyUserDto>(`admin/company-user/${companyUserNo}`);
+  }
 }
 export default new CompanyUserService();

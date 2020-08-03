@@ -398,6 +398,43 @@
                       founderConsult.companyDecisionStatusCode.value
                     }}</b-badge>
                   </li>
+                  <li v-if="founderConsultManagements.memo">
+                    업체 메모
+                    <div class="mt-2">
+                      <div class="bg-light border rounded p-3">
+                        <b-row no-gutters align-h="between" align-v="end">
+                          <div v-if="founderConsultManagements.companyUser">
+                            <span>
+                              <strong class="user-name">{{
+                                founderConsultManagements.companyUser.name
+                              }}</strong>
+                            </span>
+                          </div>
+                          <div>
+                            <span>{{
+                              founderConsultManagements.createdAt
+                                | dateTransformer
+                            }}</span>
+                          </div>
+                        </b-row>
+                        <div
+                          class="mt-2 pt-1 border-top"
+                          v-if="founderConsultManagements.memo"
+                        >
+                          {{ founderConsultManagements.memo }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mt-2 text-right">
+                      <b-button
+                        variant="outline-info"
+                        size="sm"
+                        v-b-modal.managemnt_history
+                      >
+                        메모 이력 보기
+                      </b-button>
+                    </div>
+                  </li>
                 </ul>
               </b-row>
             </div>
@@ -409,6 +446,11 @@
       </b-col>
     </b-row>
     <!-- for the text message -->
+    <b-modal id="managemnt_history" title="업체 메모 이력" hide-footer>
+      <div>
+        <FounderConsultManagementHistory />
+      </div>
+    </b-modal>
     <b-modal
       id="nanuda_user"
       title="사용자정보 수정"
@@ -575,11 +617,13 @@ import CodeManagementService from '../../../services/code-management.service';
 import FounderConsultService from '../../../services/founder-consult.service';
 import AdminService from '../../../services/admin.service';
 import FoodCategoryService from '../../../services/food-category.service';
+import FounderConsultManagementService from '../../../services/founder-consult-management.service';
 import {
   AdminDto,
   AdminListDto,
   FounderConsultDto,
   FounderConsultUpdateDto,
+  FounderConsultManagementDto,
 } from '../../../dto';
 import {
   FoodCategoryDto,
@@ -588,12 +632,14 @@ import {
 import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
 import BaseCard from '../../_components/BaseCard.vue';
+import FounderConsultManagementHistory from './FounderConsultManagementHistory.vue';
 import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'FounderConsultDetail',
   components: {
     BaseCard,
+    FounderConsultManagementHistory,
   },
 })
 export default class FounderConsultDetail extends BaseComponent {
@@ -611,6 +657,7 @@ export default class FounderConsultDetail extends BaseComponent {
   private foodCategorySelect: FoodCategoryDto[] = [];
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
+  private founderConsultManagements: FounderConsultManagementDto[] = [];
 
   // 사용자 정보 수정
   updateNanudaUser() {
@@ -657,6 +704,13 @@ export default class FounderConsultDetail extends BaseComponent {
   getFounderConsultCodes() {
     CodeManagementService.findCodesFounderConsult().subscribe(res => {
       this.founderConsultStatusSelect = res.data;
+    });
+  }
+
+  // 상담 메모 management
+  getFounderConsultManagements(id) {
+    FounderConsultManagementService.findForManagement(id).subscribe(res => {
+      this.founderConsultManagements = res.data;
     });
   }
 
@@ -716,6 +770,7 @@ export default class FounderConsultDetail extends BaseComponent {
   created() {
     const founderConsultId = this.$route.params.id;
     this.findOne(founderConsultId);
+    this.getFounderConsultManagements(founderConsultId);
   }
 }
 </script>

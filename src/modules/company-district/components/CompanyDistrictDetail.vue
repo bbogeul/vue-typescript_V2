@@ -21,6 +21,16 @@
     <div class="row d-flex align-items-stretch">
       <div class="col col-12 col-lg-6 my-3">
         <BaseCard title="지점 정보">
+          <template v-slot:head>
+            <div v-if="companyDistrict.companyDistrictStatus === 'APPROVAL'">
+              <b-button
+                variant="primary"
+                v-b-modal.district_info
+                @click="findDistrictInfo()"
+                >수정하기</b-button
+              >
+            </div>
+          </template>
           <template v-slot:body>
             <div v-if="companyDistrict">
               <ul>
@@ -28,7 +38,9 @@
                   지점 ID : <b>{{ companyDistrict.no }}</b>
                 </li>
                 <li v-if="companyDistrict.nameKr">
-                  지점명 : <b>{{ companyDistrict.nameKr }}</b>
+                  지점명 : <b>{{ companyDistrict.nameKr }}</b> ({{
+                    companyDistrict.nameEng
+                  }})
                 </li>
                 <li v-if="companyDistrict.address">
                   지점 주소 : <b>{{ companyDistrict.address }}</b>
@@ -64,14 +76,45 @@
             </div>
             <ApprovalCard
               :data="companyDistrict"
+              :dto="companyDistrictUpdateRefusalDto"
+              :reasonDto="companyDistrictUpdateRefusalReasonDto"
               status="companyDistrictStatus"
               histories="companyDistrictUpdateHistories"
               @approval="updateApproval()"
+              @refusal="updateRefusal()"
             />
           </template>
         </BaseCard>
       </div>
     </div>
+    <b-modal id="district_info" title="업체 정보 수정" @ok="updateDistrict()">
+      <div class="form-row">
+        <div class="col-12 col-md-6 mt-2">
+          <label>지점명</label>
+          <input
+            type="text"
+            v-model="companyDistrictUpdateDto.nameKr"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>지점명(영문)</label>
+          <input
+            type="text"
+            v-model="companyDistrictUpdateDto.nameEng"
+            class="form-control"
+          />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>지점 주소</label>
+          <input
+            type="text"
+            v-model="companyDistrictUpdateDto.address"
+            class="form-control"
+          />
+        </div>
+      </div>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
@@ -108,6 +151,25 @@ export default class CompanyDistrictDetail extends BaseComponent {
     });
   }
 
+  findDistrictInfo() {
+    this.companyDistrictUpdateDto.nameKr = this.companyDistrict.nameKr;
+    this.companyDistrictUpdateDto.nameEng = this.companyDistrict.nameEng;
+    this.companyDistrictUpdateDto.address = this.companyDistrict.address;
+    this.findOne(this.$route.params.id);
+  }
+
+  // 지점 정보 수정
+  updateDistrict() {
+    CompanyDistrictService.update(
+      this.$route.params.id,
+      this.companyDistrictUpdateDto,
+    ).subscribe(res => {
+      if (res) {
+        this.findOne(this.$route.params.id);
+      }
+    });
+  }
+
   //승인
   updateApproval() {
     CompanyDistrictService.updateCompanyDistrictStatus(
@@ -121,19 +183,19 @@ export default class CompanyDistrictDetail extends BaseComponent {
     });
   }
 
-  //거절
-  // updateRefusal() {
-  //   CompanyDistrictService.updateCompanyDistrictStatus(
-  //     this.$route.params.id,
-  //     'refuse-update',
-  //     this.companyDistrictUpdateRefusalDto,
-  //   ).subscribe(res => {
-  //     if (res) {
-  //       this.findOne(this.$route.params.id);
-  //       toast.success('승인거절');
-  //     }
-  //   });
-  // }
+  // 거절
+  updateRefusal() {
+    CompanyDistrictService.updateCompanyDistrictStatus(
+      this.$route.params.id,
+      'refuse-update',
+      this.companyDistrictUpdateRefusalDto,
+    ).subscribe(res => {
+      if (res) {
+        this.findOne(this.$route.params.id);
+        toast.success('승인거절');
+      }
+    });
+  }
 
   created() {
     const id = this.$route.params.id;

@@ -30,6 +30,14 @@ class NoticeBoardService extends BaseService {
       pagination,
     );
   }
+
+  /**
+   *
+   * @param noticeBoardNo
+   */
+  findOne(noticeBoardNo: string) {
+    return super.get<NoticeBoardDto>(`admin/notice-board/${noticeBoardNo}`);
+  }
 }
 
 export default new NoticeBoardService();

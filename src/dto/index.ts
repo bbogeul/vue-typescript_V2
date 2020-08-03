@@ -11,3 +11,4 @@ export * from './space';
 export * from './nanuda-user';
 export * from './notice-board';
 export * from './space-type';
+export * from './founder-consult-management';

@@ -138,14 +138,12 @@
             >
               STATUS
             </th>
-            <th scope="col">
-              -
-            </th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="district in companyDistrictList" :key="district.no">
-            <td>{{ district.no }}</td>
+            <th scope="row">{{ district.no }}</th>
             <td>{{ district.company.nameKr }}</td>
             <td>{{ district.nameKr }}</td>
             <td>{{ district.address }}</td>
@@ -295,7 +293,7 @@ export default class CompanyDistrictList extends BaseComponent {
   private approvalStatus: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
   private companyDistrictCreateDto = new CompanyDistrictDto();
   private companySelect: CompanyDto[] = [];
-  private dataLoading: boolean = false;
+  private dataLoading = false;
 
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {

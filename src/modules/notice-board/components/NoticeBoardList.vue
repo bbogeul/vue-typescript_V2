@@ -1,36 +1,58 @@
 <template>
   <section>
-    <h3>공지사항 관리</h3>
+    <div class="title pb-2 mb-2">
+      <h3>공지사항 관리</h3>
+    </div>
     <div class="divider"></div>
-    <div v-on:keyup.enter="search()">
+    <div class="search-box my-4" v-on:keyup.enter="search()">
       <div class="form-row mb-3">
         <div class="col-md-2">
           <label for>공지사항 아이디</label>
-          <input type="text" class="form-control" v-model="noticeBoardListDto.no" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.no"
+          />
         </div>
         <div class="col-md-4">
           <label for>제목</label>
-          <input type="text" class="form-control" v-model="noticeBoardListDto.title" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.title"
+          />
         </div>
         <div class="col-md-4">
           <label for>웹주소</label>
-          <input type="text" class="form-control" v-model="noticeBoardListDto.url" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.url"
+          />
         </div>
         <div class="col-md-2">
           <label for>공지사항 종류</label>
-          <select class="custom-select" v-model="noticeBoardListDto.noticeBoardType">
+          <select
+            class="custom-select"
+            v-model="noticeBoardListDto.noticeBoardType"
+          >
             <option
               v-for="noticeBoardType in noticeBoardTypes"
               :key="noticeBoardType"
               :value="noticeBoardType"
-            >{{noticeBoardType | enumTransformer}}</option>
+              >{{ noticeBoardType | enumTransformer }}</option
+            >
           </select>
         </div>
       </div>
       <div class="form-row mb-3">
         <div class="col-md-2">
           <label for>관리자 아이디</label>
-          <input type="text" class="form-control" v-model="noticeBoardListDto.adminName" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.adminName"
+          />
         </div>
       </div>
       <div class="text-center">
@@ -45,38 +67,63 @@
         <h5>
           <span>TOTAL</span>
           <strong class="text-primary">
-            {{
-            noticeBoardListCount
-            }}
+            {{ noticeBoardListCount }}
           </strong>
         </h5>
       </div>
-      <b-button variant="primary" :to="{path: '/notice-board/create'}">공지사항 생성</b-button>
+      <b-button variant="primary" :to="{ path: '/notice-board/create' }"
+        >공지사항 생성</b-button
+      >
     </div>
-    <table class="table table-bordered table-hover table-sm text-center" v-if="!dataLoading">
+    <table
+      class="table table-bordered table-hover table-sm text-center"
+      v-if="!dataLoading"
+    >
       <thead>
         <tr>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.no }">NO</th>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.adminName }">관리자</th>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.title }">TITLE</th>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.url }">웹 주소</th>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.noticeBoardType }">알림 종류</th>
-          <th scope="col">VIEW</th>
+          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.no }">
+            NO
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{ highlighted: noticeBoardListDto.adminName }"
+          >
+            관리자
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{ highlighted: noticeBoardListDto.title }"
+          >
+            TITLE
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{ highlighted: noticeBoardListDto.url }"
+          >
+            웹 주소
+          </th>
+          <th
+            scope="col"
+            v-bind:class="{ highlighted: noticeBoardListDto.noticeBoardType }"
+          >
+            알림 종류
+          </th>
         </tr>
       </thead>
       <tbody v-if="noticeBoardListCount">
-        <tr v-for="noticeBoard in noticeBoards" :key="noticeBoard.no">
-          <th scope="row" class="align-middle">{{ noticeBoard.no }}</th>
-          <td class="align-middle" v-if="noticeBoard.admin">{{ noticeBoard.admin.name }}</td>
-          <td class="align-middle">{{ noticeBoard.title }}</td>
-          <td class="align-middle">{{ noticeBoard.url }}</td>
-          <td
-            class="align-middle"
-            v-if="noticeBoard.codeManagement"
-          >{{ noticeBoard.codeManagement.value }}</td>
-
-          <td class="align-middle">
-            <router-link>상세보기</router-link>
+        <tr
+          v-for="noticeBoard in noticeBoards"
+          :key="noticeBoard.no"
+          @click="findOne(noticeBoard.no)"
+        >
+          <th scope="row">{{ noticeBoard.no }}</th>
+          <td v-if="noticeBoard.admin">
+            {{ noticeBoard.admin.name }}
+          </td>
+          <td>{{ noticeBoard.title }}</td>
+          <td>{{ noticeBoard.url }}</td>
+          <td v-if="noticeBoard.codeManagement">
+            {{ noticeBoard.codeManagement.value }}
           </td>
         </tr>
       </tbody>
@@ -108,6 +155,7 @@ import { NOTICE_BOARD, CONST_NOTICE_BOARD } from '@/services/shared';
 import NoticeBoardService from '../../../services/notice-board.service';
 import { NoticeBoardListDto, NoticeBoardDto } from '@/dto';
 import { Pagination } from '@/common';
+import noticeBoardService from '../../../services/notice-board.service';
 
 @Component({
   name: 'NoticeBoardList',
@@ -127,7 +175,7 @@ export default class NoticeBoardList extends BaseComponent {
     this.search();
   }
 
-  paginatedSearch() {
+  paginateSearch() {
     this.search(true);
   }
 
@@ -148,6 +196,11 @@ export default class NoticeBoardList extends BaseComponent {
       );
     });
     window.scrollTo(0, 0);
+  }
+
+  // 상세보기
+  findOne(boardId) {
+    this.$router.push(`/notice-board/${boardId}`);
   }
 
   created() {

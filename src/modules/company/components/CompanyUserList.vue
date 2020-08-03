@@ -114,7 +114,6 @@ export default class CompanyUserList extends BaseComponent {
       this.companyUserListDto,
       this.pagination,
     ).subscribe(res => {
-      console.log('companyUser', res);
       this.companyUserList = res.data.items;
       this.companyUserListCount = res.data.totalCount;
     });

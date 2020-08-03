@@ -12,8 +12,15 @@
       >
     </div>
     <div class="row d-flex align-items-stretch">
-      <div class="col col-12 col-lg-6">
+      <div class="col col-12 col-lg-6 my-3">
         <BaseCard title="사용자 정보">
+          <template v-slot:head>
+            <div>
+              <b-button variant="danger" v-b-modal.delete_user
+                >삭제하기</b-button
+              >
+            </div>
+          </template>
           <template v-slot:body>
             <div v-if="companyUser">
               <ul>
@@ -71,6 +78,34 @@
       </div>
     </div>
     <b-modal
+      id="delete_user"
+      title="사용자 삭제"
+      header-bg-variant="danger"
+      header-text-variant="light"
+      hide-footer
+    >
+      <div class="text-center">
+        <p>
+          <b>정말로 삭제하시겠습니까?</b>
+        </p>
+        <div class="mt-3">
+          <input
+            type="text"
+            placeholder="사용자 이름을 입력해주세요"
+            name="delete_name"
+            class="form-control"
+            id="delete_user_name"
+            v-model="deleteUserName"
+          />
+        </div>
+        <div class="mt-2 text-right">
+          <b-button variant="danger" @click="deleteCompanyUser()"
+            >삭제</b-button
+          >
+        </div>
+      </div>
+    </b-modal>
+    <!-- <b-modal
       id="company-user-info"
       title="사용자 정보 수정"
       @ok="updateUserInfo()"
@@ -88,7 +123,7 @@
           </select>
         </div>
       </div>
-    </b-modal>
+    </b-modal> -->
   </section>
 </template>
 <script lang="ts">
@@ -125,6 +160,7 @@ export default class CompanyUserDetail extends BaseComponent {
   private companyUserUpdateRefusalDto = new CompanyUserUpdateRefusalDto();
   private companyUserUpdateRefusalReasonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
   private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
+  private deleteUserName = '';
 
   findOne(id) {
     CompanyUserService.findOne(id).subscribe(res => {
@@ -143,6 +179,21 @@ export default class CompanyUserDetail extends BaseComponent {
   //     }
   //   });
   // }
+
+  // 삭제
+  deleteCompanyUser() {
+    if (this.deleteUserName === this.companyUser.name) {
+      CompanyUserService.deleteCompanyUser(this.$route.params.id).subscribe(
+        res => {
+          if (res) {
+            this.$router.push('/company-user');
+          }
+        },
+      );
+    } else {
+      toast.error('이름을 정확히 입력해주세요');
+    }
+  }
 
   // 승인
   updateApproval() {

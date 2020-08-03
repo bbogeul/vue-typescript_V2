@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import { YN } from '@/common';
-import { GENDER, APPROVAL_STATUS } from '@/services/shared';
 export const StringPipeTransformer = () =>
   Vue.filter('stringTransformer', (value: string): string => {
     if (value === 'businessNo') {

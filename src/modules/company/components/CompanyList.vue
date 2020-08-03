@@ -104,7 +104,7 @@
       >
     </div>
     <table
-      class="table table-bordered table-hover table-sm text-center"
+      class="table table-bordered table-hover table-sm table-responsive-md text-center"
       v-if="!dataLoading"
     >
       <thead>
@@ -159,39 +159,39 @@
       </thead>
       <tbody v-if="companyListTotalCount">
         <tr v-for="companyList in companyListDto" :key="companyList.no">
-          <td class="align-middle">
+          <th scope="row">
             {{ companyList.no }}
-          </td>
-          <td class="align-middle">
+          </th>
+          <td class="text-nowrap">
             {{ companyList.nameKr }}
           </td>
-          <td class="align-middle">
+          <td class="text-nowrap">
             {{ companyList.ceoKr }}
           </td>
-          <td class="align-middle">
+          <td>
             {{ companyList.phone }}
           </td>
-          <td class="align-middle">
+          <td>
             {{ companyList.email }}
           </td>
-          <td class="align-middle">
+          <td>
             {{ companyList.fax }}
           </td>
-          <td class="align-middle text-left">
+          <td class="text-left">
             {{ companyList.address }}
           </td>
-          <td class="align-middle">
+          <td>
             {{ companyList.createdAt | dateTransformer }}
           </td>
-          <td class="align-middle">
+          <td>
             <span class="badge badge-pill badge-warning p-2">
               {{ companyList.codeManagement.value }}
             </span>
           </td>
-          <td class="align-middle">
+          <td>
             <router-link
               v-if="companyList.no"
-              class="btn btn-sm btn-secondary"
+              class="btn btn-sm btn-secondary text-nowrap"
               :to="{
                 name: 'CompanyDetail',
                 params: {

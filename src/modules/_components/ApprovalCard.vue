@@ -17,7 +17,13 @@
           >
             <ul>
               <li v-for="(value, name) in data[histories][0]" :key="name">
-                {{ name | stringTransformer }} : {{ value }}
+                <span v-if="histories === 'companyDistrictHistories'">
+                  {{ name | stringDistrictTransformer }}
+                </span>
+                <span v-else>
+                  {{ name | stringTransformer }}
+                </span>
+                : {{ value }}
               </li>
             </ul>
           </div>
@@ -46,7 +52,7 @@
         </div>
         <div v-if="data[histories][0]">
           <ul
-            v-if="data[histories][0]"
+            v-if="Object.keys(data[histories][0].refusalReasons).length !== 0"
             class="py-2 mt-3 border-top border-bottom"
           >
             <li
@@ -54,7 +60,12 @@
               :key="name"
             >
               <span :class="{ 'text-danger': value }">
-                {{ name | stringTransformer }}
+                <span v-if="histories === 'companyDistrictUpdateHistories'">
+                  {{ name | stringDistrictTransformer }}
+                </span>
+                <span v-else>
+                  {{ name | stringTransformer }}
+                </span>
               </span>
             </li>
           </ul>
@@ -84,7 +95,14 @@
             class="form-check-input"
             :id="name"
           />
-          <label :for="name">{{ name | stringTransformer }}</label>
+          <label :for="name">
+            <span v-if="histories === 'companyDistrictHistories'">
+              {{ name | stringTransformer }}
+            </span>
+            <span v-else>
+              {{ name | stringTransformer }}
+            </span>
+          </label>
         </div>
         <div>
           <label for="refusalDesc" class="d-block">거절이유</label>

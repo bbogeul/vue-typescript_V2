@@ -4,6 +4,7 @@ import {
   CompanyDistrictDto,
   CompanyDistrictListDto,
   CompanyDistrictUpdateRefusalDto,
+  CompanyDistrictUpdateDto,
 } from '@/dto';
 
 class CompanyDistrictService extends BaseService {
@@ -45,6 +46,21 @@ class CompanyDistrictService extends BaseService {
     return super.patch<CompanyDistrictDto>(
       `admin/company-district/${companyDistrictNo}/${param}`,
       companyDistrictUpdateRefusalDto,
+    );
+  }
+
+  /**
+   *
+   * @param companyDistrictNo
+   * @param companyDistrictUpdateDto
+   */
+  update(
+    companyDistrictNo: string,
+    companyDistrictUpdateDto: CompanyDistrictUpdateDto,
+  ) {
+    return super.patch<CompanyDistrictDto>(
+      `admin/company-district/${companyDistrictNo}`,
+      companyDistrictUpdateDto,
     );
   }
 

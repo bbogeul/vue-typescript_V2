@@ -1,42 +1,84 @@
 <template>
   <section>
-    <h3>공지사항 생성</h3>
-    <div class="divider"></div>
-    <div class="form-row">
-      <div class="col-md-10">
-        <label>
-          제목
-          <span class="red-text">*</span>
-        </label>
-        <input class="form-control" v-model="noticeBoardCreateDto.title" />
+    <b-row no-gutters align-h="between" align-v="end" class="mb-2">
+      <h3>
+        공지사항 등록
+      </h3>
+      <router-link to="/notice-board" class="btn btn-secondary text-center"
+        >목록으로</router-link
+      >
+    </b-row>
+    <div class="mt-3">
+      <div class="form-row">
+        <div class="col-md-2">
+          <label for="create_board_type">
+            공지사항 종류
+            <span class="red-text">*</span>
+          </label>
+          <select
+            class="custom-select"
+            id="create_board_type"
+            v-model="noticeBoardCreateDto.noticeBoardType"
+          >
+            <option
+              v-for="noticeBoardType in noticeBoardTypes"
+              :key="noticeBoardType"
+              :value="noticeBoardType"
+              >{{ noticeBoardType | enumTransformer }}</option
+            >
+          </select>
+        </div>
+        <div class="col-md-10">
+          <label for="create_title">
+            제목
+            <span class="red-text">*</span>
+          </label>
+          <input
+            class="form-control"
+            id="create_title"
+            v-model="noticeBoardCreateDto.title"
+          />
+        </div>
       </div>
-      <div class="col-md-2">
-        <label>
-          공지사항 종류
-          <span class="red-text">*</span>
-        </label>
-        <select class="custom-select" v-model="noticeBoardCreateDto.noticeBoardType">
-          <option
-            v-for="noticeBoardType in noticeBoardTypes"
-            :key="noticeBoardType"
-            :value="noticeBoardType"
-          >{{ noticeBoardType | enumTransformer }}</option>
-        </select>
+      <div class="form-row mt-2">
+        <div class="col-md-12">
+          <label for="create_content">
+            내용
+            <span class="red-text">*</span>
+          </label>
+          <vue-editor
+            id="create_content"
+            class="bg-white"
+            v-model="noticeBoardCreateDto.content"
+            :editorToolbar="editorToolbar"
+          ></vue-editor>
+        </div>
       </div>
-    </div>
-    <div class="form-row mt-2">
-      <div class="col-md-12">
-        <label>
-          내용
-          <span class="red-text">*</span>
-        </label>
-        <vue-editor v-model="noticeBoardCreateDto.content" :editorToolbar="editorToolbar"></vue-editor>
+      <div class="form-row mt-2">
+        <div class="col-12">
+          <label for="create_url">
+            URL
+          </label>
+          <input
+            class="form-control"
+            id="create_url"
+            v-model="noticeBoardCreateDto.url"
+          />
+        </div>
       </div>
-    </div>
-    <div class="text-center mt-2">
-      <div class="btn-group mb-4" v-if="noticeBoardCreateDto.content">
-        <b-button variant="primary" @click="clearedOut()">초기화</b-button>
-        <b-button v-b-modal.confirm-notice variant="success">생성하기</b-button>
+      <div class="text-center mt-4">
+        <b-row
+          no-gutters
+          align-h="between"
+          align-v="center"
+          class="mb-4"
+          v-if="noticeBoardCreateDto.content"
+        >
+          <b-button variant="secondary" @click="clearedOut()">초기화</b-button>
+          <b-button v-b-modal.confirm-notice variant="primary"
+            >생성하기</b-button
+          >
+        </b-row>
       </div>
     </div>
     <!-- <b-modal
@@ -64,7 +106,10 @@
     >
       <div class="container ql-editor">
         <p class="mb-2" style="font-size:11px">
-          <i>사용자들이 보는 공지사항과 하단에 표시된 내용이 사용자 컴퓨터나 브라우저 따라 다소 차이가 있을 수 있습니다.</i>
+          <i
+            >사용자들이 보는 공지사항과 하단에 표시된 내용이 사용자 컴퓨터나
+            브라우저 따라 다소 차이가 있을 수 있습니다.</i
+          >
         </p>
         <h3>{{ noticeBoardCreateDto.title }}</h3>
         <div class="divider mt-2"></div>
@@ -81,6 +126,7 @@ import { EditorConfig } from '../../../config';
 import { NoticeBoardDto } from '@/dto';
 import { NOTICE_BOARD, CONST_NOTICE_BOARD } from '@/services/shared';
 import NoticeBoardService from '../../../services/notice-board.service';
+import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'NoticeBoardCreate',
@@ -100,11 +146,12 @@ export default class NoticeBoardCreate extends BaseComponent {
 
   create() {
     NoticeBoardService.create(this.noticeBoardCreateDto).subscribe(res => {
-      console.log(res);
-      this.$router.push('/notice-board');
+      if (res) {
+        this.$router.push('/notice-board');
+        toast.success('승인완료');
+      }
     });
   }
 }
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

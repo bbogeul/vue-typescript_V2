@@ -146,6 +146,10 @@ export class BaseService extends Vue {
     return this.__api('patch', path, params);
   }
 
+  protected delete<T>(path: string, params?: any): AxiosObservable<T> {
+    return this.__api('delete', path, params);
+  }
+
   protected paginate<T>(
     path: string,
     params: any | Pagination,
