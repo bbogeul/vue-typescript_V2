@@ -34,3 +34,4 @@
     - UPDATE STATUS [x]
     - CREATE [x]
     - DELETE
+18. sticky footerzz

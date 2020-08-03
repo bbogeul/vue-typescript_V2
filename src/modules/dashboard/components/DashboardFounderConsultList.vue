@@ -1,10 +1,8 @@
 <template>
   <section>
     <div class="title">
-      <h4 class="d-inline-block">최신 방문자 신청</h4>
-      <router-link to="/founder-consult" class="btn btn-primary float-right">
-        더 보기
-      </router-link>
+      <h4 class="d-inline-block">최신 배달형 방문자 신청</h4>
+      <router-link to="/founder-consult" class="btn btn-primary float-right">더 보기</router-link>
     </div>
     <table class="table table-hover table-sm table-bordered text-center">
       <thead>
@@ -23,10 +21,7 @@
         </tr>
       </thead>
       <tbody v-if="founderConsultListCount > 0">
-        <tr
-          v-for="founderConsult in founderConsultList"
-          :key="founderConsult.no"
-        >
+        <tr v-for="founderConsult in founderConsultList" :key="founderConsult.no">
           <th scope="row">
             <router-link
               :to="{
@@ -34,8 +29,7 @@
                 params: { id: founderConsult.no },
               }"
               class="text-primary"
-              >{{ founderConsult.no }}</router-link
-            >
+            >{{ founderConsult.no }}</router-link>
           </th>
           <td>{{ founderConsult.spaceNo }}</td>
           <td>{{ founderConsult.nanudaUser.name }}</td>
@@ -46,10 +40,7 @@
           </td>
           <td>{{ founderConsult.createdAt | dateTransformer }}</td>
           <td v-if="founderConsult.space.companyDistricts">
-            <div
-              v-for="company in founderConsult.space.companyDistricts"
-              :key="company.no"
-            >
+            <div v-for="company in founderConsult.space.companyDistricts" :key="company.no">
               <div v-if="company.company.nameKr">
                 <router-link
                   :to="{
@@ -58,21 +49,19 @@
                       id: company.company.no,
                     },
                   }"
-                >
-                  {{ company.company.nameKr }}
-                </router-link>
+                >{{ company.company.nameKr }}</router-link>
               </div>
             </div>
           </td>
           <td>
-            <div v-if="founderConsult.availableTime">
-              {{ founderConsult.availableTime.value }}
-            </div>
+            <div v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</div>
           </td>
           <td>
-            <span class="badge badge-pill badge-warning p-2">{{
+            <span class="badge badge-pill badge-warning p-2">
+              {{
               founderConsult.codeManagement.value
-            }}</span>
+              }}
+            </span>
           </td>
           <td>
             <router-link
@@ -81,16 +70,13 @@
                 name: 'FounderConsultDetail',
                 params: { id: founderConsult.no },
               }"
-              >상세보기</router-link
-            >
+            >상세보기</router-link>
           </td>
         </tr>
       </tbody>
       <tbody v-else>
         <tr>
-          <td class="empty-data">
-            상담 신청 내역 없음
-          </td>
+          <td class="empty-data">상담 신청 내역 없음</td>
         </tr>
       </tbody>
     </table>
@@ -109,6 +95,7 @@ import {
   FounderConsultListDto,
   FounderConsultDto,
 } from '../../../dto/founder-consult';
+import { SPACE_TYPE } from '@/services/shared';
 
 @Component({
   name: 'DashboardFounderConsultList',
@@ -122,13 +109,13 @@ export default class DashboardFounderConsultList extends BaseComponent {
   //TODO:  need to refactor base service
   getDashboardList() {
     this.pagination.limit = 10;
+    this.founderConsultListDto.spaceTypeNo = SPACE_TYPE.ONLY_DELIVERY;
     FounderConsultService.findAll(
       this.founderConsultListDto,
       this.pagination,
     ).subscribe(res => {
-      const data = res;
-      this.founderConsultList = data.data.items;
-      this.founderConsultListCount = data.data.totalCount;
+      this.founderConsultList = res.data.items;
+      this.founderConsultListCount = res.data.totalCount;
     });
   }
 

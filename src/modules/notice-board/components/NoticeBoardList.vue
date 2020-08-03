@@ -51,7 +51,7 @@
           </strong>
         </h5>
       </div>
-      <b-button variant="primary" @click="clearOutCompanyDistrctDto()">공지사항 생성</b-button>
+      <b-button variant="primary" :to="{path: '/notice-board/create'}">공지사항 생성</b-button>
     </div>
     <table class="table table-bordered table-hover table-sm text-center" v-if="!dataLoading">
       <thead>

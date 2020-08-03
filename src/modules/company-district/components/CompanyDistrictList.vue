@@ -79,7 +79,7 @@
       <b-button
         variant="primary"
         v-b-modal.add_company_district
-        @click="clearOutCompanyDistrctDto()"
+        @click="clearOutCompanyDistrictDto()"
         >업체 지점 추가</b-button
       >
     </div>
@@ -333,7 +333,7 @@ export default class CompanyDistrictList extends BaseComponent {
     });
   }
 
-  clearOutCompanyDistrctDto() {
+  clearOutCompanyDistrictDto() {
     this.companyDistrictCreateDto = new CompanyDistrictDto();
   }
 
