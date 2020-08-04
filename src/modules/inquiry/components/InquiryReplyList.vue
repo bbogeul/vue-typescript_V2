@@ -14,10 +14,10 @@
             v-for="reply in inquiryReplyList"
             :key="reply.no"
             class="reply-item-wrap"
-            :class="[reply.companyUser ? 'compay-user' : 'admin']"
+            :class="[reply.companyUserNo ? 'company-user' : 'admin']"
           >
             <div class="reply-item">
-              <template v-if="reply.companyUser">
+              <template v-if="reply.companyUserNo">
                 <div class="reply-user">
                   <span class="user-icon">
                     <b-avatar size="4em"></b-avatar>
@@ -172,7 +172,7 @@ export default class InquiryReplyList extends BaseComponent {
       margin-top: 1.5rem;
     }
 
-    &.compay-user {
+    &.company-user {
       justify-content: flex-start;
       .reply-item {
         justify-content: flex-start;
