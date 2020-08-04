@@ -1,8 +1,8 @@
 <template>
   <section>
-    <b-row no-gutters align-h="between" align-v="end" class="mb-2">
+    <b-row no-gutters align-h="between" align-v="end" class="title mb-2">
       <h3>
-        공지사항 등록
+        <span>공지사항 등록</span>
       </h3>
       <router-link to="/notice-board" class="btn btn-secondary text-center"
         >목록으로</router-link
@@ -10,9 +10,9 @@
     </b-row>
     <div class="mt-3">
       <div class="form-row">
-        <div class="col-md-2">
+        <div class="col-md-2 mb-3">
           <label for="create_board_type">
-            공지사항 종류
+            카테고리
             <span class="red-text">*</span>
           </label>
           <select
@@ -28,7 +28,7 @@
             >
           </select>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-10 mb-3">
           <label for="create_title">
             제목
             <span class="red-text">*</span>
@@ -40,8 +40,31 @@
           />
         </div>
       </div>
-      <div class="form-row mt-2">
-        <div class="col-md-12">
+      <!-- <div
+        class="mb-2"
+        v-if="noticeBoardCreateDto.noticeBoardType === 'EVENT_NOTICE'"
+      >
+        <label for="create_startend">
+          이벤트 기간
+        </label>
+        <b-row align-v="center">
+          <b-col>
+            <b-form-datepicker
+              id="create_started"
+              v-model="startDate"
+            ></b-form-datepicker>
+          </b-col>
+          ~
+          <b-col>
+            <b-form-datepicker
+              id="create_ended"
+              v-model="endDate"
+            ></b-form-datepicker>
+          </b-col>
+        </b-row>
+      </div> -->
+      <div class="form-row">
+        <div class="col-md-12 mb-3">
           <label for="create_content">
             내용
             <span class="red-text">*</span>
@@ -54,8 +77,8 @@
           ></vue-editor>
         </div>
       </div>
-      <div class="form-row mt-2">
-        <div class="col-12">
+      <div class="form-row">
+        <div class="col-12  mb-3">
           <label for="create_url">
             URL
           </label>
@@ -76,7 +99,7 @@
         >
           <b-button variant="secondary" @click="clearedOut()">초기화</b-button>
           <b-button v-b-modal.confirm-notice variant="primary"
-            >생성하기</b-button
+            >등록하기</b-button
           >
         </b-row>
       </div>
@@ -96,24 +119,24 @@
     </b-modal>-->
     <b-modal
       id="confirm-notice"
-      title="공지사항 생성하겠습니까?"
+      title="공지사항 미리보기"
       size="xl"
       header-bg-variant="success"
       header-text-variant="light"
-      ok-title="생성하기"
+      ok-title="등록하기"
       ok-variant="success"
       @ok="create()"
     >
       <div class="container ql-editor">
-        <p class="mb-2" style="font-size:11px">
+        <h3>{{ noticeBoardCreateDto.title }}</h3>
+        <div class="divider mt-2"></div>
+        <span v-html="noticeBoardCreateDto.content"></span>
+        <p class="mt-4 text-right" style="font-size:11px">
           <i
             >사용자들이 보는 공지사항과 하단에 표시된 내용이 사용자 컴퓨터나
             브라우저 따라 다소 차이가 있을 수 있습니다.</i
           >
         </p>
-        <h3>{{ noticeBoardCreateDto.title }}</h3>
-        <div class="divider mt-2"></div>
-        <span v-html="noticeBoardCreateDto.content"></span>
       </div>
     </b-modal>
   </section>
@@ -139,6 +162,8 @@ export default class NoticeBoardCreate extends BaseComponent {
   private htmlContent = null;
   private noticeBoardTypes: NOTICE_BOARD[] = [...CONST_NOTICE_BOARD];
   private editorToolbar = EditorConfig;
+  private startDate = new Date();
+  private endDate = new Date();
 
   clearedOut() {
     this.noticeBoardCreateDto = new NoticeBoardDto();

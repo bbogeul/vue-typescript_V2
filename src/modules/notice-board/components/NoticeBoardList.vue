@@ -5,33 +5,17 @@
     </div>
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">
-      <div class="form-row mb-3">
-        <div class="col-md-2">
-          <label for>공지사항 아이디</label>
+      <div class="form-row">
+        <div class="col-6 col-md-2 mb-3">
+          <label for>공지사항 ID</label>
           <input
             type="text"
             class="form-control"
             v-model="noticeBoardListDto.no"
           />
         </div>
-        <div class="col-md-4">
-          <label for>제목</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="noticeBoardListDto.title"
-          />
-        </div>
-        <div class="col-md-4">
-          <label for>웹주소</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="noticeBoardListDto.url"
-          />
-        </div>
-        <div class="col-md-2">
-          <label for>공지사항 종류</label>
+        <div class="col-6 col-md-2 mb-3">
+          <label for>카테고리</label>
           <select
             class="custom-select"
             v-model="noticeBoardListDto.noticeBoardType"
@@ -44,9 +28,25 @@
             >
           </select>
         </div>
+        <div class="col-md-4 mb-3">
+          <label for>제목</label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.title"
+          />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for>URL</label>
+          <input
+            type="text"
+            class="form-control"
+            v-model="noticeBoardListDto.url"
+          />
+        </div>
       </div>
-      <div class="form-row mb-3">
-        <div class="col-md-2">
+      <div class="form-row">
+        <div class="col-md-2 mb-3">
           <label for>관리자 아이디</label>
           <input
             type="text"
@@ -72,67 +72,82 @@
         </h5>
       </div>
       <b-button variant="primary" :to="{ path: '/notice-board/create' }"
-        >공지사항 생성</b-button
+        >공지사항 등록</b-button
       >
     </div>
-    <table
-      class="table table-bordered table-hover table-sm text-center"
-      v-if="!dataLoading"
-    >
-      <thead>
-        <tr>
-          <th scope="col" v-bind:class="{ highlighted: noticeBoardListDto.no }">
-            NO
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: noticeBoardListDto.adminName }"
+    <div v-if="!dataLoading">
+      <table
+        class="table table-bordered table-hover table-sm text-center"
+        v-if="noticeBoardListCount"
+      >
+        <thead>
+          <tr>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: noticeBoardListDto.no }"
+            >
+              NO
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: noticeBoardListDto.noticeBoardType }"
+            >
+              카테고리
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: noticeBoardListDto.title }"
+            >
+              제목
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: noticeBoardListDto.url }"
+            >
+              URL
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: noticeBoardListDto.adminName }"
+            >
+              관리자
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="noticeBoard in noticeBoards"
+            :key="noticeBoard.no"
+            @click="findOne(noticeBoard.no)"
           >
-            관리자
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: noticeBoardListDto.title }"
-          >
-            TITLE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: noticeBoardListDto.url }"
-          >
-            웹 주소
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: noticeBoardListDto.noticeBoardType }"
-          >
-            알림 종류
-          </th>
-        </tr>
-      </thead>
-      <tbody v-if="noticeBoardListCount">
-        <tr
-          v-for="noticeBoard in noticeBoards"
-          :key="noticeBoard.no"
-          @click="findOne(noticeBoard.no)"
-        >
-          <th scope="row">{{ noticeBoard.no }}</th>
-          <td v-if="noticeBoard.admin">
-            {{ noticeBoard.admin.name }}
-          </td>
-          <td>{{ noticeBoard.title }}</td>
-          <td>{{ noticeBoard.url }}</td>
-          <td v-if="noticeBoard.codeManagement">
-            {{ noticeBoard.codeManagement.value }}
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan=" 6" class="empty-data">검색결과가 없습니다.</td>
-        </tr>
-      </tbody>
-    </table>
+            <th scope="row">{{ noticeBoard.no }}</th>
+            <td v-if="noticeBoard.codeManagement">
+              {{ noticeBoard.codeManagement.value }}
+            </td>
+            <td class="text-left">{{ noticeBoard.title }}</td>
+            <td>{{ noticeBoard.url }}</td>
+            <td v-if="noticeBoard.admin">
+              {{ noticeBoard.admin.name }}
+            </td>
+            <td>
+              <router-link
+                v-if="noticeBoard.no"
+                class="btn btn-sm btn-secondary"
+                :to="{
+                  name: 'NoticeBoardDetail',
+                  params: {
+                    id: noticeBoard.no,
+                  },
+                }"
+                >상세보기</router-link
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-else class="empty-data border">검색결과가 없습니다.</div>
+    </div>
     <b-pagination
       v-model="pagination.page"
       v-if="noticeBoardListCount"

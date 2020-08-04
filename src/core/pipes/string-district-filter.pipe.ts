@@ -10,4 +10,10 @@ export const StringDistrictPipeTransformer = () =>
     if (value === 'address') {
       return '지점 주소';
     }
+    if (value === 'refusalReasons') {
+      return '거절 항목';
+    }
+    if (value === 'refusalDesc') {
+      return '거절 사유';
+    }
   });

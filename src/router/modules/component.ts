@@ -156,12 +156,12 @@ const componentsRouter: RouteConfig[] = [
       },
       {
         path: '/notice-board/:id([0-9]+)',
+        name: 'NoticeBoardDetail',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/notice-board/components/NoticeBoardDetail.vue'
           ),
-        name: '공지사항 상세',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
@@ -185,6 +185,59 @@ const componentsRouter: RouteConfig[] = [
           title: '공지사항 생성',
         },
       },
+    ],
+  },
+  {
+    path: '/inquiry',
+    name: 'Q&A',
+    component: () => import('../../modules/inquiry/Inquiry.vue'),
+    children: [
+      {
+        path: '/inquiry',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/inquiry/components/InquiryList.vue'
+          ),
+        name: 'Q&A 관리',
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: 'Q&A 관리',
+        },
+      },
+      {
+        path: '/inquiry/:id([0-9]+)',
+        name: 'InquiryDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/inquiry/components/InquiryDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: 'Q&A 상세',
+        },
+      },
+      // {
+      //   path: '/inquiry/create',
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "lazyLoaded" */
+      //       '../../modules/inquiry/components/InquiryCreate.vue'
+      //     ),
+      //   name: 'Q&A 생성',
+      //   meta: {
+      //     authRequired: true,
+      //     layout: 'MainLayout',
+      //     roles: [...CONST_ADMIN_USER],
+      //     title: '공지사항 생성',
+      //   },
+      // },
     ],
   },
 ];
