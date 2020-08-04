@@ -35,7 +35,7 @@ class CompanyUserService extends BaseService {
    * @param CompanyUserUpdateDto
    */
   update(companyUserNo: string, CompanyUserUpdateDto: CompanyUserUpdateDto) {
-    return super.patch(
+    return super.patch<CompanyUserDto>(
       `admin/company-user/${companyUserNo}`,
       CompanyUserUpdateDto,
     );
@@ -52,7 +52,7 @@ class CompanyUserService extends BaseService {
     param: string,
     companyUserUpdateRefusalDto?: CompanyUserUpdateRefusalDto,
   ) {
-    return super.patch(
+    return super.patch<CompanyUserDto>(
       `admin/company-user/${companyUserNo}/${param}`,
       companyUserUpdateRefusalDto,
     );
@@ -66,6 +66,10 @@ class CompanyUserService extends BaseService {
     return super.post<CompanyUserDto>('admin/company-user', companyUser);
   }
 
+  /**
+   *
+   * @param companyUserNo
+   */
   deleteCompanyUser(companyUserNo: string) {
     return super.delete<CompanyUserDto>(`admin/company-user/${companyUserNo}`);
   }

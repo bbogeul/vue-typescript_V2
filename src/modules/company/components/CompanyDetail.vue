@@ -15,11 +15,15 @@
       <div class="my-3 col-12 col-lg-6">
         <BaseCard title="업체 정보">
           <template v-slot:head>
-            <div v-if="company.companyStatus === 'APPROVAL'">
+            <div>
+              <b-button variant="danger" v-b-modal.delete_company
+                >삭제하기</b-button
+              >
               <b-button
                 variant="primary"
                 v-b-modal.company_info
                 @click="findCompanyInfo()"
+                v-if="company.companyStatus === 'APPROVAL'"
                 >수정하기</b-button
               >
             </div>
@@ -138,29 +142,30 @@
         </BaseCard>
       </div>
     </div>
+
     <b-modal
-      id="company-district"
-      title="지점 추가하기"
-      @cancel="new CompanyDistrictDto()"
-      @hide="new CompanyDistrictDto()"
-      @ok="createCompanyDistrcit()"
+      id="delete_company"
+      title="업체 삭제"
+      header-bg-variant="danger"
+      header-text-variant="light"
+      hide-footer
     >
-      <div class="form-row">
-        <div class="col-12 mb-3">
-          <label for>지점명</label>
-          <input type="text" class="form-control" id />
+      <div class="text-center">
+        <p>
+          <b>정말로 삭제하시겠습니까?</b>
+        </p>
+        <div class="mt-3">
+          <input
+            type="text"
+            placeholder="업체 이름을 입력해주세요"
+            name="delete_company"
+            class="form-control"
+            id="delete_company"
+            v-model="deleteCompanyName"
+          />
         </div>
-        <div class="col-12 mb-3">
-          <label>승인 상태</label>
-          <select class="custom-select">
-            <option value selected>전체</option>
-            <option
-              v-for="status in approvalStatusSelect"
-              :key="status"
-              :value="status"
-              >{{ status | enumTransformer }}</option
-            >
-          </select>
+        <div class="mt-2 text-right">
+          <b-button variant="danger" @click="deleteCompany()">삭제</b-button>
         </div>
       </div>
     </b-modal>
@@ -339,6 +344,7 @@ export default class CompanyDetail extends BaseComponent {
   private companyUpdateRefusalReasonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUpdateRefusalReasonDto());
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
+  private deleteCompanyName = '';
 
   findOne(id) {
     // find founder consult detail
@@ -386,6 +392,20 @@ export default class CompanyDetail extends BaseComponent {
         toast.success('수정완료');
       }
     });
+  }
+
+  // 삭제
+  deleteCompany() {
+    if (this.deleteCompanyName === this.company.nameKr) {
+      CompanyService.deleteCompany(this.$route.params.id).subscribe(res => {
+        if (res) {
+          this.$router.push('/company');
+          toast.success('삭제완료');
+        }
+      });
+    } else {
+      toast.error('업체명을 정확히 입력해주세요');
+    }
   }
 
   // 승인

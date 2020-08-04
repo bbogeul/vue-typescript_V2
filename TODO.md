@@ -22,18 +22,20 @@
     - 경과 시간 표기
     - 업체 메모 추가 [X]
 15. COMPANY DISTRICT
+    - UPDATE CONTENTS [X]
     - UPDATE STATUS
       - APPROVAL [X]
-      - REFUSAL
+      - REFUSAL [X]
     - CREATE [X]
     - DELETE
 16. COMPANY
+    - UPDATE CONTENTS [X]
     - UPDATE STATUS [X]
     - UPDATE CONTENTS [x]
     - CREATE [X]
-    - DELETE
+    - DELETE [X]
 17. COMPANY USER
     - UPDATE STATUS [x]
     - CREATE [x]
-    - DELETE
+    - DELETE [X]
 18. sticky footerzz

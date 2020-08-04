@@ -130,7 +130,7 @@ export class BaseService extends Vue {
     } else if (method === 'patch') {
       return Axios.patch(path, params, { headers }) as AxiosObservable<T>;
     } else if (method === 'delete') {
-      return Axios.delete(path, params) as AxiosObservable<T>;
+      return Axios.delete(path, { params, headers }) as AxiosObservable<T>;
     }
   }
 

@@ -299,8 +299,7 @@
             <td>
               {{ founderConsult.spaceNo }}
             </td>
-            <!-- TODO: space type value 출력 필요  -->
-            <td>{{ founderConsult.space.spaceTypeNo }}</td>
+            <td>{{ founderConsult.space.spaceType.displayName }}</td>
             <td>{{ founderConsult.nanudaUser.name }}</td>
             <td>{{ founderConsult.nanudaUser.phone }}</td>
             <td>

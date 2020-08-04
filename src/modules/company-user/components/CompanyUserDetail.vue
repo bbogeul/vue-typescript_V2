@@ -168,7 +168,7 @@ export default class CompanyUserDetail extends BaseComponent {
     });
   }
 
-  // // 사용자 정보 수정
+  // 사용자 정보 수정
   // updateUserInfo() {
   //   CompanyUserService.update(
   //     this.$route.params.id,
@@ -186,7 +186,8 @@ export default class CompanyUserDetail extends BaseComponent {
       CompanyUserService.deleteCompanyUser(this.$route.params.id).subscribe(
         res => {
           if (res) {
-            this.$router.push('/company-user');
+            this.$router.push('/company/company-user');
+            toast.success('삭제완료');
           }
         },
       );

@@ -49,8 +49,20 @@ class CompanyService extends BaseService {
     );
   }
 
+  /**
+   *
+   * @param company
+   */
   createCompany(company: CompanyDto) {
     return super.post<CompanyDto>('admin/company', company);
+  }
+
+  /**
+   *
+   * @param companyNo
+   */
+  deleteCompany(companyNo: string) {
+    return super.delete<CompanyDto>(`admin/company/${companyNo}`);
   }
 }
 export default new CompanyService();
