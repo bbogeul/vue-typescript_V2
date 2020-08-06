@@ -18,7 +18,7 @@
               v-for="inquiryType in inquiryTypeSelect"
               :key="inquiryType"
               :value="inquiryType"
-              >{{ inquiryType }}</option
+              >{{ inquiryType | enumTransformer }}</option
             >
           </select>
         </div>
@@ -98,10 +98,10 @@
               {{ inquiry.title }}
             </td>
             <td>
-              {{ inquiry.companyNo }}
+              {{ inquiry.company.nameKr }}
             </td>
             <td>
-              {{ inquiry.companyUserNo }}
+              {{ inquiry.companyUser.name }}
             </td>
             <td>
               {{ inquiry.createdAt | dateTransformer }}
@@ -110,15 +110,18 @@
               <b-badge
                 variant="success"
                 class="badge-pill p-2"
-                v-if="inquiry.isClosed"
+                v-if="inquiry.isClosed == 'Y'"
               >
                 답변 완료
               </b-badge>
               <b-badge
-                variant="secondary"
+                variant="warning"
                 class="badge-pill p-2"
-                v-else-if="inquiry.idEdit"
+                v-else-if="inquiry.isEdited == 'Y'"
               >
+                답변 중
+              </b-badge>
+              <b-badge variant="secondary" class="badge-pill p-2" v-else>
                 답변 대기
               </b-badge>
             </td>
@@ -174,11 +177,11 @@ export default class InquiryList extends BaseComponent {
   private inquiryTypeSelect: INQUIRY[] = [...CONST_INQUIRY];
 
   search(isPagination?: boolean) {
-    // this.dataLoading = true;
+    this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;
     }
-    this.pagination.limit = 5;
+    this.pagination.limit = 20;
 
     InquiryService.findAll(this.inquirySearchDto, this.pagination).subscribe(
       res => {

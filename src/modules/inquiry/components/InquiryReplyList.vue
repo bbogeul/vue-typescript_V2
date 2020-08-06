@@ -1,5 +1,26 @@
 <template>
   <section>
+    <div class="reply-write my-4" v-if="isClosed == 'N'">
+      <div class="mb-2">
+        <span v-if="admin"
+          >관리자 : <strong>{{ admin.name }}</strong></span
+        >
+      </div>
+      <div>
+        <b-form-textarea
+          style="height:100px;"
+          v-model="inquiryReplyCreateDto.content"
+        ></b-form-textarea>
+        <div class="text-right mt-2">
+          <b-button variant="primary" v-b-modal.add_reply>답변 작성</b-button>
+        </div>
+      </div>
+    </div>
+    <b-modal id="add_reply" title="답변 작성하기" @ok="createReply()">
+      <div class="text-center">
+        <p><b>답변을 작성하시겠습니까?</b></p>
+      </div>
+    </b-modal>
     <div class="board-reply" v-if="inquiryReplyListCount">
       <div class="reply-header">
         <h4 class="reply-title">답변 리스트</h4>
@@ -35,9 +56,14 @@
                       {{ reply.content }}
                     </div>
                   </div>
-                  <span class="reply-date">{{
-                    reply.updatedAt | dateTransformer
-                  }}</span>
+                  <div class="mt-1">
+                    <span class="reply-date">{{
+                      reply.updatedAt | dateTransformer
+                    }}</span>
+                    <span class="reply-eidted" v-if="reply.isEdited === 'Y'"
+                      >(edited)</span
+                    >
+                  </div>
                 </div>
               </template>
               <template v-else>
@@ -61,23 +87,27 @@
                         variant="link"
                         size="sm"
                         v-b-modal.update_reply
+                        @click="selectReply(reply)"
                         class="btn-edit"
+                        v-if="isClosed == 'N'"
                         >수정</b-button
                       >
                     </div>
                   </div>
-                  <span class="reply-date">{{
-                    reply.updatedAt | dateTransformer
-                  }}</span>
+                  <div class="mt-1">
+                    <span class="reply-date">{{
+                      reply.updatedAt | dateTransformer
+                    }}</span>
+                    <span class="reply-eidted" v-if="reply.isEdited === 'Y'"
+                      >(edited)</span
+                    >
+                  </div>
                 </div>
               </template>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else class="empty-data border">
-      <p>답변을 작성해주세요.</p>
     </div>
     <b-pagination
       v-model="pagination.page"
@@ -88,50 +118,75 @@
       @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
+    <!-- 답글 수정 모달 -->
     <b-modal id="update_reply" title="답글 수정하기" hide-footer>
       <div>
-        <div></div>
         <b-form-textarea
           name="update_reply"
-          v-model="inquiryListDto.content"
+          v-model="selectedReplyContent"
         ></b-form-textarea>
         <div class="text-right mt-2">
-          <b-button variant="danger" @click="updateReply()">취소</b-button>
           <b-button variant="primary" @click="updateReply()">수정</b-button>
         </div>
+      </div>
+    </b-modal>
+    <!-- 답글 완료 처리 모달 -->
+    <b-modal
+      id="complete_reply"
+      title="답글 완료 처리"
+      @click="completeReply()"
+    >
+      <div class="text-center">
+        <p><b>문의글에 대한 답변 완료 처리하시겠습니까?</b></p>
       </div>
     </b-modal>
   </section>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { BaseUser } from '../../../services/shared/auth';
 import BaseComponent from '../../../core/base.component';
+import AdminService from '../../../services/admin.service';
 import InquiryService from '../../../services/inquiry.service';
-import { InquiryDto, InquiryListDto, InquiryReplyListDto } from '../../../dto';
-import { Pagination } from '../../../common';
+import {
+  AdminDto,
+  InquiryDto,
+  InquiryListDto,
+  InquiryReplyListDto,
+  InquiryReplyUpdateDto,
+} from '../../../dto';
+import { Pagination, OrderByValue } from '../../../common';
+import JwtStorageService from '../../../services/shared/auth/jwt-storage.service';
+import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'InquiryReplyList',
 })
 export default class InquiryReplyList extends BaseComponent {
-  @Prop() admin!: {
-    type: object;
+  @Prop() readonly isClosed: {
+    type: boolean;
   };
-
+  private admin = new AdminDto(BaseUser);
   private inquiryReplyList: InquiryDto[] = [];
   private inquiryReplyListCount = 0;
-  private inquiryListDto = new InquiryReplyListDto();
+  private inquiryReplyCreateDto = new InquiryDto();
+  private inquiryReplyListDto = new InquiryReplyListDto();
+  private inquiryReplyUpdateDto = new InquiryReplyUpdateDto();
   private pagination = new Pagination();
+  private selectedReply: InquiryDto = new InquiryDto();
+  private selectedReplyContent = null;
+  private selectedReplyNo = null;
 
+  // 답변 리스트
   findAll(isPagination?: boolean) {
     if (!isPagination) {
       this.pagination.page = 1;
     }
-    this.pagination.limit = null;
+    this.pagination.limit = 5;
 
     InquiryService.findForReply(
       this.$route.params.id,
-      this.inquiryListDto,
+      this.inquiryReplyListDto,
       this.pagination,
     ).subscribe(res => {
       this.inquiryReplyList = res.data.items;
@@ -143,12 +198,62 @@ export default class InquiryReplyList extends BaseComponent {
     this.findAll(true);
   }
 
+  // 관리자
+  findAdmin() {
+    AdminService.findMe().subscribe(res => {
+      this.admin = res.data;
+    });
+  }
+
+  // 답변 작성
+  createReply() {
+    InquiryService.createReply(
+      this.$route.params.id,
+      this.inquiryReplyCreateDto,
+    ).subscribe(res => {
+      if (res) {
+        this.findAll();
+        this.clearOutReplyDto();
+        toast.success('작성완료');
+      }
+    });
+  }
+
+  // 답변 작성 초기화
+  clearOutReplyDto() {
+    this.inquiryReplyCreateDto = new InquiryDto();
+  }
+
+  // 답변 수정
+  selectReply(reply) {
+    this.selectedReply = reply;
+    this.selectedReplyContent = this.selectedReply.content;
+    return (
+      (this.selectedReplyNo = this.selectedReply.no),
+      (this.selectedReplyContent = this.selectedReply.content)
+    );
+  }
   updateReply() {
-    alert('답글 수정');
+    if (this.selectedReplyContent) {
+      this.inquiryReplyUpdateDto.content = this.selectedReplyContent;
+    }
+    const replyId = this.selectedReplyNo;
+    InquiryService.updateReply(
+      this.$route.params.id,
+      replyId,
+      this.inquiryReplyUpdateDto,
+    ).subscribe(res => {
+      if (res) {
+        this.$bvModal.hide('update_reply');
+        this.findAll();
+        toast.success('수정완료');
+      }
+    });
   }
 
   created() {
     this.findAll();
+    this.findAdmin();
   }
 }
 </script>
@@ -271,8 +376,10 @@ export default class InquiryReplyList extends BaseComponent {
           }
         }
         .reply-date {
-          display: block;
-          margin-top: 0.5rem;
+        }
+        .reply-eidted {
+          margin-left: 0.25rem;
+          color: #969696;
         }
       }
     }

@@ -39,3 +39,8 @@
     - CREATE [x]
     - DELETE [X]
 18. sticky footerzz
+
+# REQUEST CODE MANAGEMENT
+
+1. 공지사항 알림 유형
+2. Q&A 문의 유형

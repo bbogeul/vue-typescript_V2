@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { YN } from '@/common';
+import { YN, INQUIRY } from '@/common';
 import {
   GENDER,
   APPROVAL_STATUS,
@@ -60,5 +60,13 @@ export const EnumPipeTransformer = () =>
     }
     if (value === NOTICE_BOARD.TERMS_CHANGE_NOTICE) {
       return '이용약관 변경 안내';
+    }
+
+    // 문의 유형 타입
+    if (value === INQUIRY.FOUNDER_CONSULT) {
+      return '방문자 신청';
+    }
+    if (value === INQUIRY.SYSTEM) {
+      return '사이트 기능 문의';
     }
   });

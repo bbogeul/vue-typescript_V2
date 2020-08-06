@@ -1,14 +1,22 @@
 <template>
-  <div class="board-view" v-if="inquiryReplyListDto">
+  <div class="board-view" v-if="inquiry">
     <div class="board-view-header">
       <div class="board-view-title">
-        <!-- <b-badge variant="warning" class="board-view-category">{{
-          inquiry.codeManagement.value
-        }}</b-badge> -->
+        <b-badge
+          variant="warning"
+          class="board-view-category"
+          v-if="inquiry.codeManagement && inquiry.codeManagement.value"
+          >{{ inquiry.codeManagement.value }}</b-badge
+        >
         <h3>{{ inquiry.title }}</h3>
       </div>
-      <div>
-        {{ inquiry.adminNo }}
+      <div
+        class="board-view-info"
+        v-if="inquiry.companyUser && inquiry.company"
+      >
+        <span clsas="board-user-name"
+          >{{ inquiry.companyUser.name }} ({{ inquiry.company.nameKr }})</span
+        >
         <span class="baord-view-date">
           {{ inquiry.createdAt | dateTransformer }}</span
         >
@@ -20,36 +28,25 @@
       </div>
     </div>
     <div class="board-view-footer">
-      <div class="text-right">
+      <b-row no-gutters align-h="between" align-v="center">
         <router-link to="/inquiry" class="btn btn-secondary text-center"
           >목록으로</router-link
         >
-      </div>
+        <!-- <b-button
+          variant="success"
+          @click="completeReply()"
+          v-if="inquiry.isClosed == 'N' && inquiryReplyListCount > 0"
+          >답변 완료 처리</b-button
+        > -->
+      </b-row>
     </div>
-    <!-- 답변 작성 TODO: 추후 컴포넌트로 빼기-->
-    <div class="reply-write my-4">
-      <div class="mb-2">
-        <span v-if="admin"
-          >관리자 : <strong>{{ admin.name }}</strong></span
-        >
-      </div>
-      <div>
-        <b-form-textarea
-          style="height:100px;"
-          v-model="inquiryReplyListDto.content"
-        ></b-form-textarea>
-        <div class="text-right mt-2">
-          <b-button variant="primary" v-b-modal.add_reply>답변 작성</b-button>
-        </div>
-      </div>
-    </div>
-    <b-modal id="add_reply" title="답변 작성하기" @ok="createReply()">
-      <div class="text-center">
-        <p><b>답변을 작성하시겠습니까?</b></p>
-      </div>
-    </b-modal>
     <!-- 답변 리스트 -->
-    <InquiryReplyList :admin="admin" />
+    <b-alert variant="success" show v-if="inquiry.isClosed == 'Y'" class="my-4">
+      <p class="text-center">
+        답변이 완료된 문의 글입니다.
+      </p>
+    </b-alert>
+    <InquiryReplyList :admin="admin" :isClosed="inquiry.isClosed" />
   </div>
 </template>
 <script lang="ts">
@@ -64,7 +61,7 @@ import {
   InquiryListDto,
   InquiryReplyListDto,
 } from '../../../dto';
-import { Pagination } from '../../../common';
+import { Pagination, YN, INQUIRY } from '../../../common';
 
 import AdminService from '../../../services/admin.service';
 import JwtStorageService from '../../../services/shared/auth/jwt-storage.service';
@@ -80,35 +77,46 @@ export default class InquiryDetail extends BaseComponent {
   private inquiry = new InquiryDto();
   private pagination = new Pagination();
   private admin = new AdminDto(BaseUser);
+  // private inquiryUpdateDto = new InquiryUpdateDto();
   private inquiryReplyListDto = new InquiryReplyListDto();
+  // private inquiryReplyListCount = 0;
 
-  findAdmin() {
-    AdminService.findMe().subscribe(res => {
-      this.admin = res.data;
-    });
-  }
-
+  // 문의 상세
   findOne() {
     InquiryService.findOne(this.$route.params.id).subscribe(res => {
       this.inquiry = res.data;
     });
   }
 
-  createReply() {
-    InquiryService.createReply(
-      this.$route.params.id,
-      this.inquiryReplyListDto,
-    ).subscribe(res => {
-      if (res) {
-        this.findOne();
-        toast.success('작성완료');
-      }
-    });
+  // getReplyCount() {
+  //   InquiryService.findForReply(
+  //     this.$route.params.id,
+  //     this.inquiryReplyListDto,
+  //     this.pagination,
+  //   ).subscribe(res => {
+  //     this.inquiryReplyListCount = res.data.totalCount;
+  //   });
+  // }
+
+  // 답변 완료 처리
+  completeReply() {
+    this.inquiry.isClosed = YN.YES;
+    console.log(this.inquiry.isClosed);
+    toast.success('답변 완료 처리 되었습니다');
+    // this.update();
   }
+
+  // update() {
+  //   InquiryService.update(this.$route.params.id).subscribe(res => {
+  //     if (res) {
+  //       this.findOne();
+  //     }
+  //   });
+  // }
 
   created() {
     this.findOne();
-    this.findAdmin();
+    // this.getReplyCount();
   }
 }
 </script>
@@ -132,8 +140,30 @@ export default class InquiryDetail extends BaseComponent {
         margin-bottom: 0.25rem;
       }
     }
-    .board-view-date {
-      white-space: nowrap;
+
+    .board-view-info {
+      span {
+        position: relative;
+        + span {
+          padding-left: 1em;
+          margin-left: 1em;
+          &:before {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -5px;
+            display: inline-block;
+            content: '';
+            width: 1px;
+            height: 10px;
+            background-color: #a7a7a7;
+          }
+        }
+
+        .board-view-date {
+          white-space: nowrap;
+        }
+      }
     }
   }
   .board-view-body {

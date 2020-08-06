@@ -4,10 +4,11 @@ import { ADMIN_USER, COMPANY_USER, COMPANY } from '@/services/shared';
 import { CodeManagementDto } from '@/services/init/dto';
 
 export class InquiryDto extends BaseDto<InquiryDto> {
-  adminNo?: number;
-  companyNo?: number;
+  no: number;
+  adminNo: number;
+  companyNo: number;
   companyUserNo: number;
-  inquiryNo?: number;
+  inquiryNo: number;
   isInquiryReply?: YN;
   inquiryType: INQUIRY;
   title?: string;

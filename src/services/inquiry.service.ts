@@ -23,6 +23,14 @@ class InquiryService extends BaseService {
   /**
    *
    * @param inquiryNo
+   */
+  update(inquiryNo) {
+    return super.patch<InquiryDto>(`admin/inquiry/${inquiryNo}`);
+  }
+
+  /**
+   *
+   * @param inquiryNo
    * @param pagination
    */
   findForReply(
@@ -37,9 +45,27 @@ class InquiryService extends BaseService {
     );
   }
 
-  createReply(inquiryNo: string, inquiryReply: InquiryReplyListDto) {
-    return super.post<InquiryReplyListDto>(
+  /**
+   *
+   * @param inquiryNo
+   * @param inquiryReply
+   */
+  createReply(inquiryNo: string, inquiryReply: InquiryDto) {
+    return super.post<InquiryDto>(
       `admin/inquiry/${inquiryNo}/reply`,
+      inquiryReply,
+    );
+  }
+
+  /**
+   *
+   * @param inquiryNo
+   * @param replyId
+   * @param inquiryReply
+   */
+  updateReply(inquiryNo, replyId: string, inquiryReply: InquiryReplyListDto) {
+    return super.patch<InquiryReplyListDto>(
+      `admin/inquiry/${inquiryNo}/reply/${replyId}`,
       inquiryReply,
     );
   }

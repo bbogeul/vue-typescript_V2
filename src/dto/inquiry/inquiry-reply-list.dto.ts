@@ -1,12 +1,7 @@
 import { BaseDto } from '@/core';
 import { YN, OrderByValue } from '@/common';
-import { InquiryReplyDto } from './inquiry-reply.dto';
+import { InquiryListDto } from './inquiry-list.dto';
 
-export class InquiryReplyListDto extends BaseDto<InquiryReplyListDto>
-  implements Partial<InquiryReplyDto> {
-  no?: number;
-  companyUserName?: string;
-  adminName?: string;
-  isInquiryReply: YN;
-  orderByNo: OrderByValue;
+export class InquiryReplyListDto extends InquiryListDto {
+  orderByNo?: OrderByValue;
 }
