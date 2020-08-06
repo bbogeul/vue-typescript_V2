@@ -6,7 +6,7 @@
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">
       <div class="form-row">
-        <div class="col-6 col-md-2 mb-3">
+        <div class="col-6 col-md-1 mb-3">
           <label for>공지사항 ID</label>
           <input
             type="text"
@@ -28,7 +28,7 @@
             >
           </select>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-7 mb-3">
           <label for>제목</label>
           <input
             type="text"
@@ -36,23 +36,31 @@
             v-model="noticeBoardListDto.title"
           />
         </div>
-        <div class="col-md-4 mb-3">
+        <!-- <div class="col-md-4 mb-3">
           <label for>URL</label>
           <input
             type="text"
             class="form-control"
             v-model="noticeBoardListDto.url"
           />
-        </div>
-      </div>
-      <div class="form-row">
+        </div> -->
         <div class="col-md-2 mb-3">
-          <label for>관리자 아이디</label>
-          <input
-            type="text"
-            class="form-control"
-            v-model="noticeBoardListDto.adminName"
-          />
+          <label for>관리자</label>
+          <template>
+            <b-form-input
+              list="food-category-list"
+              id="hope_food_category"
+              v-model="noticeBoardListDto.adminName"
+            ></b-form-input>
+            <datalist id="food-category-list">
+              <option
+                v-for="admin in adminList.items"
+                :key="admin.no"
+                :value="admin.name"
+                >{{ admin.name }}</option
+              >
+            </datalist>
+          </template>
         </div>
       </div>
       <div class="text-center">
@@ -80,6 +88,14 @@
         class="table table-bordered table-hover table-sm text-center"
         v-if="noticeBoardListCount"
       >
+        <colgroup>
+          <col width="40" />
+          <col width="100" />
+          <col width="auto" />
+          <col width="200" />
+          <col width="100" />
+          <col width="100" />
+        </colgroup>
         <thead>
           <tr>
             <th
@@ -167,10 +183,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '@/core/base.component';
 import { NOTICE_BOARD, CONST_NOTICE_BOARD } from '@/services/shared';
-import NoticeBoardService from '../../../services/notice-board.service';
-import { NoticeBoardListDto, NoticeBoardDto } from '@/dto';
+import { NoticeBoardListDto, NoticeBoardDto, AdminDto } from '@/dto';
 import { Pagination } from '@/common';
-import noticeBoardService from '../../../services/notice-board.service';
+import AdminService from '../../../services/admin.service';
+import NoticeBoardService from '../../../services/notice-board.service';
 
 @Component({
   name: 'NoticeBoardList',
@@ -183,6 +199,16 @@ export default class NoticeBoardList extends BaseComponent {
   private noticeBoards: NoticeBoardDto[] = null;
   private totalPage = null;
   private dataLoading = false;
+
+  private adminList: AdminDto[] = [];
+
+  findAdmin() {
+    AdminService.findForSelect().subscribe(res => {
+      if (res) {
+        this.adminList = res.data;
+      }
+    });
+  }
 
   clearOut() {
     this.pagination.page = 1;
@@ -221,6 +247,7 @@ export default class NoticeBoardList extends BaseComponent {
   created() {
     this.pagination.page = 1;
     this.search();
+    this.findAdmin();
   }
 }
 </script>

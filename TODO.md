@@ -38,9 +38,17 @@
     - UPDATE STATUS [x]
     - CREATE [x]
     - DELETE [X]
-18. sticky footerzz
+18. sticky footer
+19. board view components
+20. NOTICE BOARD
+    - 이벤트 기간 노출
 
-# REQUEST CODE MANAGEMENT
+# REQUEST
 
-1. 공지사항 알림 유형
-2. Q&A 문의 유형
+1. 공지사항
+
+   - 알림 유형 CODE MANAGEMENT
+   - 상세 관리자 정보 value
+
+2. Q&A
+   - 문의 유형 CODE MANAGEMENT

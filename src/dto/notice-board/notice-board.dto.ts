@@ -1,5 +1,6 @@
 import { BaseDto } from '@/core';
 import { NOTICE_BOARD } from '@/services/shared';
+import { AdminDto } from '../admin';
 
 export class NoticeBoardDto extends BaseDto<NoticeBoardDto> {
   no?: number;
@@ -8,5 +9,6 @@ export class NoticeBoardDto extends BaseDto<NoticeBoardDto> {
   started?: Date;
   ended?: Date;
   url?: string;
+  admin: AdminDto;
   noticeBoardType?: NOTICE_BOARD;
 }

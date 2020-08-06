@@ -7,8 +7,8 @@
         }}</b-badge>
         <h3>{{ noticeBoard.title }}</h3>
       </div>
-      <div>
-        {{ noticeBoard.adminNo }}
+      <div class="border-view-info">
+        <span class="baord-view-user">{{ noticeBoard.adminNo }}</span>
         <span class="baord-view-date">
           {{ noticeBoard.createdAt | dateTransformer }}</span
         >

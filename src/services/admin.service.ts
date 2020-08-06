@@ -10,6 +10,10 @@ class AdminService extends BaseService {
   findAll(filter: AdminListDto, pagination?: Pagination) {
     return super.paginate<AdminDto>('admin', filter, pagination);
   }
+
+  findForSelect() {
+    return super.get<AdminDto[]>('admin');
+  }
 }
 
 export default new AdminService();
