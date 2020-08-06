@@ -252,6 +252,7 @@ export default class InquiryReplyList extends BaseComponent {
   }
 
   created() {
+    this.pagination.page = 1;
     this.findAll();
     this.findAdmin();
   }

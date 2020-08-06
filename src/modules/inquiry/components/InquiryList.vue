@@ -203,6 +203,7 @@ export default class InquiryList extends BaseComponent {
   }
 
   created() {
+    this.pagination.page = 1;
     this.search();
   }
 }

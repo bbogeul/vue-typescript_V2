@@ -117,12 +117,21 @@
         </div>
         <div class="col-6 col-lg-2 mb-3">
           <label for="admin_user">관리자명</label>
-          <input
-            type="text"
-            class="form-control"
-            id="admin_user"
-            v-model="founderConsultSearchDto.adminUserName"
-          />
+          <template>
+            <b-form-input
+              list="admin_list"
+              id="admin_user"
+              v-model="founderConsultSearchDto.adminName"
+            ></b-form-input>
+            <datalist id="admin_list">
+              <option
+                v-for="admin in adminList.items"
+                :key="admin.no"
+                :value="admin.name"
+                >{{ admin.name }}</option
+              >
+            </datalist>
+          </template>
         </div>
 
         <div class="col-6 col-lg-2 mb-3">
@@ -427,10 +436,15 @@ import {
   CONST_GENDER,
 } from '../../../services/shared';
 import { CodeManagementDto } from '../../../services/init/dto';
-import FounderConsultService from '../../../services/founder-consult.service';
+
+import AdminService from '../../../services/admin.service';
+import CompanyService from '../../../services/company.service';
 import CodeManagementService from '../../../services/code-management.service';
+import FounderConsultService from '../../../services/founder-consult.service';
 import SpaceTypeService from '../../../services/space-type.service';
+
 import {
+  AdminDto,
   FounderConsultListDto,
   CompanyDto,
   FounderConsultDto,
@@ -443,7 +457,6 @@ import {
   YN,
   CONST_YN,
 } from '../../../common';
-import CompanyService from '../../../services/company.service';
 
 @Component({
   name: 'FounderConsultList',
@@ -461,6 +474,16 @@ export default class FounderConsult extends BaseComponent {
   private spaceTypeSelect: SpaceTypeDto[] = [];
   private pagination = new Pagination();
   private dataLoading = false;
+
+  private adminList: AdminDto[] = [];
+
+  findAdmin() {
+    AdminService.findForSelect().subscribe(res => {
+      if (res) {
+        this.adminList = res.data;
+      }
+    });
+  }
 
   // 상태값
   getFounderConsultCodes() {
@@ -526,6 +549,7 @@ export default class FounderConsult extends BaseComponent {
     this.getCompanies();
     this.getFounderConsultCodes();
     this.getSpaceTypes();
+    this.findAdmin();
     this.search();
   }
 }

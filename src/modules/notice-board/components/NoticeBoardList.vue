@@ -45,7 +45,7 @@
           />
         </div> -->
         <div class="col-md-2 mb-3">
-          <label for>관리자</label>
+          <label for>관리자명</label>
           <template>
             <b-form-input
               list="food-category-list"

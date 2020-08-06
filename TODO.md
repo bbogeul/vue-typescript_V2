@@ -27,7 +27,7 @@
       - APPROVAL [X]
       - REFUSAL [X]
     - CREATE [X]
-    - DELETE
+    - DELETE => 업체 사용자가 처리
 16. COMPANY
     - UPDATE CONTENTS [X]
     - UPDATE STATUS [X]
@@ -35,13 +35,16 @@
     - CREATE [X]
     - DELETE [X]
 17. COMPANY USER
+    - UPDATE CONTENTS => 업체 사용자가 처리
     - UPDATE STATUS [x]
     - CREATE [x]
     - DELETE [X]
 18. sticky footer
 19. board view components
 20. NOTICE BOARD
-    - 이벤트 기간 노출
+    - 이벤트 기간 노출 여부
+21. Q&A
+    - isClosed , isEdited 처리 여부 (업체 사용자가 처리할지)
 
 # REQUEST
 
