@@ -3,6 +3,8 @@ import { YN } from '@/common';
 import { SPACE } from '@/services/shared';
 import { AdminDto } from '../admin';
 import { NanudaUserDto } from '../nanuda-user';
+import { AmenityDto } from '../amenity';
+import { DeliverySpaceOptionDto } from '../delivery-space-option';
 
 export class SpaceDto extends BaseDto<SpaceDto> {
   no: number;
@@ -141,13 +143,13 @@ export class SpaceDto extends BaseDto<SpaceDto> {
 
   companyDistricts?: any[];
 
-  deliverySpaceOptions?: any[];
+  deliverySpaceOptions?: DeliverySpaceOptionDto[];
 
   nanudaUser?: NanudaUserDto;
 
   admin?: AdminDto;
 
-  amenities?: any[];
+  amenities?: AmenityDto[];
 
   promotions?: any[];
 

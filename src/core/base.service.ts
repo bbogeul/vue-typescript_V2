@@ -115,7 +115,7 @@ export class BaseService extends Vue {
       'Content-type': 'application/json',
       //   'Accept': 'application/json',
     };
-    // access token added if there is one.
+
     const accessToken = JwtStorageService.getToken();
     if (accessToken) {
       headers.Authorization = `Bearer ${accessToken}`;
