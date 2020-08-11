@@ -30,4 +30,6 @@ export class FounderConsultDto extends BaseDto<FounderConsultDto> {
   companyDecisionStatus?: FOUNDER_CONSULT;
   companyUser?: CompanyUserDto;
   companyUserNo?: number;
+  createdAt?: Date;
+  deliveredAt?: Date;
 }

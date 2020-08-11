@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="founderConsultManagementHistoryListCount">
     <div class="history-list">
       <div
         class="bg-light border rounded pt-2 pb-3 px-3 mb-2"

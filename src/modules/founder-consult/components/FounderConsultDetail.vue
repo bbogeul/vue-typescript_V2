@@ -307,6 +307,7 @@
                 variant="primary"
                 @click="updateConsultInfo()"
                 v-b-modal.consult_info
+                v-if="founderConsult.status !== 'F_DIST_COMPLETE'"
                 >수정하기</b-button
               >
             </div>
@@ -356,10 +357,19 @@
                     <b-badge variant="warning" class="badge-pill p-2">{{
                       founderConsult.codeManagement.value
                     }}</b-badge>
+                    <span class="ml-1" v-if="founderConsult.deliveredAt"
+                      >({{
+                        founderConsult.deliveredAt | dateTransformer
+                      }})</span
+                    >
+                  </li>
+                  <li v-if="elapsedTime">
+                    경과 시간 :
+                    {{ elapsedTime }}
                   </li>
                 </ul>
                 <ul class="col-12 col-md-6">
-                  <li v-if="founderConsult.space.companyDistricts.length > 0">
+                  <li>
                     열람 상태 :
                     <b-badge
                       :variant="
@@ -368,22 +378,11 @@
                       >{{ founderConsult.viewCount | enumTransformer }}</b-badge
                     >
                   </li>
-                  <li
-                    v-if="
-                      founderConsult.viewCount === 'Y' &&
-                        founderConsult.space.companyDistricts.length > 0
-                    "
-                  >
+                  <li v-if="founderConsult.openedAt">
                     열람 시간 :
                     <b>{{ founderConsult.openedAt | dateTransformer }}</b>
                   </li>
-                  <li
-                    v-if="
-                      founderConsult.companyUser &&
-                        founderConsult.viewCount === 'Y' &&
-                        founderConsult.space.companyDistricts.length > 0
-                    "
-                  >
+                  <li v-if="founderConsult.companyUser">
                     열람한 사용자 :
                     <b>{{ founderConsult.companyUser.name }}</b>
                   </li>
@@ -398,7 +397,12 @@
                       founderConsult.companyDecisionStatusCode.value
                     }}</b-badge>
                   </li>
-                  <li v-if="founderConsultManagements.memo">
+                  <li
+                    v-if="
+                      founderConsultManagements &&
+                        founderConsultManagements.memo
+                    "
+                  >
                     업체 메모
                     <div class="mt-2">
                       <div class="bg-light border rounded p-3">
@@ -634,6 +638,10 @@ import { BaseUser } from '../../../services/shared/auth';
 import BaseCard from '../../_components/BaseCard.vue';
 import FounderConsultManagementHistory from './FounderConsultManagementHistory.vue';
 import toast from '../../../../resources/assets/js/services/toast.js';
+import {
+  FOUNDER_CONSULT,
+  CONST_FOUNDER_CONSULT,
+} from '../../../services/shared';
 
 @Component({
   name: 'FounderConsultDetail',
@@ -658,6 +666,9 @@ export default class FounderConsultDetail extends BaseComponent {
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
   private founderConsultManagements: FounderConsultManagementDto[] = [];
+  private elapsedTime = null;
+  private deliveredTime = new Date();
+  private createdTime = new Date();
 
   // 사용자 정보 수정
   updateNanudaUser() {
@@ -710,7 +721,9 @@ export default class FounderConsultDetail extends BaseComponent {
   // 상담 메모 management
   getFounderConsultManagements(id) {
     FounderConsultManagementService.findForManagement(id).subscribe(res => {
-      this.founderConsultManagements = res.data;
+      if (res) {
+        this.founderConsultManagements = res.data;
+      }
     });
   }
 
@@ -718,7 +731,28 @@ export default class FounderConsultDetail extends BaseComponent {
     // find founder consult detail
     FounderConsultService.findOne(id).subscribe(res => {
       this.founderConsult = res.data;
+      this.deliveredTime = res.data.deliveredAt;
+      if (this.deliveredTime) {
+        this.createdTime = new Date(res.data.createdAt);
+        this.deliveredTime = new Date(res.data.deliveredAt);
+        this.getElapsedTime(this.createdTime, this.deliveredTime);
+      }
     });
+  }
+
+  // 경과 시간
+  getElapsedTime(startTime, endTime) {
+    const timeDiff = Math.abs(
+      (this.deliveredTime as any) - (this.createdTime as any),
+    );
+    const inMinutes = 60 * 1000;
+    const inHours = 36e5;
+
+    if (timeDiff > inHours) {
+      this.elapsedTime = Math.ceil(timeDiff / inHours) + '시간';
+    } else {
+      this.elapsedTime = Math.ceil((timeDiff % inHours) / inMinutes) + '분';
+    }
   }
 
   paginateSearch() {

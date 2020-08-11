@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="board-view-footer">
-      <b-row no-gutters align-h="between" align-v="center">
+      <b-row no-gutters align-h="end" align-v="center">
         <router-link to="/inquiry" class="btn btn-secondary text-center"
           >목록으로</router-link
         >
