@@ -282,6 +282,7 @@
               type="text"
               v-model="companyCreateDto.address"
               class="form-control"
+              v-b-modal.postcode
             />
           </div>
           <div class="col-12 col-md-6 mt-2">
@@ -335,6 +336,9 @@
           </div>
         </div>
       </form>
+    </b-modal>
+    <b-modal id="postcode" title="주소 검색" hide-footer>
+      <vue-daum-postcode style="height:500px; overflow-y:auto;" />
     </b-modal>
   </section>
 </template>

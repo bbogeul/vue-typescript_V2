@@ -10,6 +10,7 @@ import {
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 // import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import VueDaumPostcode from 'vue-daum-postcode';
 
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
@@ -43,6 +44,9 @@ ViewPipeTransformer();
 // bootstrap
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+
+// daum kakao
+Vue.use(VueDaumPostcode);
 
 new Vue({
   router,
