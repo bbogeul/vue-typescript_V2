@@ -132,6 +132,21 @@ const componentsRouter: RouteConfig[] = [
           title: '방문자 신청',
         },
       },
+      {
+        path: '/delivery-founder-consult',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/delivery-founder-consult/components/DeliveryFounderConsultList.vue'
+          ),
+        name: '배달형 방문자 신청 관리',
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '배달형 방문자 신청',
+        },
+      },
     ],
   },
   {

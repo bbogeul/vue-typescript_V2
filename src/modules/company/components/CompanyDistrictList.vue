@@ -1,5 +1,3 @@
-import BaseComponent from '@/core/base.component';
-
 <template>
   <div v-if="companyDistrictListCount > 0">
     <table class="table table-hover">

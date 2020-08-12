@@ -226,6 +226,7 @@
             v-model="companyDistrictCreateDto.address"
             class="form-control"
             id="district_address"
+            v-b-modal.postcode
           />
         </div>
         <div class="col-12 col-md-6 mt-2">
@@ -260,6 +261,13 @@
           </select>
         </div>
       </div>
+    </b-modal>
+
+    <b-modal id="postcode" title="주소 검색" hide-footer>
+      <vue-daum-postcode
+        style="height:500px; overflow-y:auto;"
+        @complete="setAddress($event)"
+      />
     </b-modal>
   </section>
 </template>
@@ -299,6 +307,11 @@ export default class CompanyDistrictList extends BaseComponent {
     CompanyService.findForSelect().subscribe(res => {
       this.companySelect = res.data;
     });
+  }
+
+  // TODO: 주소 입력 - 추후 이동
+  setAddress(res) {
+    console.log(res);
   }
 
   search(isPagination?: boolean) {
