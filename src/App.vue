@@ -4,6 +4,11 @@
   </div>
 </template>
 <script lang="ts">
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 import BaseComponent from './core/base.component';
 import { Component, Vue } from 'vue-property-decorator';
 

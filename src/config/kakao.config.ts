@@ -1,4 +1,4 @@
-import { KakaoMapAppKey } from 'environments';
+import { KakaoMapAppKey } from '../../environments';
 
 export class KakaoMapLatLonConfig {
   lat: string;

@@ -133,10 +133,9 @@ import {
 import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
-  name: 'CompanyDistrictDetail',
   components: {
-    ApprovalCard,
     BaseCard,
+    ApprovalCard,
   },
 })
 export default class CompanyDistrictDetail extends BaseComponent {
@@ -200,6 +199,23 @@ export default class CompanyDistrictDetail extends BaseComponent {
   created() {
     const id = this.$route.params.id;
     this.findOne(id);
+    // const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+    // const options = {
+    //   //지도를 생성할 때 필요한 기본 옵션
+    //   center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+    //   level: 3, //지도의 레벨(확대, 축소 정도)
+    // };
+
+    // const map = new window.kakao.maps.Map(container, options);
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    const callback = function(result, status) {
+      if (status === window.kakao.maps.services.Status.OK) {
+        console.log(result);
+      }
+    };
+
+    geocoder.addressSearch('해남군 송지면', callback);
   }
 }
 </script>
