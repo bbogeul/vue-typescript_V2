@@ -223,10 +223,11 @@
           <label for="create_district_address">주소</label>
           <input
             type="text"
-            v-model="companyDistrictCreateDto.address"
+            v-model="addressData.address"
             class="form-control"
             id="district_address"
             v-b-modal.postcode
+            v-on:keyup.tab="showAddressModal()"
           />
         </div>
         <div class="col-12 col-md-6 mt-2">
@@ -302,6 +303,9 @@ export default class CompanyDistrictList extends BaseComponent {
   private companyDistrictCreateDto = new CompanyDistrictDto();
   private companySelect: CompanyDto[] = [];
   private dataLoading = false;
+  private addressData = {
+    address: '',
+  };
 
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {
@@ -309,9 +313,25 @@ export default class CompanyDistrictList extends BaseComponent {
     });
   }
 
-  // TODO: 주소 입력 - 추후 이동
+  showAddressModal() {
+    this.$bvModal.show('postcode');
+  }
   setAddress(res) {
-    console.log(res);
+    this.addressData = res;
+    this.companyDistrictCreateDto.address = this.addressData.address;
+
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const callback = (results, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        console.log(results);
+        this.companyDistrictCreateDto.lat = results[0].x;
+        this.companyDistrictCreateDto.lon = results[0].y;
+        console.log(this.companyDistrictCreateDto, results[0].x, results[0].y);
+      }
+    };
+    geocoder.addressSearch(this.companyDistrictCreateDto.address, callback);
+
+    this.$bvModal.hide('postcode');
   }
 
   search(isPagination?: boolean) {

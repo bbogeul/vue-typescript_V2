@@ -15,4 +15,6 @@ export class CompanyDistrictDto extends BaseDto<CompanyDistrictDto> {
   amenities?: AmenityDto[];
   codeManagement?: CodeManagementDto[];
   deliverySpaceDto?: DeliverySpaceDto[];
+  lat?: string;
+  lon?: string;
 }

@@ -365,15 +365,7 @@ export default class CompanyDetail extends BaseComponent {
   }
 
   findCompanyInfo() {
-    this.companyUpdateDto.nameKr = this.company.nameKr;
-    this.companyUpdateDto.nameEng = this.company.nameEng;
-    this.companyUpdateDto.ceoKr = this.company.ceoKr;
-    this.companyUpdateDto.ceoEng = this.company.ceoEng;
-    this.companyUpdateDto.website = this.company.website;
-    this.companyUpdateDto.address = this.company.address;
-    this.companyUpdateDto.email = this.company.email;
-    this.companyUpdateDto.businessNo = this.company.businessNo;
-    this.companyUpdateDto.fax = this.company.fax;
+    this.companyUpdateDto = this.company;
     this.findOne(this.$route.params.id);
   }
 

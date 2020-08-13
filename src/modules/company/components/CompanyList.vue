@@ -383,6 +383,11 @@ export default class Company extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
+
+    if (this.$route.params.address) {
+      console.log('params', this.$route.params.address);
+    }
+
     CompanyService.findAll(this.companySearchDto, this.pagination).subscribe(
       res => {
         this.dataLoading = false;
@@ -411,7 +416,6 @@ export default class Company extends BaseComponent {
 
   created() {
     this.search();
-    console.log(this.companyListDto);
   }
 }
 </script>
