@@ -14,7 +14,7 @@
             v-model="companyDistrictSearchDto.no"
           ></b-form-input>
         </b-col>
-        <b-col>
+        <b-col sm="12" lg="1" class="mb-3">
           <label for="district_company">업체명</label>
           <select
             class="custom-select"
@@ -246,6 +246,21 @@
             >
           </select>
         </div>
+        <div class="col-12 col-md-12 mt-2">
+          <label for="create_district_company">공용 시설</label>
+          <b-form-checkbox-group
+            id="common_amenity"
+            v-model="companyDistrictCreateDto.amenityIds"
+            name="common_amenity"
+          >
+            <b-form-checkbox
+              v-for="amenity in commonAmenityList"
+              :key="amenity.no"
+              :value="amenity.no"
+              >{{ amenity.amenityName }}</b-form-checkbox
+            >
+          </b-form-checkbox-group>
+        </div>
         <div class="col-12 col-md-6 mt-2">
           <label for="create_district_company">업체 선택</label>
           <select
@@ -289,6 +304,8 @@ import {
   CONST_APPROVAL_STATUS,
 } from '../../../services/shared';
 
+import AmenityService from '../../../services/amenity.service';
+
 @Component({
   name: 'CompanyDistrictList',
 })
@@ -307,6 +324,8 @@ export default class CompanyDistrictList extends BaseComponent {
     address: '',
   };
 
+  private commonAmenityList = [];
+
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {
       this.companySelect = res.data;
@@ -323,10 +342,8 @@ export default class CompanyDistrictList extends BaseComponent {
     const geocoder = new window.kakao.maps.services.Geocoder();
     const callback = (results, status) => {
       if (status === window.kakao.maps.services.Status.OK) {
-        console.log(results);
-        this.companyDistrictCreateDto.lat = results[0].x;
-        this.companyDistrictCreateDto.lon = results[0].y;
-        console.log(this.companyDistrictCreateDto, results[0].x, results[0].y);
+        this.companyDistrictCreateDto.lon = results[0].x;
+        this.companyDistrictCreateDto.lat = results[0].y;
       }
     };
     geocoder.addressSearch(this.companyDistrictCreateDto.address, callback);
@@ -366,6 +383,13 @@ export default class CompanyDistrictList extends BaseComponent {
 
   clearOutCompanyDistrictDto() {
     this.companyDistrictCreateDto = new CompanyDistrictDto();
+    this.getAmenities();
+  }
+
+  getAmenities() {
+    AmenityService.findCommonAmenities().subscribe(res => {
+      this.commonAmenityList = res.data;
+    });
   }
 
   created() {

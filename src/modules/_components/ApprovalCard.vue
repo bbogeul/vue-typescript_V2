@@ -52,7 +52,7 @@
         </div>
         <div v-if="data[histories][0]">
           <ul
-            v-if="Object.keys(data[histories][0].refusalReasons).length !== 0"
+            v-if="data[histories][0].refusalReasons"
             class="py-2 mt-3 border-top border-bottom"
           >
             <li
