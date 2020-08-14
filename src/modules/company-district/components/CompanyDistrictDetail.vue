@@ -118,75 +118,8 @@
         <BaseCard title="타입 정보">
           <template v-slot:head> </template>
           <template v-slot:body>
-            <div v-if="deliverySpaceListCount">
-              <div v-for="type in deliverySpaceList" :key="type.no">
-                <div class="card mb-3">
-                  <b-row no-gutters align-h="start" align-v="start">
-                    <b-col cols="4" class="p-2">
-                      <b-img
-                        src="https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"
-                        rounded
-                        alt="Rounded image"
-                        style="max-width:100%"
-                      ></b-img>
-                    </b-col>
-                    <b-col cols="8" class="p-2">
-                      <h5 v-if="type.typeName">{{ type.typeName }}</h5>
-                      <ul>
-                        <li v-if="type.buildingName">
-                          건물명 : {{ type.buildingName }}
-                        </li>
-                        <li v-if="type.size">평수 : {{ type.size }} 평</li>
-                        <li v-if="type.deposit">
-                          보증금 : {{ type.deposit }} 만원
-                        </li>
-                        <li v-if="type.monthlyUtilityFee">
-                          관리비 : {{ type.monthlyUtilityFee }} 만원
-                        </li>
-                        <li v-if="type.quantity">
-                          남은 공실 갯수 :
-                          <b>{{ type.remainingCount }}/ {{ type.quantity }}</b>
-                        </li>
-                        <li v-if="type.deliverySpaceOptions.length > 0">
-                          공간 옵션 :
-                          <b-badge
-                            variant="success"
-                            v-for="option in type.deliverySpaceOptions"
-                            :key="option.no"
-                            class="m-1"
-                          >
-                            {{ option.deliverySpaceOptionName }}
-                          </b-badge>
-                        </li>
-                        <li v-if="type.amenities.length > 0">
-                          주방 시설 :
-                          <b-badge
-                            variant="info"
-                            v-for="amenity in type.amenities"
-                            :key="amenity.no"
-                            class="m-1"
-                          >
-                            {{ amenity.amenityName }}
-                          </b-badge>
-                        </li>
-                      </ul>
-                    </b-col>
-                  </b-row>
-                </div>
-              </div>
-              <b-pagination
-                v-model="pagination.page"
-                v-if="deliverySpaceListCount"
-                pills
-                :total-rows="deliverySpaceListCount"
-                :per-page="pagination.limit"
-                @input="paginateSearch"
-                class="mt-4 justify-content-center"
-              ></b-pagination>
-            </div>
-            <div v-else class="empty-data">
-              타입 정보 없음
-            </div>
+            <!-- 타입 리스트 -->
+            <DeliverySpaceList />
           </template>
         </BaseCard>
       </div>
@@ -213,7 +146,9 @@
           <label>지점 주소</label>
           <input
             type="text"
-            v-model="companyDistrictUpdateDto.address"
+            v-model="addressData.address"
+            v-b-modal.postcode
+            v-on:keyup.tab="showAddressModal()"
             class="form-control"
           />
         </div>
@@ -234,34 +169,42 @@
         </div>
       </div>
     </b-modal>
+    <!-- 주소 검색 -->
+    <b-modal id="postcode" title="주소 검색" hide-footer>
+      <vue-daum-postcode
+        style="height:500px; overflow-y:auto;"
+        @complete="setAddress($event, companyDistrictUpdateDto)"
+      />
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
-import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
-import BaseCard from '../../_components/BaseCard.vue';
 import { BaseUser } from '../../../services/shared/auth';
 import {
   CompanyDistrictDto,
   CompanyDistrictUpdateDto,
   CompanyDistrictUpdateRefusalDto,
   CompanyDistrictUpdateRefusalReasonDto,
-  DeliverySpaceDto,
-  DeliverySpaceListDto,
   AmenityDto,
 } from '../../../dto';
+
 import AmenityService from '../../../services/amenity.service';
 import CompanyDistrictService from '../../../services/company-district.service';
-import DeliverSpaceService from '../../../services/delivery-space.service';
+
+import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
+import BaseCard from '../../_components/BaseCard.vue';
+import DeliverySpaceList from './DeliverySpaceList.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
-import { Pagination } from '@/common';
+import { setAddress } from '../../../core/';
 
 @Component({
   components: {
-    BaseCard,
     ApprovalCard,
+    BaseCard,
+    DeliverySpaceList,
   },
 })
 export default class CompanyDistrictDetail extends BaseComponent {
@@ -269,41 +212,19 @@ export default class CompanyDistrictDetail extends BaseComponent {
   private companyDistrictUpdateDto = new CompanyDistrictUpdateDto();
   private companyDistrictUpdateRefusalDto = new CompanyDistrictUpdateRefusalDto();
   private companyDistrictUpdateRefusalReasonDto = (this.companyDistrictUpdateRefusalDto.refusalReasons = new CompanyDistrictUpdateRefusalReasonDto());
-  private pagination = new Pagination();
-
-  private deliverySpaceList: DeliverySpaceDto[] = Array<DeliverySpaceDto>();
-  private deliverySpaceListDto = new DeliverySpaceListDto();
-  private deliverySpaceListCount = 0;
 
   private commonAmenityList = [];
   private selectedCommonAmenities: AmenityDto[] = [];
+
+  private addressData = {
+    address: '',
+  };
 
   findOne(id) {
     CompanyDistrictService.findOne(id).subscribe(res => {
       this.companyDistrict = res.data;
       this.setMap(this.companyDistrict);
-      this.findDeliverySpace();
     });
-  }
-
-  // 타입 공간 리스트
-  findDeliverySpace(isPagination?: boolean) {
-    if (!isPagination) {
-      this.pagination.page = 1;
-    }
-    this.pagination.limit = 3;
-    this.deliverySpaceListDto.companyDistrictNo = this.companyDistrict.no;
-    DeliverSpaceService.findAll(
-      this.deliverySpaceListDto,
-      this.pagination,
-    ).subscribe(res => {
-      this.deliverySpaceList = res.data.items;
-      this.deliverySpaceListCount = res.data.totalCount;
-    });
-  }
-
-  paginateSearch() {
-    this.findDeliverySpace(true);
   }
 
   findDistrictInfo() {
@@ -377,6 +298,26 @@ export default class CompanyDistrictDetail extends BaseComponent {
       position: markerPosition,
     });
     marker.setMap(map);
+  }
+
+  showAddressModal() {
+    this.$bvModal.show('postcode');
+  }
+
+  setAddress(res) {
+    this.addressData = res;
+    this.companyDistrictUpdateDto.address = this.addressData.address;
+
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    const callback = (results, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        this.companyDistrictUpdateDto.lon = results[0].x;
+        this.companyDistrictUpdateDto.lat = results[0].y;
+      }
+    };
+    geocoder.addressSearch(this.companyDistrictUpdateDto.address, callback);
+
+    this.$bvModal.hide('postcode');
   }
 
   created() {

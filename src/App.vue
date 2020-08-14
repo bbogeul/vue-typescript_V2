@@ -147,4 +147,17 @@ h5 {
 .red-text {
   color: red;
 }
+
+// list
+.u-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    list-style: none;
+    position: relative;
+    margin: 5px 0;
+  }
+}
 </style>

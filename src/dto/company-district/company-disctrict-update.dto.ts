@@ -12,4 +12,6 @@ export class CompanyDistrictUpdateDto extends BaseDto<CompanyDistrictUpdateDto>
   nameEng?: string;
   address?: string;
   amenities?: AmenityDto[];
+  lat?: string;
+  lon?: string;
 }
