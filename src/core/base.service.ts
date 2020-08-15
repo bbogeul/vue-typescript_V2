@@ -134,6 +134,14 @@ export class BaseService extends Vue {
     }
   }
 
+  public fileGet(path: string, params?: any) {
+    return axios.get(path, params);
+  }
+
+  public put(path: string, params?: any) {
+    return axios.put(path, params);
+  }
+
   protected get<T>(path: string, params?: any): AxiosObservable<T> {
     return this.__api('get', path, params);
   }

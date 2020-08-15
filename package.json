@@ -12,6 +12,7 @@
   "dependencies": {
     "@coreui/coreui": "^3.2.2",
     "@coreui/vue": "^3.1.1",
+    "aws-sdk": "^2.734.0",
     "bootstrap-vue": "^2.15.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
