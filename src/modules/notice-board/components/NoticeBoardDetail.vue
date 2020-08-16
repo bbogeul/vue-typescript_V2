@@ -1,17 +1,21 @@
 <template>
   <div class="board-view">
+    <input type="file" id="upload" v-on:change="upload($event.target.files)" multiple />
+    <div v-for="attachment in attachments" :key="attachment.originFileName">
+      <img :src="attachment.endpoint" alt="attachment." />
+    </div>
     <div class="board-view-header">
       <div class="board-view-title">
-        <b-badge variant="warning" class="board-view-category">{{
+        <b-badge variant="warning" class="board-view-category">
+          {{
           noticeBoard.noticeBoardType | enumTransformer
-        }}</b-badge>
+          }}
+        </b-badge>
         <h3>{{ noticeBoard.title }}</h3>
       </div>
       <div class="border-view-info">
         <span class="baord-view-user">{{ noticeBoard.adminNo }}</span>
-        <span class="baord-view-date">
-          {{ noticeBoard.createdAt | dateTransformer }}</span
-        >
+        <span class="baord-view-date">{{ noticeBoard.createdAt | dateTransformer }}</span>
       </div>
     </div>
     <div class="board-view-body">
@@ -20,9 +24,7 @@
         <span>{{ noticeBoard.started }}</span> ~
         <span>{{ noticeBoard.ended }}</span>
       </div>
-      <div v-html="noticeBoard.content" class="board-view-content">
-        {{ noticeBoard.content }}
-      </div>
+      <div v-html="noticeBoard.content" class="board-view-content">{{ noticeBoard.content }}</div>
       <div v-if="noticeBoard.url" class="board-view-url">
         <strong>URL</strong>
         <a :href="noticeBoard.url" target="_blank">{{ noticeBoard.url }}</a>
@@ -30,9 +32,7 @@
     </div>
     <div class="board-view-footer">
       <div class="text-right">
-        <router-link to="/notice-board" class="btn btn-secondary text-center"
-          >목록으로</router-link
-        >
+        <router-link to="/notice-board" class="btn btn-secondary text-center">목록으로</router-link>
       </div>
     </div>
   </div>
@@ -40,13 +40,33 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import BaseComponent from '../../../core/base.component';
-import { NoticeBoardDto } from '../../../dto';
+import { NoticeBoardDto, FileAttachmentDto } from '../../../dto';
 import NoticeBoardService from '../../../services/notice-board.service';
+import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
+import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
+import { ATTACHMENT_REASON_TYPE } from '../../../services/shared/file-upload/dto';
+
 @Component({
   name: 'NoticeBoardDetail',
 })
 export default class NoticeBoardDetail extends BaseComponent {
   private noticeBoard = new NoticeBoardDto();
+  private attachments = [];
+  private environments = null;
+
+  async upload(files: FileList) {
+    const attaching = await FileUploadService.upload(
+      UPLOAD_TYPE.DELIVERY_SPACE,
+      files,
+    );
+    this.attachments.push(
+      ...attaching.filter(
+        fileAttachment =>
+          fileAttachment.attachmentReasonType ===
+          ATTACHMENT_REASON_TYPE.SUCCESS,
+      ),
+    );
+  }
 
   findOne(id) {
     NoticeBoardService.findOne(id).subscribe(res => {

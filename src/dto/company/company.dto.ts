@@ -4,6 +4,7 @@ import { CodeManagementDto } from '@/services/init/dto';
 import { CompanyUserDto } from '../company-user';
 import { CompanyDistrictDto } from '../company-district';
 import { AdminDto } from '../admin';
+import { FileAttachmentDto } from '../file-upload';
 
 export class CompanyDto extends BaseDto<CompanyDto> {
   no: number;
@@ -25,4 +26,5 @@ export class CompanyDto extends BaseDto<CompanyDto> {
   companyUsers?: CompanyUserDto[];
   codeManagement?: CodeManagementDto[];
   companyDistricts?: CompanyDistrictDto[];
+  logo?: FileAttachmentDto[];
 }

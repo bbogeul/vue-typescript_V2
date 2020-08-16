@@ -3,7 +3,10 @@ import '../../../../node_modules/izitoast/dist/css/iziToast.css';
 const iZtoast = require('izitoast');
 
 const toast = {
-  error: (message, title = 'Error') => {
+  error: (message, title) => {
+    if (!title) {
+      title = 'Error';
+    }
     return iZtoast.error({
       title: title,
       message: message,

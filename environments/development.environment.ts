@@ -7,4 +7,5 @@ export const DevelopmentEnvironment: Environment = {
   production: false,
   clientName: packageInfo.name,
   productionTip: false,
+  s3BaseUrl: 'https://kr.object.ncloudstorage.com/staging-storage-nanuda',
 };

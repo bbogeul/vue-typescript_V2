@@ -5,7 +5,6 @@ import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
 import { AxiosObservable } from 'axios-observable/dist/axios-observable.interface';
-import jwtDecode from 'jwt-decode';
 import Vue from 'vue';
 
 // axios에서 사용할 메소드 타입
@@ -135,7 +134,17 @@ export class BaseService extends Vue {
   }
 
   public fileGet(path: string, params?: any) {
+    if (path.indexOf('http') !== 0) {
+      path = env.DevelopmentEnvironment.baseURL + path;
+    }
     return axios.get(path, params);
+  }
+
+  public filePost(path: string, params?: any) {
+    if (path.indexOf('http') !== 0) {
+      path = env.DevelopmentEnvironment.baseURL + path;
+    }
+    return axios.post(path, params);
   }
 
   public put(path: string, params?: any) {

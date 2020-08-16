@@ -1,35 +1,30 @@
 <template>
   <section>
-    <div
-      v-if="company"
-      class="d-flex justify-content-between align-items-end mb-2"
-    >
-      <h3 v-if="company.nameKr" class="mb-0">
-        {{ company.nameKr }} - 업체 정보
-      </h3>
-      <router-link to="/company" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
+    <div v-if="company" class="d-flex justify-content-between align-items-end mb-2">
+      <h3 v-if="company.nameKr" class="mb-0">{{ company.nameKr }} - 업체 정보</h3>
+      <router-link to="/company" class="btn btn-secondary text-center">목록으로</router-link>
     </div>
     <div class="row d-flex align-items-stretch">
       <div class="my-3 col-12 col-lg-6">
         <BaseCard title="업체 정보">
           <template v-slot:head>
             <div>
-              <b-button variant="danger" v-b-modal.delete_company
-                >삭제하기</b-button
-              >
+              <b-button variant="danger" v-b-modal.delete_company>삭제하기</b-button>
               <b-button
                 variant="primary"
                 v-b-modal.company_info
                 @click="findCompanyInfo()"
                 v-if="company.companyStatus === 'APPROVAL'"
-                >수정하기</b-button
-              >
+              >수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
             <div v-if="company">
+              <div v-if="company.logo && company.logo.length > 0">
+                <div v-for="logo in company.logo" :key="logo.endpoint">
+                  <img :src="logo.endpoint" class="rounded mx-auto d-block company-logo" />
+                </div>
+              </div>
               <ul>
                 <li v-if="company.no">
                   업체 ID :
@@ -55,21 +50,22 @@
                 <li v-if="company.address">주소 : {{ company.address }}</li>
                 <li v-if="company.website">
                   웹사이트 :
-                  <a :href="company.website" target="_blank">{{
+                  <a :href="company.website" target="_blank">
+                    {{
                     company.website
-                  }}</a>
+                    }}
+                  </a>
                 </li>
-                <li v-if="company.createdAt">
-                  등록일 : {{ company.createdAt | dateTransformer }}
-                </li>
+                <li v-if="company.createdAt">등록일 : {{ company.createdAt | dateTransformer }}</li>
                 <li v-if="company.createdAt">
                   승인 상태 :
-                  <span class="badge badge-pill badge-warning p-2 mr-2">
-                    {{ company.companyStatus | enumTransformer }}
-                  </span>
-                  <span v-if="company.updatedAt" class="d-inline-block"
-                    >({{ company.updatedAt | dateTransformer }})</span
-                  >
+                  <span
+                    class="badge badge-pill badge-warning p-2 mr-2"
+                  >{{ company.companyStatus | enumTransformer }}</span>
+                  <span
+                    v-if="company.updatedAt"
+                    class="d-inline-block"
+                  >({{ company.updatedAt | dateTransformer }})</span>
                 </li>
               </ul>
             </div>
@@ -89,12 +85,7 @@
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
-              <b-button
-                variant="primary"
-                v-b-modal.admin_list
-                @click="findAdmin()"
-                >수정하기</b-button
-              >
+              <b-button variant="primary" v-b-modal.admin_list @click="findAdmin()">수정하기</b-button>
             </div>
           </template>
           <template v-slot:body>
@@ -126,7 +117,7 @@
       </div>
       <div class="my-3 col-12 col-lg-6" v-if="company">
         <BaseCard title="지점 정보">
-          <template v-slot:head> </template>
+          <template v-slot:head></template>
           <template v-slot:body>
             <div>
               <CompanyDistrictList />
@@ -189,18 +180,12 @@
             <td>{{ admin.name }}</td>
             <td>{{ admin.phone }}</td>
             <td class="text-center">
-              <button class="btn btn-primary" @click="selectAdmin(admin)">
-                선택
-              </button>
+              <button class="btn btn-primary" @click="selectAdmin(admin)">선택</button>
             </td>
           </tr>
         </tbody>
       </table>
-      <div
-        v-if="selectedAdmin.name"
-        class="py-2 px-4 rounded"
-        style="background-color:#f1f1f1"
-      >
+      <div v-if="selectedAdmin.name" class="py-2 px-4 rounded" style="background-color:#f1f1f1">
         선택한 관리자 :
         <b>{{ selectedAdmin.name }}</b>
       </div>
@@ -214,79 +199,67 @@
         class="mt-4 justify-content-center"
       ></b-pagination>
     </b-modal>
-    <b-modal id="company_info" title="업체 정보 수정" @ok="updateCompany()">
+    <b-modal id="company_info" title="업체 정보 수정" @ok="updateCompany()" @cancel="cancelSelection()">
+      <div v-if="company.logo && company.logo.length > 0 && !logoChanged">
+        <div v-for="logo in company.logo" :key="logo.endpoint">
+          <img :src="logo.endpoint" class="rounded mx-auto d-block company-logo" />
+        </div>
+      </div>
+      <div v-if="newLogo.length > 0 && logoChanged">
+        <div v-for="logo in newLogo" :key="logo.endpoint">
+          <img :src="logo.endpoint" class="rounded mx-auto d-block company-logo" />
+        </div>
+      </div>
       <div class="form-row">
         <div class="col-12 col-md-6 mt-2">
           <label>업체명</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.nameKr"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.nameKr" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>업체명(영문)</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.nameEng"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.nameEng" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>대표명</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.ceoKr"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.ceoKr" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>대표명(영문)</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.ceoEng"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.ceoEng" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>사업자 번호</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.businessNo"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.businessNo" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>이메일</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.email"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.email" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>팩스</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.fax"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.fax" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>주소</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.address"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.address" class="form-control" />
         </div>
         <div class="col-12 col-md-6 mt-2">
           <label>웹사이트</label>
-          <input
-            type="text"
-            v-model="companyUpdateDto.website"
-            class="form-control"
-          />
+          <input type="text" v-model="companyUpdateDto.website" class="form-control" />
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label>업체 로고</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFileLang"
+              lang="kr"
+              v-on:change="upload($event.target.files)"
+              multiple
+            />
+            <label class="custom-file-label" for="customFileLang">로고 변경</label>
+          </div>
         </div>
       </div>
     </b-modal>
@@ -322,6 +295,10 @@ import {
   CONST_APPROVAL_STATUS,
 } from '../../../services/shared';
 import toast from '../../../../resources/assets/js/services/toast.js';
+import { FileAttachmentDto } from '@/services/shared/file-upload';
+import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
+import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
+import { ATTACHMENT_REASON_TYPE } from '@/services/shared/file-upload';
 
 @Component({
   name: 'CompanyDetail',
@@ -344,6 +321,8 @@ export default class CompanyDetail extends BaseComponent {
   private companyUpdateRefusalReasonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUpdateRefusalReasonDto());
   private pagination = new Pagination();
   private selectedAdmin: AdminDto = new AdminDto(BaseUser);
+  private newLogo: FileAttachmentDto[] = [];
+  private logoChanged = false;
   private deleteCompanyName = '';
 
   findOne(id) {
@@ -373,7 +352,7 @@ export default class CompanyDetail extends BaseComponent {
     if (this.selectedAdmin) {
       this.companyUpdateDto.managerNo = this.selectedAdmin.no;
     }
-
+    this.companyUpdateDto.logo = this.newLogo;
     CompanyService.update(
       this.$route.params.id,
       this.companyUpdateDto,
@@ -427,6 +406,23 @@ export default class CompanyDetail extends BaseComponent {
     });
   }
 
+  async upload(file: FileList) {
+    console.log(file);
+
+    const attachments = await FileUploadService.upload(
+      UPLOAD_TYPE.COMPANY_LOGO,
+      file,
+    );
+    this.newLogo = [];
+    this.newLogo.push(
+      ...attachments.filter(
+        fileUpload =>
+          fileUpload.attachmentReasonType === ATTACHMENT_REASON_TYPE.SUCCESS,
+      ),
+    );
+    this.logoChanged = true;
+  }
+
   paginateSearch() {
     this.findAdmin(true);
   }
@@ -437,6 +433,7 @@ export default class CompanyDetail extends BaseComponent {
 
   cancelSelection() {
     this.selectedAdmin = new AdminDto(BaseUser);
+    this.logoChanged = false;
   }
 
   created() {

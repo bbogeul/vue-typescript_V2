@@ -9,11 +9,19 @@ import {
   ATTACHMENT_REASON_TYPE,
 } from '.';
 import axios from 'axios';
+import toast from '../../../../resources/assets/js/services/toast.js';
+import {
+  EnvironmentType,
+  ProductionEnvironment,
+  DevelopmentEnvironment,
+} from '../../../../environments';
 
 export enum UPLOAD_TYPE {
   DELIVERY_SPACE = 'delivery-space',
   BANNER = 'banner',
   POPUP = 'popup',
+  INQUIRY = 'inquiry',
+  COMPANY_LOGO = 'company-logo',
 }
 
 type UploadOptionConfig = {
@@ -26,8 +34,8 @@ class FileUploadService extends BaseService {
     [UPLOAD_TYPE.DELIVERY_SPACE]: {
       path: 'delivery-space',
       sizeLimit: 1024 * 1024 * 10,
-      fileType: FileType.DOCUMENT,
-      mimeType: FileType.DOCUMENT,
+      fileType: FileType.IMAGE,
+      mimeType: FileType.IMAGE,
       accessType: FileAccessType.PUBLIC,
       acl: ACL.PUBLIC,
     },
@@ -45,7 +53,7 @@ class FileUploadService extends BaseService {
     },
     [UPLOAD_TYPE.POPUP]: {
       path: 'popup',
-      sizeLimit: 1024 * 1024 * 1,
+      sizeLimit: 1024 * 1024 * 10,
       fileType: FileType.IMAGE,
       mimeType: FileType.IMAGE,
       accessType: FileAccessType.PUBLIC,
@@ -53,6 +61,22 @@ class FileUploadService extends BaseService {
       // resized: false,
       // squared: false,
       // cropped: false,
+    },
+    [UPLOAD_TYPE.INQUIRY]: {
+      path: 'popup',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.DOCUMENT,
+      mimeType: FileType.DOCUMENT,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PRIVATE,
+    },
+    [UPLOAD_TYPE.COMPANY_LOGO]: {
+      path: 'company-logo',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.IMAGE,
+      mimeType: FileType.IMAGE,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PUBLIC,
     },
   };
   private readonly mimeTypes: MimeTypes = {
@@ -64,7 +88,6 @@ class FileUploadService extends BaseService {
       'image/jpg',
       'image/webp',
       'image/heic',
-      'image/svg',
       'application/octet-stream',
       'application/vnd.ms-excel', // .xls
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
@@ -89,40 +112,50 @@ class FileUploadService extends BaseService {
    * @param files
    */
   async upload(uploadType: UPLOAD_TYPE, files: FileList) {
+    console.log(uploadType, files);
     const attachments: FileAttachmentDto[] = [];
     const uploadOption = FileUploadService.UPLOAD_OPTIONS[uploadType];
-
+    const endpointUrl =
+      process.env.NODE_ENV === EnvironmentType.production
+        ? ProductionEnvironment.s3BaseUrl
+        : DevelopmentEnvironment.s3BaseUrl;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
+      console.log(uploadOption);
       if (file.size > uploadOption.sizeLimit) {
         attachments.push({
           attachmentReasonType: ATTACHMENT_REASON_TYPE.SIZE,
           originFilename: file.name,
           mimetype: file.type,
         });
+        toast.error(
+          `${uploadOption.sizeLimit / 1024 / 1024}MB까지 지원합니다.`,
+          '용량 초과',
+        );
         return;
       }
-
       if (!this.mimeTypes[uploadOption.mimeType].includes(file.type)) {
         attachments.push({
           attachmentReasonType: ATTACHMENT_REASON_TYPE.CONTENT_TYPE,
           originFilename: file.name,
           mimetype: file.type,
         });
+        console.log('test');
+        toast.error('지원하지 않는 파일 형식입니다.', '파일');
         return;
       }
 
-      const presigned = await this.fileGet(
-        '/file-upload/retrieve-s3-presigned',
+      const presigned = await this.filePost(
+        'file-upload/retrieve-s3-presigned',
         {
           uploadType,
           filename: file.name,
           mimetype: file.type,
         },
       );
-      if (!presigned.data || presigned.data.url) {
+
+      if (!presigned || !presigned.data.url) {
         attachments.push({
           attachmentReasonType: ATTACHMENT_REASON_TYPE.ETC,
           originFilename: file.name,
@@ -130,10 +163,14 @@ class FileUploadService extends BaseService {
         });
         return;
       }
-
+      console.log(presigned.data);
       //   toPromise()
       await axios.put(presigned.data.url, file, {
-        headers: { 'Content-Type': file.type },
+        headers: {
+          'Content-Type': file.type,
+          // required for public read - 버킷 타입에 따라 public 또는 private
+          'x-amz-acl': uploadOption.acl,
+        },
       });
 
       attachments.push({
@@ -142,10 +179,11 @@ class FileUploadService extends BaseService {
         mimetype: file.type,
         source: presigned.data.source,
         key: presigned.data.key,
-        endpoint: '',
+        endpoint: `${endpointUrl}/${presigned.data.source}`,
         uploadType,
       });
     }
+    return attachments;
   }
 }
 
