@@ -17,6 +17,12 @@ class CodeManagementService extends BaseService {
   findGender() {
     return super.get<CodeManagementDto[]>('admin/code-management/gender');
   }
+
+  findCodesFounderConsultB2B() {
+    return super.get<CodeManagementDto[]>(
+      'admin/code-management/b2b-founder-consult',
+    );
+  }
 }
 
 export default new CodeManagementService();

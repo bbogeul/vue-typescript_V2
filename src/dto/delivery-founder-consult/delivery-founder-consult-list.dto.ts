@@ -5,11 +5,11 @@ import {
   B2B_FOUNDER_CONSULT,
 } from '@/services/shared';
 import { AVAILABLE_TIME, YN } from '@/common';
-import { DeliveryFounderConsult } from './delivery-founder-consult.dto';
+import { DeliveryFounderConsultDto } from './delivery-founder-consult.dto';
 
 export class DeliveryFounderConsultListDto
   extends BaseDto<DeliveryFounderConsultListDto>
-  implements Partial<DeliveryFounderConsult> {
+  implements Partial<DeliveryFounderConsultDto> {
   deliverySpaceNo?: number;
   phone?: string;
   status?: FOUNDER_CONSULT;

@@ -12,7 +12,7 @@
             type="text"
             class="form-control"
             id="space_id"
-            v-model="deliveryFounderConsultSearchDto.spaceNo"
+            v-model="deliveryFounderConsultSearchDto.deliverySpaceNo"
           />
         </div>
         <div class="col-6 col-lg-2 mb-3">
@@ -89,15 +89,6 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="col-lg-4 mb-3">
-          <label for="space_address">지점 주소</label>
-          <input
-            type="text"
-            class="form-control"
-            id="space_address"
-            v-model="deliveryFounderConsultSearchDto.address"
-          />
-        </div>
         <div class="col-6 col-lg-2 mb-3">
           <label for="admin_user">관리자명</label>
           <template>
@@ -138,11 +129,11 @@
           <select
             class="custom-select"
             id="status"
-            v-model="deliveryFounderConsultSearchDto.status"
+            v-model="deliveryFounderConsultSearchDto.companyDecisionStatus"
           >
             <option value selected>전체</option>
             <option
-              v-for="status in founderConsultStatusSelect"
+              v-for="status in statusSelect"
               :key="status.no"
               :value="status.key"
               >{{ status.value }}</option
@@ -182,7 +173,7 @@
     </div>
     <div v-if="!dataLoading">
       <table
-        class="table table-bordered table-hover table-sm table-responsive text-center"
+        class="table table-bordered table-hover table-sm table-responsive-sm text-center"
         v-if="deliveryFounderConsultListCount"
       >
         <thead>
@@ -191,7 +182,7 @@
             <th
               scope="col"
               v-bind:class="{
-                highlighted: deliveryFounderConsultSearchDto.spaceNo,
+                highlighted: deliveryFounderConsultSearchDto.deliverySpaceNo,
               }"
             >
               SPACE ID
@@ -220,15 +211,6 @@
             >
               GENDER
             </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: deliveryFounderConsultSearchDto.address,
-              }"
-            >
-              ADDRESS
-            </th>
-
             <th
               scope="col"
               v-bind:class="{
@@ -300,7 +282,7 @@
               {{ founderConsult.no }}
             </th>
             <td>
-              {{ founderConsult.spaceNo }}
+              {{ founderConsult.deliverySpaceNo }}
             </td>
             <td>{{ founderConsult.nanudaUser.name }}</td>
             <td>{{ founderConsult.nanudaUser.phone }}</td>
@@ -309,37 +291,11 @@
                 {{ founderConsult.nanudaUser.genderInfo.value }}
               </div>
             </td>
-            <td class="text-left">
-              <div v-if="founderConsult.space">
-                {{ founderConsult.space.address }}
-                {{ founderConsult.space.detailAddress }}
-              </div>
+            <td v-if="founderConsult.deliverySpaces">
+              {{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}
             </td>
-            <td v-if="founderConsult.space.companyDistricts">
-              <div
-                v-for="company in founderConsult.space.companyDistricts"
-                :key="company.no"
-              >
-                <div v-if="company.company.nameKr">
-                  <router-link
-                    :to="{
-                      name: 'CompanyDetail',
-                      params: {
-                        id: company.company.no,
-                      },
-                    }"
-                    >{{ company.company.nameKr }}</router-link
-                  >
-                </div>
-              </div>
-            </td>
-            <td>
-              <div
-                v-for="company in founderConsult.space.companyDistricts"
-                :key="company.no"
-              >
-                <div v-if="company.company.nameKr">{{ company.nameKr }}</div>
-              </div>
+            <td v-if="founderConsult.deliverySpaces">
+              {{ founderConsult.deliverySpaces.companyDistrict.nameKr }}
             </td>
             <td>
               <div v-if="founderConsult.availableTime">
@@ -388,10 +344,10 @@
             </td>
             <td>
               <router-link
-                v-if="founderConsult.space"
+                v-if="founderConsult.no"
                 class="btn btn-sm btn-secondary text-nowrap"
                 :to="{
-                  name: 'FounderConsultDetail',
+                  name: 'DeliveryFounderConsultDetail',
                   params: {
                     id: founderConsult.no,
                   },
@@ -433,7 +389,7 @@ import { CodeManagementDto } from '../../../services/init/dto';
 import AdminService from '../../../services/admin.service';
 import CompanyService from '../../../services/company.service';
 import CodeManagementService from '../../../services/code-management.service';
-import FounderConsultService from '../../../services/founder-consult.service';
+import DeliveryFounderConsultService from '../../../services/delivery-founder-consult.service';
 import SpaceTypeService from '../../../services/space-type.service';
 
 import {
@@ -441,6 +397,7 @@ import {
   DeliveryFounderConsultListDto,
   CompanyDto,
   DeliveryFounderConsultDto,
+  DeliverySpaceDto,
 } from '../../../dto';
 import {
   Pagination,
@@ -455,9 +412,12 @@ import {
 })
 export default class DeliveryFounderConsult extends BaseComponent {
   private deliveryFounderConsultSearchDto = new DeliveryFounderConsultListDto();
+  private deliveryFounderConsultDto = new DeliveryFounderConsultDto();
   private deliveryFounderConsultList: DeliveryFounderConsultDto[] = [];
   private deliveryFounderConsultListCount = 0;
-  private founderConsultStatusSelect: CodeManagementDto[] = [];
+  F;
+
+  private statusSelect: CodeManagementDto[] = [];
   private availableTimesSelect: CodeManagementDto[] = [];
   private companySelect: CompanyDto[] = [];
   private totalPage = 0;
@@ -479,8 +439,8 @@ export default class DeliveryFounderConsult extends BaseComponent {
 
   // 상태값
   getFounderConsultCodes() {
-    CodeManagementService.findCodesFounderConsult().subscribe(res => {
-      this.founderConsultStatusSelect = res.data;
+    CodeManagementService.findCodesFounderConsultB2B().subscribe(res => {
+      this.statusSelect = res.data;
     });
   }
 
@@ -508,14 +468,14 @@ export default class DeliveryFounderConsult extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
-    // DeliveryFounderConsultService.findAll(
-    //   this.deliveryFounderConsultSearchDto,
-    //   this.pagination,
-    // ).subscribe(res => {
-    //   this.dataLoading = false;
-    //   this.deliveryFounderConsultList = res.data.items;
-    //   this.deliveryFounderConsultListCount = res.data.totalCount;
-    // });
+    DeliveryFounderConsultService.findAll(
+      this.deliveryFounderConsultSearchDto,
+      this.pagination,
+    ).subscribe(res => {
+      this.dataLoading = false;
+      this.deliveryFounderConsultList = res.data.items;
+      this.deliveryFounderConsultListCount = res.data.totalCount;
+    });
     window.scrollTo(0, 0);
   }
 
