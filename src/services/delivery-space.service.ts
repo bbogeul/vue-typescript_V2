@@ -22,6 +22,14 @@ class DeliverSpaceService extends BaseService {
   findOne(spaceNo) {
     return super.get<DeliverySpaceDto>(`admin/delivery-space/${spaceNo}`);
   }
+
+  /**
+   *
+   * @param deliverySpace
+   */
+  create(deliverySpace: DeliverySpaceDto) {
+    return super.post<DeliverySpaceDto>('admin/delivery-space', deliverySpace);
+  }
 }
 
 export default new DeliverSpaceService();

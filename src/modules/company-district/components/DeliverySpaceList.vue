@@ -5,12 +5,24 @@
         <div class="card mb-3">
           <b-row no-gutters align-h="start" align-v="start">
             <b-col cols="4" class="p-2">
-              <b-img
+              <b-img-lazy
+                v-if="
+                  type.images &&
+                    type.images[0] &&
+                    type.images[0].endpoint.includes('storage')
+                "
+                :src="type.images[0].endpoint"
+                :alt="type.images[0].originalFilename"
+                onerror="https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"
+                rounded
+                style="max-width:100%"
+              />
+              <b-img-lazy
+                v-else
                 src="https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"
                 rounded
-                alt="Rounded image"
                 style="max-width:100%"
-              ></b-img>
+              />
               <div class="text-center mt-2">
                 <b-button
                   variant="outline-secondary"
@@ -30,12 +42,15 @@
                 </li>
                 <li v-if="type.size">평수 : {{ type.size }} 평</li>
                 <li v-if="type.deposit">보증금 : {{ type.deposit }} 만원</li>
+                <li v-if="type.monthlyRentFee">
+                  월 임대료 : {{ type.monthlyRentFee }} 만원
+                </li>
                 <li v-if="type.monthlyUtilityFee">
-                  관리비 : {{ type.monthlyUtilityFee }} 만원
+                  월 관리비 : {{ type.monthlyUtilityFee }} 만원
                 </li>
                 <li v-if="type.quantity">
                   남은 공실 갯수 :
-                  <b>{{ type.remainingCount }}/ {{ type.quantity }}</b>
+                  <b>{{ type.remainingCount }} / {{ type.quantity }}</b>
                 </li>
                 <li v-if="type.deliverySpaceOptions.length > 0">
                   공간 옵션 :
@@ -85,28 +100,91 @@
       <b-row>
         <b-col cols="12" md="6">
           <b-carousel
+            v-if="deliverySpaceDto.images"
             :interval="3000"
             controls
             indicators
-            background="#ababab"
+            background="white"
             img-width="500"
             img-height="480"
-            style="text-shadow: 1px 1px 2px #333;"
           >
             <b-carousel-slide
-              caption="내부사진"
-              img-src="https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"
-            >
-            </b-carousel-slide>
-            <b-carousel-slide
-              caption="내부사진"
-              img-src="https://www.ajactraining.org/wp-content/uploads/2019/09/image-placeholder.jpg"
+              v-for="image in deliverySpaceDto.images"
+              :key="image.originalFilename"
+              :img-src="image.endpoint"
             >
             </b-carousel-slide>
           </b-carousel>
         </b-col>
         <b-col cols="12" md="6">
-          <p>남은 공실 : {{ deliverySpaceDto.remainingCount }} 개</p>
+          <h4 v-if="deliverySpaceDto.typeName" class="mb-3">
+            {{ deliverySpaceDto.typeName }}
+          </h4>
+          <ul class="u-list">
+            <li v-if="deliverySpaceDto.buildingName">
+              건물명 : {{ deliverySpaceDto.buildingName }}
+            </li>
+            <li v-if="deliverySpaceDto.size">
+              평수 : {{ deliverySpaceDto.size }} 평
+            </li>
+            <li v-if="deliverySpaceDto.deposit">
+              보증금 : {{ deliverySpaceDto.deposit }} 만원
+            </li>
+            <li v-if="deliverySpaceDto.monthlyRentFee">
+              월 임대료 : {{ deliverySpaceDto.monthlyRentFee }} 만원
+            </li>
+            <li v-if="deliverySpaceDto.monthlyUtilityFee">
+              월 관리비 : {{ deliverySpaceDto.monthlyUtilityFee }} 만원
+            </li>
+            <li
+              v-if="
+                deliverySpaceDto.deliverySpaceOptions &&
+                  deliverySpaceDto.deliverySpaceOptions.length > 0
+              "
+            >
+              공간 옵션 :
+              <b-badge
+                variant="success"
+                v-for="option in deliverySpaceDto.deliverySpaceOptions"
+                :key="option.no"
+                class="m-1"
+              >
+                {{ option.deliverySpaceOptionName }}
+              </b-badge>
+            </li>
+            <li
+              v-if="
+                deliverySpaceDto.amenities &&
+                  deliverySpaceDto.amenities.length > 0
+              "
+            >
+              주방 시설 :
+              <b-badge
+                variant="info"
+                v-for="amenity in deliverySpaceDto.amenities"
+                :key="amenity.no"
+                class="m-1"
+              >
+                {{ amenity.amenityName }}
+              </b-badge>
+            </li>
+          </ul>
+          <div
+            v-if="deliverySpaceDto.quantity"
+            class="border bg-light rounded p-3 mt-3"
+          >
+            남은 공실 갯수 :
+            <b
+              :class="[
+                deliverySpaceDto.remainingCount > 0
+                  ? 'text-success'
+                  : 'text-danger',
+              ]"
+              >{{ deliverySpaceDto.remainingCount }}</b
+            >
+            /
+            {{ deliverySpaceDto.quantity }}
+          </div>
         </b-col>
       </b-row>
     </b-modal>
@@ -153,6 +231,7 @@ export default class DeliverySpaceList extends BaseComponent {
     });
   }
 
+  // 타입 상세 보기
   findOne(typeNo) {
     DeliverSpaceService.findOne(typeNo).subscribe(res => {
       if (res) {
@@ -166,7 +245,7 @@ export default class DeliverySpaceList extends BaseComponent {
   }
 
   created() {
-    this.findAll(true);
+    this.findAll();
   }
 }
 </script>

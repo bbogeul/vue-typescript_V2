@@ -387,7 +387,7 @@ export default class CompanyDistrictList extends BaseComponent {
   }
 
   getAmenities() {
-    AmenityService.findCommonAmenities().subscribe(res => {
+    AmenityService.findAmenities('common-facility').subscribe(res => {
       this.commonAmenityList = res.data;
     });
   }

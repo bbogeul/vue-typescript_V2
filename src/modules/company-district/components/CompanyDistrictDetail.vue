@@ -5,11 +5,11 @@
       align-h="between"
       align-v="end"
       class="title mb-3"
-      v-if="companyDistrict"
+      v-if="companyDistrictDto"
     >
       <h3>
-        <span v-if="companyDistrict.nameKr"
-          >{{ companyDistrict.nameKr }} - 업체 지점 정보</span
+        <span v-if="companyDistrictDto.nameKr"
+          >{{ companyDistrictDto.nameKr }} - 업체 지점 정보</span
         >
       </h3>
       <router-link
@@ -22,68 +22,72 @@
       <div class="col col-12 col-lg-6 my-3">
         <BaseCard title="지점 정보">
           <template v-slot:head>
-            <div v-if="companyDistrict.companyDistrictStatus === 'APPROVAL'">
+            <div v-if="companyDistrictDto.companyDistrictStatus === 'APPROVAL'">
               <b-button
                 variant="primary"
-                v-b-modal.district_info
+                v-b-modal.update_district
                 @click="findDistrictInfo()"
                 >수정하기</b-button
               >
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="companyDistrict">
+            <div v-if="companyDistrictDto">
               <div>
                 <ul>
-                  <li v-if="companyDistrict.no">
-                    지점 ID : <b>{{ companyDistrict.no }}</b>
+                  <li v-if="companyDistrictDto.no">
+                    지점 ID : <b>{{ companyDistrictDto.no }}</b>
                   </li>
-                  <li v-if="companyDistrict.nameKr">
-                    지점명 : <b>{{ companyDistrict.nameKr }}</b> ({{
-                      companyDistrict.nameEng
+                  <li v-if="companyDistrictDto.nameKr">
+                    지점명 : <b>{{ companyDistrictDto.nameKr }}</b> ({{
+                      companyDistrictDto.nameEng
                     }})
                   </li>
-                  <li v-if="companyDistrict.address">
-                    지점 주소 : <b>{{ companyDistrict.address }}</b>
+                  <li v-if="companyDistrictDto.address">
+                    지점 주소 : <b>{{ companyDistrictDto.address }}</b>
                   </li>
-                  <li v-if="companyDistrict.company">
+                  <li v-if="companyDistrictDto.company">
                     업체명 :
                     <router-link
                       :to="{
                         name: 'CompanyDetail',
                         params: {
-                          id: companyDistrict.company.no,
+                          id: companyDistrictDto.company.no,
                         },
                       }"
                     >
-                      <b>{{ companyDistrict.company.nameKr }}</b>
+                      <b>{{ companyDistrictDto.company.nameKr }}</b>
                     </router-link>
                   </li>
                   <li>
                     공용 시설 정보 :
                     <b-badge
                       variant="info"
-                      v-for="amenity in companyDistrict.amenities"
+                      v-for="amenity in companyDistrictDto.amenities"
                       :key="amenity.no"
                       class="m-1"
                     >
                       {{ amenity.amenityName }}
                     </b-badge>
                   </li>
-                  <li v-if="companyDistrict.createdAt">
-                    등록일 : {{ companyDistrict.createdAt | dateTransformer }}
+                  <li v-if="companyDistrictDto.createdAt">
+                    등록일 :
+                    {{ companyDistrictDto.createdAt | dateTransformer }}
                   </li>
-                  <li v-if="companyDistrict.companyDistrictStatus">
+                  <li v-if="companyDistrictDto.companyDistrictStatus">
                     승인 상태 :
                     <b-badge variant="warning" class="badge-pill p-2 mr-2">
                       {{
-                        companyDistrict.companyDistrictStatus | enumTransformer
+                        companyDistrictDto.companyDistrictStatus
+                          | enumTransformer
                       }}
                     </b-badge>
                     <span
-                      v-if="companyDistrict.updatedAt"
+                      v-if="companyDistrictDto.updatedAt"
                       class="d-inline-block"
-                      >({{ companyDistrict.updatedAt | dateTransformer }})</span
+                      >({{
+                        companyDistrictDto.updatedAt | dateTransformer
+                      }})</span
                     >
                   </li>
                 </ul>
@@ -93,7 +97,7 @@
                 <div class="text-right mt-2">
                   <a
                     :href="
-                      `https://map.kakao.com/link/map/${companyDistrict.nameKr},${companyDistrict.lat},${companyDistrict.lon}`
+                      `https://map.kakao.com/link/map/${companyDistrictDto.nameKr},${companyDistrictDto.lat},${companyDistrictDto.lon}`
                     "
                     target="_blank"
                     class="btn btn-sm btn-outline-info"
@@ -103,7 +107,7 @@
               </div>
             </div>
             <ApprovalCard
-              :data="companyDistrict"
+              :data="companyDistrictDto"
               :dto="companyDistrictUpdateRefusalDto"
               :reasonDto="companyDistrictUpdateRefusalReasonDto"
               status="companyDistrictStatus"
@@ -116,7 +120,11 @@
       </div>
       <div class="col col-12 col-lg-6 my-3">
         <BaseCard title="타입 정보">
-          <template v-slot:head> </template>
+          <template v-slot:head>
+            <b-button variant="primary" v-b-modal.add_delivery_space
+              >추가하기</b-button
+            >
+          </template>
           <template v-slot:body>
             <!-- 타입 리스트 -->
             <DeliverySpaceList />
@@ -124,7 +132,8 @@
         </BaseCard>
       </div>
     </div>
-    <b-modal id="district_info" title="업체 정보 수정" @ok="updateDistrict()">
+    <!-- 업체 정보 수정 모달 -->
+    <b-modal id="update_district" title="업체 정보 수정" @ok="updateDistrict()">
       <div class="form-row">
         <div class="col-12 col-md-6 mt-2">
           <label>지점명</label>
@@ -160,7 +169,7 @@
             name="common_amenity"
           >
             <b-form-checkbox
-              v-for="amenity in commonAmenityList"
+              v-for="amenity in amenityList"
               :key="amenity.no"
               :value="amenity"
               >{{ amenity.amenityName }}</b-form-checkbox
@@ -169,13 +178,15 @@
         </div>
       </div>
     </b-modal>
-    <!-- 주소 검색 -->
+    <!-- 주소 검색 모달 -->
     <b-modal id="postcode" title="주소 검색" hide-footer>
       <vue-daum-postcode
         style="height:500px; overflow-y:auto;"
         @complete="setAddress($event, companyDistrictUpdateDto)"
       />
     </b-modal>
+    <!-- 지점 타입 추가 모달 -->
+    <DeliverySpaceCreate />
   </section>
 </template>
 <script lang="ts">
@@ -196,6 +207,7 @@ import CompanyDistrictService from '../../../services/company-district.service';
 import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
 import BaseCard from '../../_components/BaseCard.vue';
 import DeliverySpaceList from './DeliverySpaceList.vue';
+import DeliverySpaceCreate from './DeliverySpaceCreate.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
 import { setAddress } from '../../../core/';
@@ -205,15 +217,16 @@ import { setAddress } from '../../../core/';
     ApprovalCard,
     BaseCard,
     DeliverySpaceList,
+    DeliverySpaceCreate,
   },
 })
 export default class CompanyDistrictDetail extends BaseComponent {
-  private companyDistrict = new CompanyDistrictDto();
+  private companyDistrictDto = new CompanyDistrictDto();
   private companyDistrictUpdateDto = new CompanyDistrictUpdateDto();
   private companyDistrictUpdateRefusalDto = new CompanyDistrictUpdateRefusalDto();
   private companyDistrictUpdateRefusalReasonDto = (this.companyDistrictUpdateRefusalDto.refusalReasons = new CompanyDistrictUpdateRefusalReasonDto());
 
-  private commonAmenityList = [];
+  private amenityList = [];
   private selectedCommonAmenities: AmenityDto[] = [];
 
   private addressData = {
@@ -222,21 +235,21 @@ export default class CompanyDistrictDetail extends BaseComponent {
 
   findOne(id) {
     CompanyDistrictService.findOne(id).subscribe(res => {
-      this.companyDistrict = res.data;
-      this.setMap(this.companyDistrict);
+      this.companyDistrictDto = res.data;
+      this.setMap(this.companyDistrictDto);
     });
   }
 
   findDistrictInfo() {
-    this.companyDistrictUpdateDto = this.companyDistrict;
+    this.companyDistrictUpdateDto = this.companyDistrictDto;
     this.findOne(this.$route.params.id);
     this.getAmenities();
   }
 
   // 공용 시설 정보 리스트
   getAmenities() {
-    AmenityService.findCommonAmenities().subscribe(res => {
-      this.commonAmenityList = res.data;
+    AmenityService.findAmenities('common-facility').subscribe(res => {
+      this.amenityList = res.data;
     });
   }
 
@@ -252,7 +265,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
     });
   }
 
-  //승인
+  //승인s
   updateApproval() {
     CompanyDistrictService.updateCompanyDistrictStatus(
       this.$route.params.id,
@@ -320,6 +333,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
     this.$bvModal.hide('postcode');
   }
 
+  // 지점 타입 추가
   created() {
     const id = this.$route.params.id;
     this.findOne(id);

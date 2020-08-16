@@ -160,4 +160,16 @@ h5 {
     margin: 5px 0;
   }
 }
+
+.carousel-indicators {
+  position: static;
+  li {
+    width: 10px;
+    height: 10px;
+    background-color: #646464;
+    &.active {
+      background-color: #323232;
+    }
+  }
+}
 </style>

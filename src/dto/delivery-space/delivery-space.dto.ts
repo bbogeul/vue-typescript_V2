@@ -3,6 +3,7 @@ import { FileAttachmentDto } from '../file-upload';
 import { YN } from '@/common';
 import { CompanyDistrictDto } from '../company-district';
 import { AmenityDto } from '../amenity';
+import { DeliverySpaceOptionDto } from '../delivery-space-option';
 
 export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   no?: number;
@@ -20,5 +21,5 @@ export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   companyDistrict?: CompanyDistrictDto;
   remainingCount?: number;
   amenities?: AmenityDto[];
-  deliverySpaceOptions?: DeliverySpaceDto[];
+  deliverySpaceOptions?: DeliverySpaceOptionDto[];
 }
