@@ -6,6 +6,9 @@ import { Line, Bar } from 'vue-chartjs';
   extends: Line,
 })
 export default class DashboardChart extends Vue<Line> {
+  constructor() {
+    super();
+  }
   @Prop({ required: true }) chartData!: {
     type: any;
     default: null;
