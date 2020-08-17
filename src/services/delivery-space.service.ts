@@ -1,5 +1,9 @@
 import { BaseService } from '@/core';
-import { DeliverySpaceDto, DeliverySpaceListDto } from '@/dto';
+import {
+  DeliverySpaceDto,
+  DeliverySpaceListDto,
+  DeliverySpaceOptionDto,
+} from '@/dto';
 import { Pagination } from '@/common';
 
 class DeliverSpaceService extends BaseService {
@@ -29,6 +33,10 @@ class DeliverSpaceService extends BaseService {
    */
   create(deliverySpace: DeliverySpaceDto) {
     return super.post<DeliverySpaceDto>('admin/delivery-space', deliverySpace);
+  }
+
+  findSpaceOption() {
+    return super.get<DeliverySpaceOptionDto[]>('admin/delivery-space-option');
   }
 }
 

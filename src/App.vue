@@ -106,6 +106,10 @@ h5 {
   font-size: 1rem;
 }
 
+img {
+  max-width: 100%;
+}
+
 .table {
   margin-bottom: 0;
   th,
