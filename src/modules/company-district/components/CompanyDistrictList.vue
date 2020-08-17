@@ -155,10 +155,13 @@
             > -->
             </td>
             <td>
-              <span class="badge badge-pill badge-warning p-2">
+              <b-badge
+                :variant="getStatusColor(district.companyDistrictStatus)"
+                class="badge-pill p-2"
+              >
                 {{ district.companyDistrictStatus | enumTransformer }}
                 {{ companyDistrictList.no }}
-              </span>
+              </b-badge>
             </td>
             <td>
               <router-link
@@ -305,6 +308,7 @@ import {
 } from '../../../services/shared';
 
 import AmenityService from '../../../services/amenity.service';
+import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({
   name: 'CompanyDistrictList',
@@ -325,6 +329,10 @@ export default class CompanyDistrictList extends BaseComponent {
   };
 
   private commonAmenityList = [];
+
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {
