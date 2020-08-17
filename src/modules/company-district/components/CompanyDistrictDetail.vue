@@ -76,7 +76,12 @@
                   </li>
                   <li v-if="companyDistrictDto.companyDistrictStatus">
                     승인 상태 :
-                    <b-badge variant="warning" class="badge-pill p-2 mr-2">
+                    <b-badge
+                      :variant="
+                        getStatusColor(companyDistrictDto.companyDistrictStatus)
+                      "
+                      class="badge-pill p-2 mr-2"
+                    >
                       {{
                         companyDistrictDto.companyDistrictStatus
                           | enumTransformer
@@ -211,6 +216,7 @@ import DeliverySpaceCreate from './DeliverySpaceCreate.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
 import { setAddress } from '../../../core/';
+import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({
   components: {
@@ -232,6 +238,10 @@ export default class CompanyDistrictDetail extends BaseComponent {
   private addressData = {
     address: '',
   };
+
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   findOne(id) {
     CompanyDistrictService.findOne(id).subscribe(res => {
