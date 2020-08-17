@@ -147,6 +147,21 @@ const componentsRouter: RouteConfig[] = [
           title: '배달형 방문자 신청',
         },
       },
+      {
+        path: '/delivery-founder-consult/:id([0-9]+)',
+        name: 'DeliveryFounderConsultDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/delivery-founder-consult/components/DeliveryFounderConsultDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: '배달형 방문자 신청',
+        },
+      },
     ],
   },
   {

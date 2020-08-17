@@ -18,6 +18,16 @@ class DeliveryFounderConsultService extends BaseService {
       pagination,
     );
   }
+
+  /**
+   * find one for founer consult admin
+   * @param founderConsultNo
+   */
+  findOne(deliveryFounderConsultNo) {
+    return super.get<DeliveryFounderConsultDto>(
+      `admin/delivery-founder-consult/${deliveryFounderConsultNo}`,
+    );
+  }
 }
 
 export default new DeliveryFounderConsultService();

@@ -29,6 +29,7 @@ export class DeliveryFounderConsultDto extends BaseDto<
   hopeFoodCategory?: string;
   companyDecisionStatus?: B2B_FOUNDER_CONSULT;
   companyUserNo?: number;
+  createdAt?: Date;
   deliveredAt?: Date;
   openedAt?: Date;
   admin?: ADMIN_USER;
