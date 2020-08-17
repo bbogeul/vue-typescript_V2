@@ -4,6 +4,7 @@ import { YN } from '@/common';
 import { CompanyDistrictDto } from '../company-district';
 import { AmenityDto } from '../amenity';
 import { DeliverySpaceOptionDto } from '../delivery-space-option';
+import { DeliveryFounderConsultContractDto } from '../delivery-founder-consult-contract';
 
 export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   no?: number;
@@ -22,4 +23,5 @@ export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   remainingCount?: number;
   amenities?: AmenityDto[];
   deliverySpaceOptions?: DeliverySpaceOptionDto[];
+  contracts?: DeliveryFounderConsultContractDto[];
 }

@@ -7,6 +7,7 @@ export * from './company-user-update-history';
 export * from './company-district';
 export * from './company-district-update-history';
 export * from './delivery-founder-consult';
+export * from './delivery-founder-consult-contract';
 export * from './delivery-space';
 export * from './delivery-space-option';
 export * from './file-upload';
