@@ -15,7 +15,7 @@
             v-model="founderConsultSearchDto.spaceNo"
           />
         </div>
-        <div class="col-6 col-lg-1 mb-3">
+        <!-- <div class="col-6 col-lg-1 mb-3">
           <label for="space_type">공간 유형</label>
           <select
             class="custom-select"
@@ -30,7 +30,7 @@
               >{{ spaceType.displayName }}</option
             >
           </select>
-        </div>
+        </div> -->
         <div class="col-6 col-lg-2 mb-3">
           <label for="user_name">사용자명</label>
           <input
@@ -94,7 +94,7 @@
             >
           </select>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
+        <!-- <div class="col-6 col-lg-2 mb-3">
           <label for="company_district">업체 지점</label>
           <input
             type="text"
@@ -102,7 +102,7 @@
             id="company_district"
             v-model="founderConsultSearchDto.companyDistrictNameKr"
           />
-        </div>
+        </div> -->
       </div>
       <!-- second row -->
       <div class="form-row">
@@ -211,12 +211,12 @@
             >
               SPACE ID
             </th>
-            <th
+            <!-- <th
               scope="col"
               v-bind:class="{ highlighted: founderConsultSearchDto.spaceNo }"
             >
               SPACE TYPE
-            </th>
+            </th> -->
             <th
               scope="col"
               v-bind:class="{
@@ -308,7 +308,7 @@
             <td>
               {{ founderConsult.spaceNo }}
             </td>
-            <td>{{ founderConsult.space.spaceType.displayName }}</td>
+            <!-- <td>{{ founderConsult.space.spaceType.displayName }}</td> -->
             <td>{{ founderConsult.nanudaUser.name }}</td>
             <td>{{ founderConsult.nanudaUser.phone }}</td>
             <td>
@@ -434,6 +434,7 @@ import {
   CONST_FOUNDER_CONSULT,
   GENDER,
   CONST_GENDER,
+  SPACE_TYPE,
 } from '../../../services/shared';
 import { CodeManagementDto } from '../../../services/init/dto';
 
@@ -518,6 +519,7 @@ export default class FounderConsult extends BaseComponent {
 
   // 검색하기
   search(isPagination?: boolean) {
+    this.founderConsultSearchDto.spaceTypeNo = SPACE_TYPE.SPACE_SHARE;
     this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;

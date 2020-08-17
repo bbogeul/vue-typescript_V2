@@ -296,13 +296,13 @@
         <BaseCard title="상담 상세 정보">
           <template v-slot:head>
             <div v-if="founderConsult.createdAt">
-              <b-button
+              <!-- <b-button
                 variant="danger"
                 @click="updateConsultInfo()"
                 v-b-modal.reverse-read
                 v-if="founderConsult.viewCount === 'Y'"
                 >미열람 처리</b-button
-              >
+              > -->
               <b-button
                 variant="primary"
                 @click="updateConsultInfo()"
@@ -363,12 +363,12 @@
                       }})</span
                     >
                   </li>
-                  <li v-if="elapsedTime">
+                  <!-- <li v-if="elapsedTime">
                     경과 시간 :
                     {{ elapsedTime }}
-                  </li>
+                  </li> -->
                 </ul>
-                <ul class="col-12 col-md-6">
+                <!-- <ul class="col-12 col-md-6">
                   <li>
                     열람 상태 :
                     <b-badge
@@ -439,7 +439,7 @@
                       </b-button>
                     </div>
                   </li>
-                </ul>
+                </ul> -->
               </b-row>
             </div>
             <div v-else class="empty-data">
