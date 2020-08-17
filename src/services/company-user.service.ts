@@ -73,5 +73,13 @@ class CompanyUserService extends BaseService {
   deleteCompanyUser(companyUserNo: string) {
     return super.delete<CompanyUserDto>(`admin/company-user/${companyUserNo}`);
   }
+
+  /**
+   *
+   * @param companyUser
+   */
+  findForSelect(companyUser: CompanyUserDto) {
+    return super.get<CompanyUserDto[]>('admin/company-user', companyUser);
+  }
 }
 export default new CompanyUserService();

@@ -138,9 +138,14 @@
       </div>
     </div>
     <!-- 업체 정보 수정 모달 -->
-    <b-modal id="update_district" title="업체 정보 수정" @ok="updateDistrict()">
+    <b-modal
+      id="update_district"
+      size="xl"
+      title="지점 정보 수정"
+      @ok="updateDistrict()"
+    >
       <div class="form-row">
-        <div class="col-12 col-md-6 mt-2">
+        <div class="col-5 col-md-6 mb-3">
           <label>지점명</label>
           <input
             type="text"
@@ -148,7 +153,7 @@
             class="form-control"
           />
         </div>
-        <div class="col-12 col-md-6 mt-2">
+        <div class="col-5 col-md-6 mb-3">
           <label>지점명(영문)</label>
           <input
             type="text"
@@ -156,27 +161,33 @@
             class="form-control"
           />
         </div>
-        <div class="col-12 col-md-6 mt-2">
+        <div class="col-12 col-md-6 mb-3">
           <label>지점 주소</label>
           <input
+            type="text"
+            v-model="addressData.address"
+            class="form-control"
+            readonly
+          />
+          <!-- <input
             type="text"
             v-model="addressData.address"
             v-b-modal.postcode
             v-on:keyup.tab="showAddressModal()"
             class="form-control"
-          />
+          /> -->
         </div>
-        <div class="col-12 col-md-6 mt-2">
+        <div class="col-12 col-md-6 mb-3">
           <label>공용 시설 정보</label>
           <b-form-checkbox-group
             id="common_amenity"
-            v-model="companyDistrictUpdateDto.amenities"
+            v-model="companyDistrictUpdateDto.amenityIds"
             name="common_amenity"
           >
             <b-form-checkbox
               v-for="amenity in amenityList"
               :key="amenity.no"
-              :value="amenity"
+              :value="amenity.no"
               >{{ amenity.amenityName }}</b-form-checkbox
             >
           </b-form-checkbox-group>
@@ -219,6 +230,7 @@ import { setAddress } from '../../../core/';
 import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({
+  name: 'ComapanyDistrictDetail',
   components: {
     ApprovalCard,
     BaseCard,
@@ -233,7 +245,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
   private companyDistrictUpdateRefusalReasonDto = (this.companyDistrictUpdateRefusalDto.refusalReasons = new CompanyDistrictUpdateRefusalReasonDto());
 
   private amenityList = [];
-  private selectedCommonAmenities: AmenityDto[] = [];
+  private selectedAmenities: AmenityDto[] = [];
 
   private addressData = {
     address: '',
@@ -252,6 +264,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
 
   findDistrictInfo() {
     this.companyDistrictUpdateDto = this.companyDistrictDto;
+    this.addressData.address = this.companyDistrictDto.address;
     this.findOne(this.$route.params.id);
     this.getAmenities();
   }

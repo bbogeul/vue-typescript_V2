@@ -38,6 +38,14 @@ class DeliverSpaceService extends BaseService {
   findSpaceOption() {
     return super.get<DeliverySpaceOptionDto[]>('admin/delivery-space-option');
   }
+
+  /**
+   *
+   * @param deliverySpace
+   */
+  findForSelect(deliverySpace: DeliverySpaceDto) {
+    return super.get<DeliverySpaceDto[]>('admin/delivery-space', deliverySpace);
+  }
 }
 
 export default new DeliverSpaceService();

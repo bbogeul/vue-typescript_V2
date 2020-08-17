@@ -74,5 +74,16 @@ class CompanyDistrictService extends BaseService {
       companyDistrict,
     );
   }
+
+  /**
+   *
+   * @param companyDistrict
+   */
+  findForSelect(companyDistrict: CompanyDistrictDto) {
+    return super.get<CompanyDistrictDto[]>(
+      'admin/company-district',
+      companyDistrict,
+    );
+  }
 }
 export default new CompanyDistrictService();

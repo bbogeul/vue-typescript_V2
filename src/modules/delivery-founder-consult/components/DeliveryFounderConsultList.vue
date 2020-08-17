@@ -170,6 +170,9 @@
           </strong>
         </h5>
       </div>
+      <b-button variant="primary" v-b-modal.add_founder_consult
+        >방문 신청 추가</b-button
+      >
     </div>
     <div v-if="!dataLoading">
       <table
@@ -373,11 +376,189 @@
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
+    <b-modal
+      id="add_founder_consult"
+      size="xl"
+      title="방문 신청 추가"
+      @cancel="clearOutCreateDto()"
+      @ok="create()"
+    >
+      <b-form-row>
+        <b-col lg="4">
+          <div class="mb-3">
+            <label>사용자명</label>
+            <template>
+              <b-form-input
+                id="create_nanuda_user"
+                v-model="deliveryFounderConsultCreateDto.nanudaUserNo"
+              ></b-form-input>
+              <!-- <datalist id="nanuda_user_list">
+                <option
+                  v-for="user in nanudaUserSelect.items"
+                  :key="user.code"
+                  :value="user.no"
+                  >{{ user.name }}</option
+                >
+              </datalist> -->
+            </template>
+          </div>
+          <div class="mb-3">
+            <label>창업 유무</label>
+
+            <b-form-radio
+              v-model="deliveryFounderConsultCreateDto.changUpExpYn"
+              v-for="yn in delYn"
+              :key="yn"
+              :value="yn"
+              name="changup_exp_yn"
+              :id="`changup_exp_yn_${yn}`"
+              >{{ yn | enumTransformer }}</b-form-radio
+            >
+          </div>
+          <div class="mb-3">
+            <label>공간 소유 유무</label>
+
+            <b-form-radio
+              v-model="deliveryFounderConsultCreateDto.spaceOwnYn"
+              v-for="yn in delYn"
+              :key="yn"
+              :value="yn"
+              name="space_own_yn"
+              :id="`space_own_yn_${yn}`"
+              >{{ yn | enumTransformer }}</b-form-radio
+            >
+          </div>
+          <div class="mb-3">
+            <label>희망 업종</label>
+            <template>
+              <b-form-input
+                list="food_category_list"
+                id="hope_food_category"
+                v-model="deliveryFounderConsultCreateDto.hopeFoodCategory"
+              ></b-form-input>
+              <datalist id="food_category_list">
+                <option
+                  v-for="category in foodCategorySelect.items"
+                  :key="category.code"
+                  :value="category.nameKr"
+                  >{{ category.nameKr }}</option
+                >
+              </datalist>
+            </template>
+          </div>
+          <div class="mb-3">
+            <label>희망 시간 대</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.hopeTime"
+            >
+              <option value selected>전체</option>
+              <option
+                v-for="time in availableTimesSelect"
+                :key="time.no"
+                :value="time.key"
+                >{{ time.value }}</option
+              >
+            </select>
+          </div>
+        </b-col>
+        <b-col lg="4">
+          <div class="mb-3">
+            <label>업체명</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.companyNo"
+              @change="changeCompany($event)"
+            >
+              <option value selected>전체</option>
+              <option
+                v-for="company in companySelect"
+                :key="company.no"
+                :value="company.no"
+                >{{ company.nameKr }}</option
+              >
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>담당자</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.spaceConsultManager"
+            >
+              <option value selected>업체를 선택해주세요</option>
+              <option
+                v-for="manager in managerSelect.items"
+                :key="manager.no"
+                :value="manager.name"
+                >{{ manager.name }}</option
+              >
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>지점명</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.districtNo"
+              @change="changeDistrict($event)"
+            >
+              <option value selected>업체를 선택해주세요</option>
+              <option
+                v-for="district in districtSelect.items"
+                :key="district.no"
+                :value="district.no"
+                >{{ district.nameKr }}</option
+              >
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>타입명</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.deliverySpaceNo"
+            >
+              <option value selected>지점을 선택해주세요</option>
+              <option
+                v-for="space in deliverySpaceSelect.items"
+                :key="space.no"
+                :value="space.no"
+                >{{ space.typeName }}</option
+              >
+            </select>
+          </div>
+        </b-col>
+        <b-col lg="4">
+          <div class="mb-3">
+            <label>신청 상태</label>
+            <select
+              class="custom-select"
+              id="status"
+              v-model="deliveryFounderConsultCreateDto.status"
+            >
+              <option value selected>전체</option>
+              <option
+                v-for="status in statusSelect"
+                :key="status.no"
+                :value="status.key"
+                >{{ status.value }}</option
+              >
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>메모</label>
+            <b-form-textarea
+              v-model="deliveryFounderConsultCreateDto.spaceConsultEtc"
+              style="height:200px"
+            ></b-form-textarea>
+          </div>
+        </b-col>
+      </b-form-row>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
+import { BaseUser } from '@/services/shared/auth';
 import {
   FOUNDER_CONSULT,
   CONST_FOUNDER_CONSULT,
@@ -388,16 +569,25 @@ import { CodeManagementDto } from '../../../services/init/dto';
 
 import AdminService from '../../../services/admin.service';
 import CompanyService from '../../../services/company.service';
+import CompanyUserService from '../../../services/company-user.service';
+import CompanyDistrictService from '../../../services/company-district.service';
 import CodeManagementService from '../../../services/code-management.service';
 import DeliveryFounderConsultService from '../../../services/delivery-founder-consult.service';
+import DeliverySpaceService from '@/services/delivery-space.service';
+import FoodCategoryService from '../../../services/food-category.service';
 import SpaceTypeService from '../../../services/space-type.service';
+import NanudaUserService from '../../../services/nanuda-user.service';
 
 import {
   AdminDto,
-  DeliveryFounderConsultListDto,
   CompanyDto,
+  CompanyUserDto,
+  CompanyDistrictDto,
   DeliveryFounderConsultDto,
+  DeliveryFounderConsultListDto,
   DeliverySpaceDto,
+  FoodCategoryDto,
+  NanudaUserDto,
 } from '../../../dto';
 import {
   Pagination,
@@ -415,9 +605,10 @@ export default class DeliveryFounderConsult extends BaseComponent {
   private deliveryFounderConsultDto = new DeliveryFounderConsultDto();
   private deliveryFounderConsultList: DeliveryFounderConsultDto[] = [];
   private deliveryFounderConsultListCount = 0;
-  F;
+  private deliveryFounderConsultCreateDto = new DeliveryFounderConsultDto();
 
   private statusSelect: CodeManagementDto[] = [];
+  private statusB2BSelect: CodeManagementDto[] = [];
   private availableTimesSelect: CodeManagementDto[] = [];
   private companySelect: CompanyDto[] = [];
   private totalPage = 0;
@@ -428,6 +619,19 @@ export default class DeliveryFounderConsult extends BaseComponent {
   private dataLoading = false;
 
   private adminList: AdminDto[] = [];
+  private managerSelect: CompanyUserDto[] = [];
+  private companyUserDto = new CompanyUserDto(BaseUser);
+
+  private districtSelect: CompanyDistrictDto[] = [];
+  private companyDistrictDto = new CompanyDistrictDto();
+
+  private foodCategorySelect: FoodCategoryDto[] = [];
+
+  private deliverySpaceSelect: DeliverySpaceDto[] = [];
+  private deliverySpaceDto = new DeliverySpaceDto();
+
+  private nanudaUserSelect: NanudaUserDto[] = [];
+  private nanudaUserDto = new NanudaUserDto(BaseUser);
 
   findAdmin() {
     AdminService.findForSelect().subscribe(res => {
@@ -440,7 +644,54 @@ export default class DeliveryFounderConsult extends BaseComponent {
   // 상태값
   getFounderConsultCodes() {
     CodeManagementService.findCodesFounderConsultB2B().subscribe(res => {
+      this.statusB2BSelect = res.data;
+    });
+
+    CodeManagementService.findCodesFounderConsult().subscribe(res => {
       this.statusSelect = res.data;
+    });
+  }
+
+  changeCompany(event) {
+    const companyNo = event.target.value;
+    this.getCompanyUser(companyNo);
+    this.getCompanyDistrict(companyNo);
+  }
+
+  changeDistrict(event) {
+    const districtNo = event.target.value;
+    this.getDeliverSpace(districtNo);
+  }
+
+  // 업체 사용자
+  getCompanyUser(companyNo) {
+    this.companyUserDto.companyNo = companyNo;
+    CompanyUserService.findForSelect(this.companyUserDto).subscribe(res => {
+      if (res) {
+        this.managerSelect = res.data;
+      }
+    });
+  }
+
+  // 업체 지점
+  getCompanyDistrict(companyNo) {
+    this.companyDistrictDto.companyNo = companyNo;
+    CompanyDistrictService.findForSelect(this.companyDistrictDto).subscribe(
+      res => {
+        if (res) {
+          this.districtSelect = res.data;
+        }
+      },
+    );
+  }
+
+  // 타입
+  getDeliverSpace(districtNo) {
+    this.deliverySpaceDto.companyDistrictNo = districtNo;
+    DeliverySpaceService.findForSelect(this.deliverySpaceDto).subscribe(res => {
+      if (res) {
+        this.deliverySpaceSelect = res.data;
+      }
     });
   }
 
@@ -450,6 +701,20 @@ export default class DeliveryFounderConsult extends BaseComponent {
       this.availableTimesSelect = res.data;
     });
   }
+
+  // 음식 업종
+  getFoodCategories() {
+    FoodCategoryService.findForSelect().subscribe(res => {
+      this.foodCategorySelect = res.data;
+    });
+  }
+
+  // 사용자
+  // getNanudaUser() {
+  //   NanudaUserService.findForSelect().subscribe(res => {
+  //     this.nanudaUserSelect = res.data;
+  //   })
+  // }
 
   // TODO: Create autocomplete box
   getCompanies() {
@@ -486,11 +751,25 @@ export default class DeliveryFounderConsult extends BaseComponent {
     this.search();
   }
 
+  create() {
+    this.deliveryFounderConsultCreateDto.nanudaUserNo = 3;
+    DeliveryFounderConsultService.create(
+      this.deliveryFounderConsultDto,
+    ).subscribe(res => {
+      this.search();
+    });
+  }
+
+  clearOutCreateDto() {
+    this.deliveryFounderConsultCreateDto = new DeliveryFounderConsultDto();
+  }
+
   created() {
     this.pagination.page = 1;
     this.getAvailableTimes();
     this.getCompanies();
     this.getFounderConsultCodes();
+    this.getFoodCategories();
     this.findAdmin();
     this.search();
   }

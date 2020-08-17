@@ -655,9 +655,7 @@ export default class FounderConsultDetail extends BaseComponent {
 
   // 상담 내용 수정
   updateConsultInfo() {
-    this.founderConsultUpdateDto.status = this.founderConsult.status;
-    this.founderConsultUpdateDto.changUpExpYn = this.founderConsult.changUpExpYn;
-    this.founderConsultUpdateDto.hopeTime = this.founderConsult.hopeTime;
+    this.founderConsultUpdateDto = this.founderConsult;
     this.getFounderConsultCodes();
     this.getAvailableTimes();
     this.getFoodCategories();

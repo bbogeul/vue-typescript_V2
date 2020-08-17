@@ -38,7 +38,7 @@
             v-model="companyDistrictSearchDto.nameKr"
           ></b-form-input>
         </b-col>
-        <b-col sm="12" lg="3" class="mb-3">
+        <b-col sm="12" lg="4" class="mb-3">
           <label for="district_address">주소</label>
           <b-form-input
             type="text"

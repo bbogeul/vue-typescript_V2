@@ -11,6 +11,7 @@ export * from './delivery-founder-consult-contract';
 export * from './delivery-space';
 export * from './delivery-space-option';
 export * from './file-upload';
+export * from './food-category';
 export * from './founder-consult';
 export * from './founder-consult-management';
 export * from './graph';

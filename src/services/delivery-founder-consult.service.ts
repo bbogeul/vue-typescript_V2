@@ -28,6 +28,17 @@ class DeliveryFounderConsultService extends BaseService {
       `admin/delivery-founder-consult/${deliveryFounderConsultNo}`,
     );
   }
+
+  /**
+   *
+   * @param deliveryFounderConsult
+   */
+  create(deliveryFounderConsult: DeliveryFounderConsultDto) {
+    return super.post<DeliveryFounderConsultDto>(
+      'admin/delivery-founder-consult',
+      deliveryFounderConsult,
+    );
+  }
 }
 
 export default new DeliveryFounderConsultService();
