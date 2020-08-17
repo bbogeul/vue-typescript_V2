@@ -29,28 +29,20 @@
                   size="sm"
                   v-b-modal.view_detail
                   @click="findOne(type.no)"
-                >
-                  상세보기
-                </b-button>
+                >상세보기</b-button>
               </div>
             </b-col>
             <b-col cols="8" class="p-2">
               <h5 v-if="type.typeName">{{ type.typeName }}</h5>
               <ul class="u-list">
-                <li v-if="type.buildingName">
-                  건물명 : {{ type.buildingName }}
-                </li>
+                <li v-if="type.buildingName">건물명 : {{ type.buildingName }}</li>
                 <li v-if="type.size">평수 : {{ type.size }} 평</li>
                 <li v-if="type.deposit">보증금 : {{ type.deposit }} 만원</li>
-                <li v-if="type.monthlyRentFee">
-                  월 임대료 : {{ type.monthlyRentFee }} 만원
-                </li>
-                <li v-if="type.monthlyUtilityFee">
-                  월 관리비 : {{ type.monthlyUtilityFee }} 만원
-                </li>
+                <li v-if="type.monthlyRentFee">월 임대료 : {{ type.monthlyRentFee }} 만원</li>
+                <li v-if="type.monthlyUtilityFee">월 관리비 : {{ type.monthlyUtilityFee }} 만원</li>
                 <li v-if="type.quantity">
                   남은 공실 갯수 :
-                  <b>{{ type.remainingCount }} / {{ type.quantity }}</b>
+                  <b>{{ type.quantity - type.contracts.length }} / {{ type.quantity }}</b>
                 </li>
                 <li v-if="type.deliverySpaceOptions.length > 0">
                   공간 옵션 :
@@ -59,9 +51,7 @@
                     v-for="option in type.deliverySpaceOptions"
                     :key="option.no"
                     class="m-1"
-                  >
-                    {{ option.deliverySpaceOptionName }}
-                  </b-badge>
+                  >{{ option.deliverySpaceOptionName }}</b-badge>
                 </li>
                 <li v-if="type.amenities.length > 0">
                   주방 시설 :
@@ -70,9 +60,7 @@
                     v-for="amenity in type.amenities"
                     :key="amenity.no"
                     class="m-1"
-                  >
-                    {{ amenity.amenityName }}
-                  </b-badge>
+                  >{{ amenity.amenityName }}</b-badge>
                 </li>
               </ul>
             </b-col>
@@ -89,14 +77,8 @@
         class="mt-4 justify-content-center"
       ></b-pagination>
     </div>
-    <div v-else class="empty-data">
-      타입 정보 없음
-    </div>
-    <b-modal
-      id="view_detail"
-      size="xl"
-      :title="`${deliverySpaceDto.typeName} 상세 보기`"
-    >
+    <div v-else class="empty-data">타입 정보 없음</div>
+    <b-modal id="view_detail" size="xl" :title="`${deliverySpaceDto.typeName} 상세 보기`">
       <b-row>
         <b-col cols="12" md="6">
           <b-carousel
@@ -112,30 +94,21 @@
               v-for="image in deliverySpaceDto.images"
               :key="image.originalFilename"
               :img-src="image.endpoint"
-            >
-            </b-carousel-slide>
+            ></b-carousel-slide>
           </b-carousel>
         </b-col>
         <b-col cols="12" md="6">
-          <h4 v-if="deliverySpaceDto.typeName" class="mb-3">
-            {{ deliverySpaceDto.typeName }}
-          </h4>
+          <h4 v-if="deliverySpaceDto.typeName" class="mb-3">{{ deliverySpaceDto.typeName }}</h4>
           <ul class="u-list">
-            <li v-if="deliverySpaceDto.buildingName">
-              건물명 : {{ deliverySpaceDto.buildingName }}
-            </li>
-            <li v-if="deliverySpaceDto.size">
-              평수 : {{ deliverySpaceDto.size }} 평
-            </li>
-            <li v-if="deliverySpaceDto.deposit">
-              보증금 : {{ deliverySpaceDto.deposit }} 만원
-            </li>
-            <li v-if="deliverySpaceDto.monthlyRentFee">
-              월 임대료 : {{ deliverySpaceDto.monthlyRentFee }} 만원
-            </li>
-            <li v-if="deliverySpaceDto.monthlyUtilityFee">
-              월 관리비 : {{ deliverySpaceDto.monthlyUtilityFee }} 만원
-            </li>
+            <li v-if="deliverySpaceDto.buildingName">건물명 : {{ deliverySpaceDto.buildingName }}</li>
+            <li v-if="deliverySpaceDto.size">평수 : {{ deliverySpaceDto.size }} 평</li>
+            <li v-if="deliverySpaceDto.deposit">보증금 : {{ deliverySpaceDto.deposit }} 만원</li>
+            <li
+              v-if="deliverySpaceDto.monthlyRentFee"
+            >월 임대료 : {{ deliverySpaceDto.monthlyRentFee }} 만원</li>
+            <li
+              v-if="deliverySpaceDto.monthlyUtilityFee"
+            >월 관리비 : {{ deliverySpaceDto.monthlyUtilityFee }} 만원</li>
             <li
               v-if="
                 deliverySpaceDto.deliverySpaceOptions &&
@@ -148,9 +121,7 @@
                 v-for="option in deliverySpaceDto.deliverySpaceOptions"
                 :key="option.no"
                 class="m-1"
-              >
-                {{ option.deliverySpaceOptionName }}
-              </b-badge>
+              >{{ option.deliverySpaceOptionName }}</b-badge>
             </li>
             <li
               v-if="
@@ -164,15 +135,10 @@
                 v-for="amenity in deliverySpaceDto.amenities"
                 :key="amenity.no"
                 class="m-1"
-              >
-                {{ amenity.amenityName }}
-              </b-badge>
+              >{{ amenity.amenityName }}</b-badge>
             </li>
           </ul>
-          <div
-            v-if="deliverySpaceDto.quantity"
-            class="border bg-light rounded p-3 mt-3"
-          >
+          <div v-if="deliverySpaceDto.quantity" class="border bg-light rounded p-3 mt-3">
             남은 공실 갯수 :
             <b
               :class="[
@@ -180,8 +146,7 @@
                   ? 'text-success'
                   : 'text-danger',
               ]"
-              >{{ deliverySpaceDto.remainingCount }}</b
-            >
+            >{{ deliverySpaceDto.remainingCount }}</b>
             /
             {{ deliverySpaceDto.quantity }}
           </div>
