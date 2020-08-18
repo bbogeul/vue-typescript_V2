@@ -79,12 +79,12 @@ export default class DeliverFounderConsultContract extends BaseComponent {
     });
   }
 
-  deleteContarct() {
-    DeliveryFounderConsultContractService.deleteContarct(3).subscribe(res => {
-      if (res) {
-      }
-    });
-  }
+  // deleteContarct() {
+  //   DeliveryFounderConsultContractService.deleteContarct(3).subscribe(res => {
+  //     if (res) {
+  //     }
+  //   });
+  // }
 
   created() {
     this.findForContract();
