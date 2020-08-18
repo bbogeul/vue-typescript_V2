@@ -1,14 +1,15 @@
 import {
   FOUNDER_CONSULT,
   B2B_FOUNDER_CONSULT,
-  COMPANY_USER,
-  NANUDA_USER,
   ADMIN_USER,
 } from '@/services/shared';
 import { AVAILABLE_TIME, YN } from '@/common';
 import { CodeManagementDto } from '@/services/init/dto';
 import { DeliverySpaceDto } from '../delivery-space';
 import { BaseDto } from '@/core';
+import { NanudaUserDto } from '../nanuda-user';
+import { CompanyUserDto } from '..';
+import { AdminDto } from '../admin';
 
 export class DeliveryFounderConsultDto extends BaseDto<
   DeliveryFounderConsultDto
@@ -32,11 +33,11 @@ export class DeliveryFounderConsultDto extends BaseDto<
   createdAt?: Date;
   deliveredAt?: Date;
   openedAt?: Date;
-  admin?: ADMIN_USER;
+  admin?: AdminDto;
   deliverySpaces?: DeliverySpaceDto[];
   codeManagement?: CodeManagementDto;
   companyDecisionStatusCode?: CodeManagementDto;
   availableTime?: CodeManagementDto;
-  nanudaUser?: NANUDA_USER;
-  companyUser?: COMPANY_USER;
+  nanudaUser?: NanudaUserDto;
+  companyUser?: CompanyUserDto;
 }

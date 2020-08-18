@@ -2,6 +2,7 @@ import { BaseService } from '@/core';
 import {
   DeliveryFounderConsultListDto,
   DeliveryFounderConsultDto,
+  DeliveryFounderConsultUpdateDto,
 } from '@/dto';
 import { Pagination } from '@/common';
 
@@ -21,7 +22,7 @@ class DeliveryFounderConsultService extends BaseService {
 
   /**
    * find one for founer consult admin
-   * @param founderConsultNo
+   * @param deliveryFounderConsultNo
    */
   findOne(deliveryFounderConsultNo) {
     return super.get<DeliveryFounderConsultDto>(
@@ -37,6 +38,21 @@ class DeliveryFounderConsultService extends BaseService {
     return super.post<DeliveryFounderConsultDto>(
       'admin/delivery-founder-consult',
       deliveryFounderConsult,
+    );
+  }
+
+  /**
+   *
+   * @param deliveryfounderConsultNo
+   * @param deliveryFounderConsultUpdateDto
+   */
+  update(
+    deliveryfounderConsultNo,
+    deliveryFounderConsultUpdateDto: DeliveryFounderConsultUpdateDto,
+  ) {
+    return super.patch<DeliveryFounderConsultDto>(
+      `admin/delivery-founder-consult/${deliveryfounderConsultNo}`,
+      deliveryFounderConsultUpdateDto,
     );
   }
 }

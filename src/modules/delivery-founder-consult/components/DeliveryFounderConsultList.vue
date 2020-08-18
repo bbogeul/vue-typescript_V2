@@ -388,18 +388,24 @@
           <div class="mb-3">
             <label>사용자명</label>
             <template>
-              <b-form-input
-                id="create_nanuda_user"
-                v-model="deliveryFounderConsultCreateDto.nanudaUserNo"
-              ></b-form-input>
-              <!-- <datalist id="nanuda_user_list">
-                <option
-                  v-for="user in nanudaUserSelect.items"
-                  :key="user.code"
-                  :value="user.no"
-                  >{{ user.name }}</option
-                >
-              </datalist> -->
+              <b-form-row>
+                <b-col cols="8">
+                  <b-form-input
+                    id="create_nanuda_user"
+                    v-model="deliveryFounderConsultCreateDto.nanudaUserNo"
+                  ></b-form-input>
+                </b-col>
+                <b-col cols="4">
+                  <b-button
+                    variant="primary"
+                    size="md"
+                    v-b-modal.add_nanuda_user
+                    @click="findUser()"
+                  >
+                    사용자 추가하기
+                  </b-button>
+                </b-col>
+              </b-form-row>
             </template>
           </div>
           <div class="mb-3">
@@ -417,7 +423,6 @@
           </div>
           <div class="mb-3">
             <label>공간 소유 유무</label>
-
             <b-form-radio
               v-model="deliveryFounderConsultCreateDto.spaceOwnYn"
               v-for="yn in delYn"
@@ -470,27 +475,11 @@
               v-model="deliveryFounderConsultCreateDto.companyNo"
               @change="changeCompany($event)"
             >
-              <option value selected>전체</option>
               <option
                 v-for="company in companySelect"
                 :key="company.no"
                 :value="company.no"
                 >{{ company.nameKr }}</option
-              >
-            </select>
-          </div>
-          <div class="mb-3">
-            <label>담당자</label>
-            <select
-              class="custom-select"
-              v-model="deliveryFounderConsultCreateDto.spaceConsultManager"
-            >
-              <option value selected>업체를 선택해주세요</option>
-              <option
-                v-for="manager in managerSelect.items"
-                :key="manager.no"
-                :value="manager.name"
-                >{{ manager.name }}</option
               >
             </select>
           </div>
@@ -501,7 +490,7 @@
               v-model="deliveryFounderConsultCreateDto.districtNo"
               @change="changeDistrict($event)"
             >
-              <option value selected>업체를 선택해주세요</option>
+              <option value selected disabled>업체를 선택해주세요</option>
               <option
                 v-for="district in districtSelect.items"
                 :key="district.no"
@@ -516,7 +505,7 @@
               class="custom-select"
               v-model="deliveryFounderConsultCreateDto.deliverySpaceNo"
             >
-              <option value selected>지점을 선택해주세요</option>
+              <option value selected disabled>지점을 선택해주세요</option>
               <option
                 v-for="space in deliverySpaceSelect.items"
                 :key="space.no"
@@ -527,6 +516,21 @@
           </div>
         </b-col>
         <b-col lg="4">
+          <div class="mb-3">
+            <label>담당자</label>
+            <select
+              class="custom-select"
+              v-model="deliveryFounderConsultCreateDto.spaceConsultManager"
+            >
+              <option value selected disabled>담장자를 선택해주세요</option>
+              <option
+                v-for="admin in adminList.items"
+                :key="admin.no"
+                :value="admin.no"
+                >{{ admin.name }}</option
+              >
+            </select>
+          </div>
           <div class="mb-3">
             <label>신청 상태</label>
             <select
@@ -553,6 +557,7 @@
         </b-col>
       </b-form-row>
     </b-modal>
+    <NanudaUserList />
   </section>
 </template>
 <script lang="ts">
@@ -576,7 +581,8 @@ import DeliveryFounderConsultService from '../../../services/delivery-founder-co
 import DeliverySpaceService from '@/services/delivery-space.service';
 import FoodCategoryService from '../../../services/food-category.service';
 import SpaceTypeService from '../../../services/space-type.service';
-import NanudaUserService from '../../../services/nanuda-user.service';
+
+import NanudaUserList from './NanudaUserList.vue';
 
 import {
   AdminDto,
@@ -587,7 +593,6 @@ import {
   DeliveryFounderConsultListDto,
   DeliverySpaceDto,
   FoodCategoryDto,
-  NanudaUserDto,
 } from '../../../dto';
 import {
   Pagination,
@@ -599,6 +604,9 @@ import {
 
 @Component({
   name: 'DeliveryFounderConsultList',
+  components: {
+    NanudaUserList,
+  },
 })
 export default class DeliveryFounderConsult extends BaseComponent {
   private deliveryFounderConsultSearchDto = new DeliveryFounderConsultListDto();
@@ -630,10 +638,7 @@ export default class DeliveryFounderConsult extends BaseComponent {
   private deliverySpaceSelect: DeliverySpaceDto[] = [];
   private deliverySpaceDto = new DeliverySpaceDto();
 
-  private nanudaUserSelect: NanudaUserDto[] = [];
-  private nanudaUserDto = new NanudaUserDto(BaseUser);
-
-  findAdmin() {
+  getAdmin() {
     AdminService.findForSelect().subscribe(res => {
       if (res) {
         this.adminList = res.data;
@@ -654,7 +659,7 @@ export default class DeliveryFounderConsult extends BaseComponent {
 
   changeCompany(event) {
     const companyNo = event.target.value;
-    this.getCompanyUser(companyNo);
+    // this.getCompanyUser(companyNo);
     this.getCompanyDistrict(companyNo);
   }
 
@@ -709,13 +714,6 @@ export default class DeliveryFounderConsult extends BaseComponent {
     });
   }
 
-  // 사용자
-  // getNanudaUser() {
-  //   NanudaUserService.findForSelect().subscribe(res => {
-  //     this.nanudaUserSelect = res.data;
-  //   })
-  // }
-
   // TODO: Create autocomplete box
   getCompanies() {
     CompanyService.findForSelect().subscribe(res => {
@@ -752,14 +750,12 @@ export default class DeliveryFounderConsult extends BaseComponent {
   }
 
   create() {
-    this.deliveryFounderConsultCreateDto.nanudaUserNo = 3;
     DeliveryFounderConsultService.create(
-      this.deliveryFounderConsultDto,
+      this.deliveryFounderConsultCreateDto,
     ).subscribe(res => {
       this.search();
     });
   }
-
   clearOutCreateDto() {
     this.deliveryFounderConsultCreateDto = new DeliveryFounderConsultDto();
   }
@@ -770,8 +766,13 @@ export default class DeliveryFounderConsult extends BaseComponent {
     this.getCompanies();
     this.getFounderConsultCodes();
     this.getFoodCategories();
-    this.findAdmin();
+    this.getAdmin();
     this.search();
+  }
+
+  findUser() {
+    console.log('click');
+    this.$root.$emit('find_nanuda_user');
   }
 }
 </script>
