@@ -777,10 +777,11 @@ export default class DeliveryFounderConsult extends BaseComponent {
 
   mounted() {
     this.$root.$on('select_nanuda_user', user => {
-      console.log('userNo', user.no);
-      this.userData = user;
-      this.nanudaUserData = `${this.userData.name} - ${this.userData.phone}`;
-      this.deliveryFounderConsultCreateDto.nanudaUserNo = user.no;
+      if (user.no) {
+        this.userData = user;
+        this.nanudaUserData = `${this.userData.name} - ${this.userData.phone}`;
+        this.deliveryFounderConsultCreateDto.nanudaUserNo = user.no;
+      }
     });
   }
 }

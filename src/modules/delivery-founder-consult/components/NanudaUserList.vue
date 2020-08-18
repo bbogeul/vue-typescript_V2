@@ -1,5 +1,11 @@
 <template>
-  <b-modal id="add_nanuda_user" title="사용자 추가하기" @ok="findNanudaUser()">
+  <b-modal
+    id="add_nanuda_user"
+    title="사용자 추가하기"
+    @hide="cancelSelection()"
+    @cancel="cancelSelection()"
+    @ok="findNanudaUser()"
+  >
     <div class="search-box mb-4" v-on:keyup.enter="search()">
       <b-form-row>
         <b-col cols="6">
@@ -105,6 +111,11 @@ export default class NanudaUserCreate extends BaseComponent {
     this.search();
   }
 
+  cancelSelection() {
+    this.selectedUser = new NanudaUserDto(BaseUser);
+    this.clearOut();
+  }
+
   paginateSearch() {
     this.search(true);
   }
@@ -117,7 +128,6 @@ export default class NanudaUserCreate extends BaseComponent {
   findNanudaUser() {
     if (this.selectedUser) {
       this.$root.$emit('select_nanuda_user', this.selectedUser);
-      this.$bvModal.hide('add_nanuda_user');
     }
   }
 

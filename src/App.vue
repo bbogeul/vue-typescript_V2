@@ -176,10 +176,4 @@ img {
     }
   }
 }
-
-.form-row {
-  label {
-    font-size: 11px;
-  }
-}
 </style>
