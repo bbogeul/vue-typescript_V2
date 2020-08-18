@@ -27,7 +27,7 @@
                 <b-button
                   variant="outline-secondary"
                   size="sm"
-                  v-b-modal.view_detail
+                  v-b-modal.view_type_detail
                   @click="findOne(type.no)"
                   >상세보기</b-button
                 >
@@ -92,9 +92,10 @@
     </div>
     <div v-else class="empty-data">타입 정보 없음</div>
     <b-modal
-      id="view_detail"
+      id="view_type_detail"
       size="xl"
-      :title="`${deliverySpaceDto.typeName} 상세 보기`"
+      hide-footer
+      :title="`${deliverySpaceDto.typeName} 타입 상세 보기`"
     >
       <b-row>
         <b-col cols="12" md="4">
@@ -122,7 +123,7 @@
         </b-col>
         <b-col cols="12" md="8">
           <h4 v-if="deliverySpaceDto.typeName" class="mb-3">
-            {{ deliverySpaceDto.typeName }}
+            [{{ deliverySpaceDto.no }}] {{ deliverySpaceDto.typeName }}
           </h4>
           <ul class="u-list">
             <li v-if="deliverySpaceDto.buildingName">
@@ -244,6 +245,7 @@ export default class DeliverySpaceList extends BaseComponent {
     DeliverSpaceService.findOne(typeNo).subscribe(res => {
       if (res) {
         this.deliverySpaceDto = res.data;
+        this.$root.$emit('find_contract_list', typeNo);
       }
     });
   }
