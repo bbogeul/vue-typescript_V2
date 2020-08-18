@@ -380,6 +380,7 @@
       id="add_founder_consult"
       size="xl"
       title="방문 신청 추가"
+      @hide="clearOutCreateDto()"
       @cancel="clearOutCreateDto()"
       @ok="create()"
     >
@@ -758,6 +759,8 @@ export default class DeliveryFounderConsult extends BaseComponent {
   }
   clearOutCreateDto() {
     this.deliveryFounderConsultCreateDto = new DeliveryFounderConsultDto();
+    this.userData = new NanudaUserDto(BaseUser);
+    this.nanudaUserData = '';
   }
 
   // 사용자 추가
