@@ -813,7 +813,7 @@ export default class FounderConsultDetail extends BaseComponent {
       this.deliveryFounderConsultUpdateDto.spaceConsultManager = this.selectedAdmin.no;
     }
 
-    FounderConsultService.update(
+    DeliveryFounderConsultService.update(
       this.$route.params.id,
       this.deliveryFounderConsultUpdateDto,
     ).subscribe(res => {

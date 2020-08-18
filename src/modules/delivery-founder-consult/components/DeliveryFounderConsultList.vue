@@ -387,26 +387,22 @@
         <b-col lg="4">
           <div class="mb-3">
             <label>사용자명</label>
-            <template>
-              <b-form-row>
-                <b-col cols="8">
-                  <b-form-input
-                    id="create_nanuda_user"
-                    v-model="deliveryFounderConsultCreateDto.nanudaUserNo"
-                  ></b-form-input>
-                </b-col>
-                <b-col cols="4">
-                  <b-button
-                    variant="primary"
-                    size="md"
-                    v-b-modal.add_nanuda_user
-                    @click="findUser()"
-                  >
-                    사용자 추가하기
-                  </b-button>
-                </b-col>
-              </b-form-row>
-            </template>
+            <div>
+              <div
+                class="border rounded  bg-light light p-2 mb-2"
+                v-if="nanudaUserData"
+              >
+                {{ nanudaUserData }}
+              </div>
+              <b-button
+                variant="primary"
+                size="md"
+                v-b-modal.add_nanuda_user
+                @click="findUser()"
+              >
+                사용자 추가하기
+              </b-button>
+            </div>
           </div>
           <div class="mb-3">
             <label>창업 유무</label>
@@ -593,6 +589,7 @@ import {
   DeliveryFounderConsultListDto,
   DeliverySpaceDto,
   FoodCategoryDto,
+  NanudaUserDto,
 } from '../../../dto';
 import {
   Pagination,
@@ -637,6 +634,9 @@ export default class DeliveryFounderConsult extends BaseComponent {
 
   private deliverySpaceSelect: DeliverySpaceDto[] = [];
   private deliverySpaceDto = new DeliverySpaceDto();
+
+  private userData = new NanudaUserDto(BaseUser);
+  private nanudaUserData = '';
 
   getAdmin() {
     AdminService.findForSelect().subscribe(res => {
@@ -760,6 +760,11 @@ export default class DeliveryFounderConsult extends BaseComponent {
     this.deliveryFounderConsultCreateDto = new DeliveryFounderConsultDto();
   }
 
+  // 사용자 추가
+  findUser() {
+    this.$root.$emit('find_nanuda_user');
+  }
+
   created() {
     this.pagination.page = 1;
     this.getAvailableTimes();
@@ -770,9 +775,13 @@ export default class DeliveryFounderConsult extends BaseComponent {
     this.search();
   }
 
-  findUser() {
-    console.log('click');
-    this.$root.$emit('find_nanuda_user');
+  mounted() {
+    this.$root.$on('select_nanuda_user', user => {
+      console.log('userNo', user.no);
+      this.userData = user;
+      this.nanudaUserData = `${this.userData.name} - ${this.userData.phone}`;
+      this.deliveryFounderConsultCreateDto.nanudaUserNo = user.no;
+    });
   }
 }
 </script>

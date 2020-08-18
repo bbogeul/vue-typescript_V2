@@ -1,5 +1,31 @@
 <template>
   <b-modal id="add_nanuda_user" title="사용자 추가하기" @ok="findNanudaUser()">
+    <div class="search-box mb-4" v-on:keyup.enter="search()">
+      <b-form-row>
+        <b-col cols="6">
+          <label>이름</label>
+          <b-form-input v-model="nanudaUserSearchDto.name" />
+        </b-col>
+        <b-col cols="6">
+          <label>전화번호</label>
+          <b-form-input v-model="nanudaUserSearchDto.phone" />
+        </b-col>
+      </b-form-row>
+      <b-row align-h="center" class="mt-3">
+        <b-btn-group>
+          <b-button variant="primary" @click="clearOut()">초기화</b-button>
+          <b-button variant="success" @click="search()">검색</b-button>
+        </b-btn-group>
+      </b-row>
+    </div>
+    <div class="table-top">
+      <div class="totla-count">
+        <h5>
+          <span>TOTAL </span>
+          <strong class="text-primary">{{ nanudaUserListCount }}</strong>
+        </h5>
+      </div>
+    </div>
     <table class="table table-sm tabl-bordered text-center">
       <thead>
         <tr>
@@ -22,7 +48,7 @@
     </table>
     <div
       v-if="selectedUser.name"
-      class="py-2 px-4 rounded"
+      class="py-2 px-4 rounded mt-2"
       style="background-color:#f1f1f1"
     >
       선택한 사용자 :
@@ -34,7 +60,7 @@
       pills
       :total-rows="nanudaUserListCount"
       :per-page="pagination.limit"
-      @input="paginateSearch2"
+      @input="paginateSearch"
       class="mt-4 justify-content-center"
     ></b-pagination>
   </b-modal>
@@ -47,30 +73,36 @@ import NanudaUserService from '../../../services/nanuda-user.service';
 import { BaseUser } from '@/services/shared/auth';
 import { Pagination } from '@/common';
 
+@Component({
+  name: 'NanudaUserList',
+})
 export default class NanudaUserCreate extends BaseComponent {
   private nanudaUserList: NanudaUserDto[] = [];
-  private nanudaUserListDto = new NanudaUserListDto();
+  private nanudaUserSearchDto = new NanudaUserListDto();
   private nanudaUserListCount = 0;
   private selectedUser: NanudaUserDto = new NanudaUserDto(BaseUser);
   private pagination = new Pagination();
 
   search(isPagination?: boolean) {
-    this.pagination.page = 1;
-    this.pagination.limit = 10;
+    if (!isPagination) {
+      this.pagination.page = 1;
+    }
+    this.pagination.limit = 5;
     NanudaUserService.findAll(
-      this.nanudaUserListDto,
+      this.nanudaUserSearchDto,
       this.pagination,
     ).subscribe(res => {
       if (res) {
-        console.log(res);
         this.nanudaUserList = res.data.items;
         this.nanudaUserListCount = res.data.totalCount;
       }
     });
   }
 
-  selectUser(user: NanudaUserDto) {
-    this.selectedUser = user;
+  clearOut() {
+    this.pagination.page = 1;
+    this.nanudaUserSearchDto = new NanudaUserListDto();
+    this.search();
   }
 
   paginateSearch() {
@@ -78,11 +110,16 @@ export default class NanudaUserCreate extends BaseComponent {
   }
 
   // 사용자 추가
-  //   findNanudaUser() {
-  //     if (this.selectedUser) {
-  //       this.deliveryFounderConsultCreateDto.nanudaUserNo = this.selectedUser.no;
-  //     }
-  //   }
+  selectUser(user: NanudaUserDto) {
+    this.selectedUser = user;
+  }
+
+  findNanudaUser() {
+    if (this.selectedUser) {
+      this.$root.$emit('select_nanuda_user', this.selectedUser);
+      this.$bvModal.hide('add_nanuda_user');
+    }
+  }
 
   created() {
     this.search();
@@ -90,7 +127,6 @@ export default class NanudaUserCreate extends BaseComponent {
 
   mounted() {
     this.$root.$on('find_nanuda_user', () => {
-      console.log('ss');
       this.search();
     });
   }
