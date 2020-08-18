@@ -30,6 +30,16 @@ class DeliveryFounderConsultContractService extends BaseService {
 
   /**
    *
+   * @param contractNo
+   */
+  findOne(contractNo) {
+    return super.get<DeliveryFounderConsultContractDto>(
+      `admin/delivery-founder-consult-contract/${contractNo}`,
+    );
+  }
+
+  /**
+   *
    * @param contarctNo
    */
   deleteContract(contarctNo) {

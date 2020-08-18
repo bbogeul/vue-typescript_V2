@@ -162,6 +162,36 @@ const componentsRouter: RouteConfig[] = [
           title: '배달형 방문자 신청',
         },
       },
+      {
+        path: '/delivery-founder-consult-contract',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */
+            '../../modules/delivery-founder-consult-contract/components/DeliveryFounderConsultContractList.vue'
+          ),
+        name: '배달형 계약 관리',
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '배달형 계약',
+        },
+      },
+      {
+        path: '/delivery-founder-consult-contract-detail/:id([0-9]+)',
+        name: 'DeliveryFounderConsultContractDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/delivery-founder-consult-contract/components/DeliveryFounderConsultContractDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: '배달형 계약 상세',
+        },
+      },
     ],
   },
   {
