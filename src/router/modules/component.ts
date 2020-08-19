@@ -4,6 +4,27 @@ import { CONST_ADMIN_USER } from '@/services/shared';
 // 철자 순으로 컴퍼논트 나열한다.
 const componentsRouter: RouteConfig[] = [
   {
+    path: '/nanuda-user',
+    name: '사용자',
+    component: () => import('../../modules/nanuda-user/NanudaUser.vue'),
+    children: [
+      {
+        path: '/nanuda-user',
+        name: '사용자 관리',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/nanuda-user/components/NanudaUserList.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '사용자 관리',
+        },
+      },
+    ],
+  },
+  {
     path: '/company',
     name: '업체',
     component: () => import('../../modules/company/Company.vue'),

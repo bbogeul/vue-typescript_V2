@@ -5,6 +5,7 @@ import { BaseDto } from '@/core';
 
 export class NanudaUserListDto extends BaseDto<NanudaUserDto> {
   name?: string;
+  phone?: string;
   gender?: GENDER;
   orderByNo?: OrderByValue;
 }
