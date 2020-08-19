@@ -162,11 +162,9 @@
             {{ companyUser.createdAt | dateTransformer }}
           </td>
           <td>
-            <b-badge
-              :varient="getStatusColor(companyUser.codeManagement.value)"
-              class="badge-pill p-2"
-              >{{ companyUser.codeManagement.value }}</b-badge
-            >
+            <span class="badge badge-pill badge-warning p-2">{{
+              companyUser.codeManagement.value
+            }}</span>
           </td>
           <td>
             <router-link
