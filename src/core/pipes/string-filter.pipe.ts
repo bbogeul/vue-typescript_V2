@@ -1,6 +1,9 @@
 import Vue from 'vue';
 export const StringPipeTransformer = () =>
   Vue.filter('stringTransformer', (value: string): string => {
+    if (!value) {
+      return;
+    }
     if (value === 'businessNo') {
       return '사업자번호';
     }

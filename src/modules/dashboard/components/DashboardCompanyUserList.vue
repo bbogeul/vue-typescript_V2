@@ -53,7 +53,7 @@
               {{ companyUser.company.nameKr }}
             </router-link>
           </td>
-          <td>{{ companyUser.phone }}</td>
+          <td>{{ companyUser.phone | phoneTransformer }}</td>
 
           <td>
             <router-link

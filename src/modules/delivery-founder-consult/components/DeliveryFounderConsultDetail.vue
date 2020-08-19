@@ -39,7 +39,9 @@
                 <li>
                   휴대폰 번호 :
                   <span>
-                    <b>{{ deliveryFounderConsult.nanudaUser.phone }}</b>
+                    <b>{{
+                      deliveryFounderConsult.nanudaUser.phone | phoneTransformer
+                    }}</b>
                     <b-button
                       size="sm"
                       variant="info"
@@ -115,7 +117,9 @@
                 </li>
                 <li>
                   휴대폰 번호 :
-                  <b>{{ deliveryFounderConsult.admin.phone }}</b>
+                  <b>{{
+                    deliveryFounderConsult.admin.phone | phoneTransformer
+                  }}</b>
                 </li>
               </ul>
             </div>
@@ -560,7 +564,7 @@
       <p class="mb-2">
         휴대폰 번호 :
         <b class="text-primary">{{
-          deliveryFounderConsult.nanudaUser.phone
+          deliveryFounderConsult.nanudaUser.phone | phoneTransformer
         }}</b>
       </p>
       <b-form-textarea
@@ -607,7 +611,7 @@
         <tbody>
           <tr v-for="admin in adminList" :key="admin.no">
             <td>{{ admin.name }}</td>
-            <td>{{ admin.phone }}</td>
+            <td>{{ admin.phone | phoneTransformer }}</td>
             <td class="text-center">
               <button class="btn btn-primary" @click="selectAdmin(admin)">
                 선택

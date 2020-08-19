@@ -226,7 +226,6 @@ import DeliverySpaceList from './DeliverySpaceList.vue';
 import DeliverySpaceCreate from './DeliverySpaceCreate.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
-import { setAddress } from '../../../core/';
 import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({

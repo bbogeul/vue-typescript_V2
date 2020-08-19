@@ -3,3 +3,4 @@ export * from './enum-filter.pipe';
 export * from './string-filter.pipe';
 export * from './view-filter.pipe';
 export * from './string-district-filter.pipe';
+export * from './phone-filter.pipe';

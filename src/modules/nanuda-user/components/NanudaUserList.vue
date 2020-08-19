@@ -86,7 +86,7 @@
         <tr v-for="user in nanudaUserList" :key="user.no">
           <th scope="row">{{ user.no }}</th>
           <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
+          <td>{{ user.phone | phoneTransformer }}</td>
           <td>
             {{ user.createdAt | dateTransformer }}
           </td>

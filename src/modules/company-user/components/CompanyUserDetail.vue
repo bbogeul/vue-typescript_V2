@@ -45,7 +45,9 @@
                     <b>{{ companyUser.company.nameKr }}</b>
                   </router-link>
                 </li>
-                <li>휴대폰 번호 : {{ companyUser.phone }}</li>
+                <li>
+                  휴대폰 번호 : {{ companyUser.phone | phoneTransformer }}
+                </li>
                 <li>이메일 : {{ companyUser.email }}</li>
                 <li>
                   관리자 등급 : {{ companyUser.authCode | enumTransformer }}

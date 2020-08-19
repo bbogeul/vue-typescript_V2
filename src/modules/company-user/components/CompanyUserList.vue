@@ -156,15 +156,17 @@
             >
             {{ companyUser.name }}
           </td>
-          <td>{{ companyUser.phone }}</td>
+          <td>{{ companyUser.phone | phoneTransformer }}</td>
           <td>{{ companyUser.email }}</td>
           <td>
             {{ companyUser.createdAt | dateTransformer }}
           </td>
           <td>
-            <span class="badge badge-pill badge-warning p-2">{{
-              companyUser.codeManagement.value
-            }}</span>
+            <b-badge
+              :varient="getStatusColor(companyUser.codeManagement.value)"
+              class="badge-pill p-2"
+              >{{ companyUser.codeManagement.value }}</b-badge
+            >
           </td>
           <td>
             <router-link
@@ -299,8 +301,9 @@
   </section>
 </template>
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { BaseUser } from '../../../services/shared/auth';
 import BaseComponent from '../../../core/base.component';
+import { Component } from 'vue-property-decorator';
 import { CompanyUserListDto, CompanyUserDto, CompanyDto } from '../../../dto';
 import { Pagination } from '../../../common';
 import CompanyUserService from '../../../services/company-user.service';
@@ -311,10 +314,9 @@ import {
   COMPANY_USER,
   CONST_COMPANY_USER,
 } from '../../../services/shared';
-import { BaseUser } from '../../../services/shared/auth';
 
 @Component({
-  name: 'CompanyList',
+  name: 'CompanyUserList',
 })
 export default class Company extends BaseComponent {
   private companyUserSearchDto = new CompanyUserListDto();

@@ -43,7 +43,7 @@
       <tbody>
         <tr v-for="user in nanudaUserList" :key="user.no">
           <td>{{ user.name }}</td>
-          <td>{{ user.phone }}</td>
+          <td>{{ user.phone | phoneTransformer }}</td>
           <td class="text-center">
             <button class="btn btn-primary" @click="selectUser(user)">
               선택

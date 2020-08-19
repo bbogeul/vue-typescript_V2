@@ -310,7 +310,7 @@
             </td>
             <!-- <td>{{ founderConsult.space.spaceType.displayName }}</td> -->
             <td>{{ founderConsult.nanudaUser.name }}</td>
-            <td>{{ founderConsult.nanudaUser.phone }}</td>
+            <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
             <td>
               <div v-if="founderConsult.nanudaUser.genderInfo">
                 {{ founderConsult.nanudaUser.genderInfo.value }}

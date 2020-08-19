@@ -157,7 +157,7 @@
             <td>{{ contract.deliverySpace.companyDistrict.nameKr }}</td>
             <td>{{ contract.deliverySpace.typeName }}</td>
             <td>{{ contract.nanudaUser.name }}</td>
-            <td>{{ contract.nanudaUser.phone }}</td>
+            <td>{{ contract.nanudaUser.phone | phoneTransformer }}</td>
             <!-- <td>
               {{ contract.createdAt | dateTransformer }}
             </td> -->

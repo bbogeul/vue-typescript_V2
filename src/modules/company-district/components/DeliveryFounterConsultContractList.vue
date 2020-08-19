@@ -49,7 +49,7 @@
               {{ contract.nanudaUser.name }}
             </td>
             <td>
-              {{ contract.nanudaUser.phone }}
+              {{ contract.nanudaUser.phone | phoneTransformer }}
             </td>
             <td>
               <b-button

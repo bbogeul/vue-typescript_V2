@@ -41,7 +41,7 @@
             </router-link>
           </td>
           <td>{{ company.ceoKr }}</td>
-          <td>{{ company.phone }}</td>
+          <td>{{ company.phone | phoneTransformer }}</td>
           <td>
             <span
               class="badge badge-pill badge-warning p-2"

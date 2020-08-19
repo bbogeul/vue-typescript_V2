@@ -15,12 +15,15 @@ import VueDaumPostcode from 'vue-daum-postcode';
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import '@/core/guards/auth-role.guard';
+import '@/core/utils/status-color.util';
+
 import {
   DatePipeTransformer,
   EnumPipeTransformer,
   StringPipeTransformer,
   ViewPipeTransformer,
   StringDistrictPipeTransformer,
+  PhonePipeTransformer,
 } from './core';
 
 let env = new Environment();
@@ -40,6 +43,7 @@ EnumPipeTransformer();
 StringPipeTransformer();
 StringDistrictPipeTransformer();
 ViewPipeTransformer();
+PhonePipeTransformer();
 
 // bootstrap
 Vue.use(BootstrapVue);
