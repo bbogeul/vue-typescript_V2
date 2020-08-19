@@ -216,6 +216,27 @@ const componentsRouter: RouteConfig[] = [
     ],
   },
   {
+    path: '/amenity',
+    name: '시설 관리',
+    component: () => import('../../modules/amenity/Amenity.vue'),
+    children: [
+      {
+        path: '/amenity',
+        name: '시설 관리',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/amenity/components/AmenityList.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '사용자 관리',
+        },
+      },
+    ],
+  },
+  {
     path: '/notice-board',
     name: '공지사항',
     component: () => import('../../modules/notice-board/NoticeBoard.vue'),
