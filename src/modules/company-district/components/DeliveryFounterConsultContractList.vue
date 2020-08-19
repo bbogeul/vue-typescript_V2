@@ -37,7 +37,9 @@
               <router-link
                 :to="{
                   name: 'DeliveryFounderConsultDetail',
-                  params: contract.deliveryFounderConsultNo,
+                  params: {
+                    id: contract.deliveryFounderConsultNo,
+                  },
                 }"
               >
                 {{ contract.deliveryFounderConsultNo }}
