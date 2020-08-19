@@ -581,6 +581,8 @@ import SpaceTypeService from '../../../services/space-type.service';
 
 import NanudaUserList from './NanudaUserList.vue';
 
+import toast from '../../../../resources/assets/js/services/toast.js';
+
 import {
   AdminDto,
   CompanyDto,
@@ -754,7 +756,10 @@ export default class DeliveryFounderConsult extends BaseComponent {
     DeliveryFounderConsultService.create(
       this.deliveryFounderConsultCreateDto,
     ).subscribe(res => {
-      this.search();
+      if (res) {
+        this.search();
+        toast.success('추가완료');
+      }
     });
   }
   clearOutCreateDto() {
