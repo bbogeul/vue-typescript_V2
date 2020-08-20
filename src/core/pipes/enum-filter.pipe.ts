@@ -5,6 +5,7 @@ import {
   APPROVAL_STATUS,
   COMPANY_USER,
   NOTICE_BOARD,
+  AMENITY,
 } from '@/services/shared';
 export const EnumPipeTransformer = () =>
   Vue.filter('enumTransformer', (value: string): string => {
@@ -68,5 +69,14 @@ export const EnumPipeTransformer = () =>
     }
     if (value === INQUIRY.SYSTEM) {
       return '사이트 기능 문의';
+    }
+
+    // 시설 타입
+
+    if (value === AMENITY.COMMON_FACILITY) {
+      return '공통 시설';
+    }
+    if (value === AMENITY.KITCHEN_FACILITY) {
+      return '주방 시설';
     }
   });

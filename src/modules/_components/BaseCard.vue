@@ -6,9 +6,10 @@
       </h4>
       <slot name="head"></slot>
     </div>
-    <div class="card-body">
+    <div class="card-body" v-if="noBody">
       <slot name="body"></slot>
     </div>
+    <slot></slot>
   </div>
 </template>
 <script lang="ts">
@@ -21,6 +22,7 @@ import BaseComponent from '../../core/base.component';
 export default class BaseCard extends BaseComponent {
   @Prop() readonly title: string;
   @Prop({ default: false }) readonly hideTitle: boolean;
+  @Prop({ default: true }) noBody: boolean;
 }
 </script>
 <style lang="scss" scoped>
@@ -36,6 +38,7 @@ export default class BaseCard extends BaseComponent {
     border-bottom: 1px solid #ddd;
     padding: 0.625rem 1rem;
     min-height: 52px;
+    margin-bottom: -1px;
     .card-title {
       margin-bottom: 0;
       line-height: 1;
