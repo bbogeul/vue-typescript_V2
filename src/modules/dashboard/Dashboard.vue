@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-12 col-lg-6 mb-5">
-        <DashboardGraph />
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <DashboardCityGraph />
+      <div class="col-sm-12">
+        <DashboardDeliveryConsultGraph />
       </div>
     </div>
     <div class="divider"></div>
@@ -15,6 +12,19 @@
       </div>
       <div class="col-sm-12 col-lg-6 mb-4">
         <DashboardCompanyList />
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="col-sm-12 mb-5">
+      <DashboardDeliveryConsultList />
+    </div>
+    <div class="divider"></div>
+    <div class="row">
+      <div class="col-sm-12 col-lg-6 mb-5">
+        <DashboardGraph />
+      </div>
+      <div class="col-sm-12 col-lg-6">
+        <DashboardCityGraph />
       </div>
     </div>
     <div class="divider my-4"></div>
@@ -29,6 +39,8 @@ import DashboardCompanyUserList from './components/DashboardCompanyUserList.vue'
 import DashboardCompanyList from './components/DashboardCompanyList.vue';
 import DashboardGraph from './components/DashboardGraph.vue';
 import DashboardCityGraph from './components/DashboardCityGraph.vue';
+import DashboardDeliveryConsultGraph from './components/DashboardDeliveryConsultGraph.vue';
+import DashboardDeliveryConsultList from './components/DashboardDeliveryConsultList.vue';
 
 @Component({
   name: 'Dashboard',
@@ -38,6 +50,8 @@ import DashboardCityGraph from './components/DashboardCityGraph.vue';
     DashboardCompanyList,
     DashboardGraph,
     DashboardCityGraph,
+    DashboardDeliveryConsultGraph,
+    DashboardDeliveryConsultList,
   },
 })
 export default class Dashboard extends BaseComponent {}

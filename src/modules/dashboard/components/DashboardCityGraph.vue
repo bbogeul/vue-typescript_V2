@@ -32,7 +32,19 @@ export default class DashboardGraphCity extends Vue {
 
   getGraph() {
     DashboardService.dashboardGraphByCity().subscribe(res => {
-      this.options = { responsive: true, maintainAspectRatio: false };
+      this.options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      };
       this.founderConsultGraph = res.data;
     });
   }

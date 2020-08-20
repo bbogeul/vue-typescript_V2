@@ -12,6 +12,10 @@ class DashboardService extends BaseService {
   dashboardGraphByCity() {
     return super.get<any>('admin/dashboard/founder-consult/city');
   }
+
+  dashboardConsultGraph() {
+    return super.get<any>('admin/dashboard/delivery-founder-consult');
+  }
 }
 
 export default new DashboardService();
