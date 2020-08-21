@@ -25,8 +25,30 @@
                   {{ deliveryFounderConsultContractDto.nanudaUser.name }}
                 </li>
                 <li>
+                  계약자 성별 :
+                  {{
+                    deliveryFounderConsultContractDto.nanudaUser.gender
+                      | enumTransformer
+                  }}
+                </li>
+                <li>
                   휴대폰 번호 :
-                  {{ deliveryFounderConsultContractDto.nanudaUser.phone }}
+                  <b>
+                    {{
+                      deliveryFounderConsultContractDto.nanudaUser.phone
+                        | phoneTransformer
+                    }}
+                  </b>
+                  <b-button
+                    size="sm"
+                    variant="info"
+                    pill
+                    v-b-modal.send_message
+                    class="mx-2 p-1"
+                  >
+                    <b-icon icon="envelope"></b-icon>
+                    <span class="d-none">문자전송</span>
+                  </b-button>
                 </li>
               </ul>
             </div>
@@ -36,10 +58,10 @@
       <b-col md="6" class="my-3">
         <BaseCard title="계약 공간 정보">
           <template v-slot:head>
-            <span>
-              계약일
+            <span v-if="deliveryFounderConsultContractDto.createdAt">
+              계약일 -
               {{
-                deliveryFounderConsultContractDto.createdAt | enumTransformer
+                deliveryFounderConsultContractDto.createdAt | dateTransformer
               }}
             </span>
           </template>
@@ -54,12 +76,33 @@
                   공간 타입 :
                   {{ deliveryFounderConsultContractDto.deliverySpace.typeName }}
                 </li>
-                <li>
+                <li
+                  v-if="
+                    deliveryFounderConsultContractDto.deliverySpace.buildingName
+                  "
+                >
+                  건물명 :
+                  {{
+                    deliveryFounderConsultContractDto.deliverySpace.buildingName
+                  }}
+                </li>
+                <li v-if="deliveryFounderConsultContractDto.deliverySpace.size">
+                  평수 :
+                  {{ deliveryFounderConsultContractDto.deliverySpace.size }} 평
+                </li>
+                <li
+                  v-if="deliveryFounderConsultContractDto.deliverySpace.deposit"
+                >
                   보증금 :
                   {{ deliveryFounderConsultContractDto.deliverySpace.deposit }}
                   만원
                 </li>
-                <li>
+                <li
+                  v-if="
+                    deliveryFounderConsultContractDto.deliverySpace
+                      .monthlyRentFee
+                  "
+                >
                   월 임대로 :
                   {{
                     deliveryFounderConsultContractDto.deliverySpace
@@ -91,14 +134,14 @@
                 </router-link>
                 <router-link
                   :to="{
-                    name: 'CompanyDistrictDetail',
+                    name: 'DeliverySpaceDetail',
                     params: {
-                      id: deliveryFounderConsultContractDto.companyDistrictNo,
+                      id: deliveryFounderConsultContractDto.deliverySpaceNo,
                     },
                   }"
                   class="btn btn-outline-info"
                 >
-                  계약 공간 보기
+                  계약 공간 상세 보기
                 </router-link>
               </b-btn-group>
             </div>
@@ -106,6 +149,29 @@
         </BaseCard>
       </b-col>
     </b-row>
+    <!-- 문자 전송 -->
+    <b-modal
+      v-if="deliveryFounderConsultContractDto.nanudaUser"
+      id="send_message"
+      ok-title="전송"
+      cancel-title="취소"
+      :title="
+        `${deliveryFounderConsultContractDto.nanudaUser.name} 사용자에게 문자하기`
+      "
+    >
+      <p class="mb-2">
+        휴대폰 번호 :
+        <b class="text-primary">{{
+          deliveryFounderConsultContractDto.nanudaUser.phone | phoneTransformer
+        }}</b>
+      </p>
+      <b-form-textarea
+        id="message"
+        placeholder="메세지를 입력해주세요.."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">

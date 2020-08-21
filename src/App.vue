@@ -176,4 +176,19 @@ img {
     }
   }
 }
+
+// attatchments file
+.attatchments-list {
+  .attatchments-list-item {
+    position: relative;
+    img {
+      width: 100%;
+    }
+    .btn-delete-item {
+      position: absolute;
+      right: -5px;
+      top: -5px;
+    }
+  }
+}
 </style>

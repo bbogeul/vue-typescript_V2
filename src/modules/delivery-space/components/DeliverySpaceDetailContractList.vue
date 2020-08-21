@@ -119,9 +119,9 @@ import toast from '../../../../resources/assets/js/services/toast.js';
 import { Pagination } from '@/common';
 
 @Component({
-  name: 'DeliveryFonderConsultContract',
+  name: 'DeliverySpaceDetailContractList',
 })
-export default class DeliveryFonderConsultContract extends BaseComponent {
+export default class DeliverySpaceDetailContractList extends BaseComponent {
   private deliveryFounderConsultContractList: DeliveryFounderConsultContractDto[] = [];
   private deliveryFounderConsultContractListCount = 0;
   private deliveryFounderConsultContractSearchDto = new DeliveryFounderConsultContractListDto();

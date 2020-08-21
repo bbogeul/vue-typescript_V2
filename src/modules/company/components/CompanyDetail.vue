@@ -60,7 +60,17 @@
                 <li v-if="company.phone">
                   전화번호 : {{ company.phone | phoneTransformer }}
                 </li>
-                <li v-if="company.email">이메일 : {{ company.email }}</li>
+                <li v-if="company.email">
+                  이메일 :
+
+                  <a
+                    :href="
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${company.email}`
+                    "
+                    target="_blank"
+                    >{{ company.email }}
+                  </a>
+                </li>
                 <li v-if="company.fax">
                   팩스 : {{ company.fax | phoneTransformer }}
                 </li>

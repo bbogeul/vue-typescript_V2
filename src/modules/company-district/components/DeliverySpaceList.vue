@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <div v-if="deliverySpaceListCount">
       <div v-for="type in deliverySpaceList" :key="type.no">
         <div class="card mb-3">
@@ -190,11 +190,11 @@
           </div>
         </b-col>
         <b-col>
-          <DeliveryFounterConsultContractList />
+          <DeliverySpaceDetailContractList />
         </b-col>
       </b-row>
     </b-modal>
-  </div>
+  </section>
 </template>
 <script lang="ts">
 import BaseCard from '../../_components/BaseCard.vue';
@@ -205,13 +205,13 @@ import AmenityService from '../../../services/amenity.service';
 import DeliverSpaceService from '../../../services/delivery-space.service';
 import { Pagination } from '@/common';
 
-import DeliveryFounterConsultContractList from './DeliveryFounterConsultContractList.vue';
+import DeliverySpaceDetailContractList from '../../delivery-space/components/DeliverySpaceDetailContractList.vue';
 
 @Component({
   name: 'DeliverySpaceList',
   components: {
     BaseCard,
-    DeliveryFounterConsultContractList,
+    DeliverySpaceDetailContractList,
   },
 })
 export default class DeliverySpaceList extends BaseComponent {

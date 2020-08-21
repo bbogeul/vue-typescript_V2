@@ -3,6 +3,7 @@ import {
   DeliverySpaceDto,
   DeliverySpaceListDto,
   DeliverySpaceOptionDto,
+  DeliverySpaceUpdateDto,
 } from '@/dto';
 import { Pagination } from '@/common';
 
@@ -29,10 +30,25 @@ class DeliverSpaceService extends BaseService {
 
   /**
    *
-   * @param deliverySpace
+   * @param deliverySpaceDto
    */
-  create(deliverySpace: DeliverySpaceDto) {
-    return super.post<DeliverySpaceDto>('admin/delivery-space', deliverySpace);
+  create(deliverySpaceDto: DeliverySpaceDto) {
+    return super.post<DeliverySpaceDto>(
+      'admin/delivery-space',
+      deliverySpaceDto,
+    );
+  }
+
+  /**
+   *
+   * @param deliverySpaceNo
+   * @param deliverySpaceUpdateDto
+   */
+  update(deliverySpaceNo, deliverySpaceUpdateDto: DeliverySpaceUpdateDto) {
+    return super.patch<DeliverySpaceDto>(
+      `admin/delivery-space/${deliverySpaceNo}`,
+      deliverySpaceUpdateDto,
+    );
   }
 
   findSpaceOption() {
@@ -41,10 +57,13 @@ class DeliverSpaceService extends BaseService {
 
   /**
    *
-   * @param deliverySpace
+   * @param deliverySpaceDto
    */
-  findForSelect(deliverySpace: DeliverySpaceDto) {
-    return super.get<DeliverySpaceDto[]>('admin/delivery-space', deliverySpace);
+  findForSelect(deliverySpaceDto: DeliverySpaceDto) {
+    return super.get<DeliverySpaceDto[]>(
+      'admin/delivery-space',
+      deliverySpaceDto,
+    );
   }
 }
 

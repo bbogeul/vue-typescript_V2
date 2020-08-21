@@ -116,6 +116,35 @@ const componentsRouter: RouteConfig[] = [
           title: '업체 지점 관리',
         },
       },
+      {
+        path: '/company/delivery-space',
+        name: '지점 타입 관리',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/delivery-space/components/DeliverySpaceList.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '지점 타입 관리',
+        },
+      },
+      {
+        path: '/company/delivery-space/:id([0-9]+)',
+        name: 'DeliverySpaceDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/delivery-space/components/DeliverySpaceDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: '지점 타입 상세',
+        },
+      },
     ],
   },
   {

@@ -14,8 +14,8 @@ import VueDaumPostcode from 'vue-daum-postcode';
 
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
+import SectionTitle from '../src/modules/_components/SectionTitle.vue';
 import '@/core/guards/auth-role.guard';
-import '@/core/utils/status-color.util';
 
 import {
   DatePipeTransformer,
@@ -36,6 +36,8 @@ Vue.config.productionTip = env.productionTip;
 // import layouts
 Vue.component('NonMainLayout', NonMainLayout);
 Vue.component('MainLayout', MainLayout);
+
+Vue.component('SectionTitle', SectionTitle);
 
 // filters
 DatePipeTransformer();

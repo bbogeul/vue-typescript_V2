@@ -137,7 +137,7 @@
         </BaseCard>
       </div>
     </div>
-    <!-- 업체 정보 수정 모달 -->
+    <!-- 업체 지점 정보 수정 모달 -->
     <b-modal
       id="update_district"
       size="xl"

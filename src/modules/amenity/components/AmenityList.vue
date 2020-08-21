@@ -14,6 +14,12 @@
         <BaseCard title="공통 시설" no-body>
           <template v-slot:head> </template>
           <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">시설 이름</th>
+                <th scope="col">시설 코드</th>
+              </tr>
+            </thead>
             <tbody>
               <tr
                 v-for="amenity in amenityCommonList"
@@ -30,6 +36,12 @@
         <BaseCard title="주방 시설" no-body>
           <template v-slot:head> </template>
           <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">시설 이름</th>
+                <th scope="col">시설 코드</th>
+              </tr>
+            </thead>
             <tbody>
               <tr
                 v-for="amenity in amenityKitchenList"
