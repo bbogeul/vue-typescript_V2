@@ -1,15 +1,6 @@
 <template>
-  <div>
-    <div class="title">
-      <h4 class="d-inline-block">사용자 수정요청</h4>
-      <router-link
-        to="/company/company-user"
-        class="btn btn-primary float-right"
-      >
-        더 보기
-      </router-link>
-    </div>
-    <table class="table table-hover table-bordered">
+  <div v-if="!dataLoading">
+    <table class="table table-hover table-bordered" v-if="companyUserListCount">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -20,7 +11,7 @@
           <th scope="col">VIEW</th>
         </tr>
       </thead>
-      <tbody v-if="companyUserListCount > 0">
+      <tbody>
         <tr v-for="companyUser in companyUserDto" :key="companyUser.no">
           <th scope="row">
             <router-link
@@ -79,12 +70,12 @@
           </td>
         </tr>
       </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="6" class="empty-data">승인 수정 요청 내역 없음</td>
-        </tr>
-      </tbody>
     </table>
+    <div class="empty-data" v-else>승인 수정 요청 내역 없음</div>
+  </div>
+  <div class="half-circle-spinner my-5" v-else>
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
   </div>
 </template>
 <script lang="ts">
@@ -109,15 +100,18 @@ export default class DashboardCompanyUserList extends BaseComponent {
   private pagination = new Pagination();
   private companyUserListDto = new CompanyUserListDto();
   private companyUserListCount = null;
+  private dataLoading = false;
 
   // TODO: 등록 승인 요청, 수정 승인 요청 건 둘다 노출 필요
   getUserWithUpdateStatus() {
+    this.dataLoading = true;
     this.pagination.limit = 2;
     this.companyUserListDto.companyUserStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
     CompanyUserService.findAll(
       this.companyUserListDto,
       this.pagination,
     ).subscribe(res => {
+      this.dataLoading = false;
       const data = res.data;
       this.companyUserDto = data.items;
       this.companyUserListCount = data.totalCount;

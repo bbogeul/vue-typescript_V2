@@ -1,12 +1,6 @@
 <template>
-  <div>
-    <div class="title">
-      <h4 class="d-inline-block">업체 수정요청</h4>
-      <router-link to="/company" class="btn btn-primary float-right">
-        더 보기
-      </router-link>
-    </div>
-    <table class="table table-hover table-bordered">
+  <div v-if="!dataLoading">
+    <table class="table table-hover" v-if="companyListCount">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -17,7 +11,7 @@
           <th scope="col">VIEW</th>
         </tr>
       </thead>
-      <tbody v-if="companyListCount > 0">
+      <tbody>
         <tr v-for="company in companyDto" :key="company.no">
           <th scope="row">
             <router-link
@@ -62,12 +56,12 @@
           </td>
         </tr>
       </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="6" class="empty-data">승인 수정 요청 내역 없음</td>
-        </tr>
-      </tbody>
     </table>
+    <div class="empty-data" v-else>승인 수정 요청 내역 없음</div>
+  </div>
+  <div class="half-circle-spinner my-5" v-else>
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
   </div>
 </template>
 <script lang="ts">
@@ -86,12 +80,15 @@ export default class DashboardCompanyList extends BaseComponent {
   private companyListDto = new CompanyListDto();
   private companyListCount = null;
   private companyDto: CompanyDto[] = [];
+  private dataLoading = false;
 
   getCompanyUpdateStatusList() {
+    this.dataLoading = true;
     this.pagination.limit = 2;
     this.companyListDto.companyStatus = APPROVAL_STATUS.UPDATE_APPROVAL;
     CompanyService.findAll(this.companyListDto, this.pagination).subscribe(
       res => {
+        this.dataLoading = false;
         this.companyDto = res.data.items;
         this.companyListCount = res.data.totalCount;
       },

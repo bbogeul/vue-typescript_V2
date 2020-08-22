@@ -10,9 +10,6 @@
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
-    <button class="btn btn-primary text-center float-right">
-      <router-link to="/graph-by-cities">Learn more</router-link>
-    </button>
   </div>
 </template>
 <script lang="ts">
@@ -52,4 +49,4 @@ export default class DashboardGraphCity extends Vue {
     this.getGraph();
   }
 }
-</script> 
+</script>

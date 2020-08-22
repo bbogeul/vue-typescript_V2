@@ -1,35 +1,93 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-sm-12">
-        <DashboardDeliveryConsultGraph />
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div class="row mt-4">
-      <div class="col-sm-12 col-lg-6 mb-4">
-        <DashboardCompanyUserList />
-      </div>
-      <div class="col-sm-12 col-lg-6 mb-4">
-        <DashboardCompanyList />
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div class="col-sm-12 mb-5">
-      <DashboardDeliveryConsultList />
-    </div>
-    <div class="divider"></div>
-    <div class="row">
-      <div class="col-sm-12 col-lg-6 mb-5">
-        <DashboardGraph />
-      </div>
-      <div class="col-sm-12 col-lg-6">
-        <DashboardCityGraph />
-      </div>
-    </div>
-    <div class="divider my-4"></div>
-    <DashboardFounderConsultList />
-  </div>
+  <section>
+    <b-row class="my-4">
+      <b-col md="6">
+        <BaseCard title="업체 승인 요청" no-body>
+          <template v-slot:head>
+            <router-link to="/company" class="btn btn-primary float-right">
+              더 보기
+            </router-link>
+          </template>
+          <DashboardCompanyList />
+        </BaseCard>
+      </b-col>
+      <b-col md="6">
+        <BaseCard title="업체 사용자 승인 요청" no-body>
+          <template v-slot:head>
+            <router-link
+              to="/company/company-user"
+              class="btn btn-primary float-right"
+            >
+              더 보기
+            </router-link>
+          </template>
+          <DashboardCompanyUserList />
+        </BaseCard>
+      </b-col>
+    </b-row>
+    <b-row class="my-4">
+      <b-col sm="6" md="4">
+        <BaseCard title="배달형 방문자 신청">
+          <template v-slot:body>
+            <DashboardDeliveryConsultGraph />
+          </template>
+        </BaseCard>
+      </b-col>
+      <b-col sm="6" md="8">
+        <b-row>
+          <b-col sm="6">
+            <BaseCard title="식당형 방문자 신청">
+              <template v-slot:body>
+                <DashboardGraph />
+              </template>
+            </BaseCard>
+          </b-col>
+          <b-col sm="6">
+            <BaseCard title="식당형 지역별 방문 신청 추이">
+              <template v-slot:head>
+                <div>
+                  <router-link
+                    to="/graph-by-cities"
+                    class="btn btn-primary text-center float-right"
+                    >더 보기</router-link
+                  >
+                </div>
+              </template>
+              <template v-slot:body>
+                <DashboardCityGraph />
+              </template>
+            </BaseCard>
+          </b-col>
+        </b-row>
+      </b-col>
+    </b-row>
+    <b-row class="my-4">
+      <b-col md="6">
+        <BaseCard title="최신 배달형 방문자 신청" no-body>
+          <template v-slot:head>
+            <router-link
+              to="/delivery-founder-consult"
+              class="btn btn-primary float-right"
+              >더 보기</router-link
+            >
+          </template>
+          <DashboardDeliveryConsultList />
+        </BaseCard>
+      </b-col>
+      <b-col md="6">
+        <BaseCard title="최신 식당형 방문자 신청" no-body>
+          <template v-slot:head>
+            <router-link
+              to="/founder-consult"
+              class="btn btn-primary float-right"
+              >더 보기</router-link
+            >
+          </template>
+          <DashboardFounderConsultList />
+        </BaseCard>
+      </b-col>
+    </b-row>
+  </section>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';

@@ -15,6 +15,7 @@ import VueDaumPostcode from 'vue-daum-postcode';
 import MainLayout from '../src/modules/_layouts/Layout/MainLayout.layout.vue';
 import NonMainLayout from '../src/modules/_layouts/Layout/NonMainLayout.layout.vue';
 import SectionTitle from '../src/modules/_components/SectionTitle.vue';
+import BaseCard from '../src/modules/_components/BaseCard.vue';
 import '@/core/guards/auth-role.guard';
 
 import {
@@ -38,6 +39,7 @@ Vue.component('NonMainLayout', NonMainLayout);
 Vue.component('MainLayout', MainLayout);
 
 Vue.component('SectionTitle', SectionTitle);
+Vue.component('BaseCard', BaseCard);
 
 // filters
 DatePipeTransformer();
