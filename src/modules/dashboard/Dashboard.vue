@@ -1,7 +1,7 @@
 <template>
   <section>
-    <b-row class="my-4">
-      <b-col md="6">
+    <b-row class="my-0">
+      <b-col md="6" class="my-3">
         <BaseCard title="업체 승인 요청" no-body>
           <template v-slot:head>
             <router-link to="/company" class="btn btn-primary float-right">
@@ -11,7 +11,7 @@
           <DashboardCompanyList />
         </BaseCard>
       </b-col>
-      <b-col md="6">
+      <b-col md="6" class="my-3">
         <BaseCard title="업체 사용자 승인 요청" no-body>
           <template v-slot:head>
             <router-link
@@ -25,24 +25,24 @@
         </BaseCard>
       </b-col>
     </b-row>
-    <b-row class="my-4">
-      <b-col sm="6" md="4">
+    <b-row class="my-0">
+      <b-col lg="4" class="my-3">
         <BaseCard title="배달형 방문자 신청">
           <template v-slot:body>
             <DashboardDeliveryConsultGraph />
           </template>
         </BaseCard>
       </b-col>
-      <b-col sm="6" md="8">
+      <b-col lg="8">
         <b-row>
-          <b-col sm="6">
+          <b-col md="6" class="my-3">
             <BaseCard title="식당형 방문자 신청">
               <template v-slot:body>
                 <DashboardGraph />
               </template>
             </BaseCard>
           </b-col>
-          <b-col sm="6">
+          <b-col md="6" class="my-3">
             <BaseCard title="식당형 지역별 방문 신청 추이">
               <template v-slot:head>
                 <div>
@@ -61,8 +61,8 @@
         </b-row>
       </b-col>
     </b-row>
-    <b-row class="my-4">
-      <b-col md="6">
+    <b-row class="my-0">
+      <b-col lg="6" class="my-3">
         <BaseCard title="최신 배달형 방문자 신청" no-body>
           <template v-slot:head>
             <router-link
@@ -74,7 +74,7 @@
           <DashboardDeliveryConsultList />
         </BaseCard>
       </b-col>
-      <b-col md="6">
+      <b-col lg="6" class="my-3">
         <BaseCard title="최신 식당형 방문자 신청" no-body>
           <template v-slot:head>
             <router-link

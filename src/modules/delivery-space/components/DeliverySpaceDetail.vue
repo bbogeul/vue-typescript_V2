@@ -99,7 +99,6 @@
             {{ deliverySpaceDto.quantity }}
           </div>
         </div>
-        <!--TODO: 타입 수정 기능 추가-->
         <div class="text-right mt-4">
           <b-button
             variant="primary"
@@ -123,12 +122,13 @@ import BaseComponent from '@/core/base.component';
 import { Prop, Vue, Component } from 'vue-property-decorator';
 import { DeliverySpaceDto, DeliverySpaceListDto } from '../../../dto';
 import AmenityService from '../../../services/amenity.service';
-import DeliverSpaceService from '../../../services/delivery-space.service';
+import DeliverySpaceService from '../../../services/delivery-space.service';
 import { Pagination } from '@/common';
 
 import DeliverySpaceUpdate from './DeliverySpaceUpdate.vue';
 import DeliverySpaceDetailContractList from './DeliverySpaceDetailContractList.vue';
 import SectionTitle from '../../../modules/_components/SectionTitle.vue';
+import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'DeliverySpaceDetail',
@@ -143,11 +143,11 @@ export default class DeliverySpaceList extends BaseComponent {
   private deliverySpaceDto = new DeliverySpaceDto();
 
   // 타입 상세 보기
-  findOne(typeNo) {
-    DeliverSpaceService.findOne(typeNo).subscribe(res => {
+  findOne(id) {
+    DeliverySpaceService.findOne(id).subscribe(res => {
       if (res) {
         this.deliverySpaceDto = res.data;
-        this.$root.$emit('find_contract_list', typeNo);
+        this.$root.$emit('find_contract_list', id);
       }
     });
   }
@@ -160,6 +160,7 @@ export default class DeliverySpaceList extends BaseComponent {
     const id = this.$route.params.id;
     this.findOne(id);
   }
+
   mounted() {
     const id = this.$route.params.id;
     this.$root.$on('find_delivery_space', () => {
