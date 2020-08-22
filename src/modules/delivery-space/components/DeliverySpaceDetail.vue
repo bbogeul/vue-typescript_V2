@@ -10,7 +10,7 @@
     <b-row>
       <b-col cols="12" md="4">
         <b-carousel
-          v-if="deliverySpaceDto.images"
+          v-if="deliverySpaceDto.images && deliverySpaceDto.images.length > 0"
           :interval="3000"
           controls
           indicators
@@ -31,11 +31,17 @@
         />
       </b-col>
       <b-col cols="12" md="8">
-        <div>
+        <div v-if="deliverySpaceDto && deliverySpaceDto.companyDistrict">
           <h4 v-if="deliverySpaceDto.typeName" class="mb-3">
             [{{ deliverySpaceDto.no }}] {{ deliverySpaceDto.typeName }}
           </h4>
           <ul class="u-list">
+            <li v-if="deliverySpaceDto.companyDistrict.company.nameKr">
+              업체명 : {{ deliverySpaceDto.companyDistrict.company.nameKr }}
+            </li>
+            <li v-if="deliverySpaceDto.companyDistrict.company.nameKr">
+              지점명 : {{ deliverySpaceDto.companyDistrict.nameKr }}
+            </li>
             <li v-if="deliverySpaceDto.buildingName">
               건물명 : {{ deliverySpaceDto.buildingName }}
             </li>
@@ -103,7 +109,7 @@
           <b-button
             variant="primary"
             v-b-modal.update_delivery_space
-            @click="update()"
+            @click="showUpdateModal()"
           >
             수정하기
           </b-button>
@@ -113,7 +119,7 @@
         <DeliverySpaceDetailContractList />
       </b-col>
     </b-row>
-    <DeliverySpaceUpdate />
+    <DeliverySpaceUpdate :deliverySpaceDto="deliverySpaceDto" />
   </section>
 </template>
 <script lang="ts">
@@ -152,7 +158,7 @@ export default class DeliverySpaceList extends BaseComponent {
     });
   }
 
-  update() {
+  showUpdateModal() {
     this.$root.$emit('update_delivery_space', this.deliverySpaceDto);
   }
 
@@ -164,6 +170,9 @@ export default class DeliverySpaceList extends BaseComponent {
   mounted() {
     const id = this.$route.params.id;
     this.$root.$on('find_delivery_space', () => {
+      this.findOne(id);
+    });
+    this.$root.$on('clearout_updatedto', () => {
       this.findOne(id);
     });
   }

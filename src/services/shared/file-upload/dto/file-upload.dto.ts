@@ -13,7 +13,7 @@ export class FileAttachmentDto extends BaseDto<FileAttachmentDto> {
     super(partial);
   }
 
-  attachmentReasonType: ATTACHMENT_REASON_TYPE;
+  attachmentReasonType?: ATTACHMENT_REASON_TYPE;
   originFilename: string;
   source?: string;
   key?: string;

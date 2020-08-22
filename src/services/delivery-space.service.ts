@@ -7,7 +7,7 @@ import {
 } from '@/dto';
 import { Pagination } from '@/common';
 
-class DeliverSpaceService extends BaseService {
+class DeliverySpaceService extends BaseService {
   /**
    *
    * @param filter
@@ -67,4 +67,4 @@ class DeliverSpaceService extends BaseService {
   }
 }
 
-export default new DeliverSpaceService();
+export default new DeliverySpaceService();

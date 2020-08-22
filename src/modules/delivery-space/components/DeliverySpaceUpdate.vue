@@ -3,11 +3,29 @@
     id="update_delivery_space"
     title="타입 수정"
     size="xl"
-    @hide="clearOut()"
-    @cancel="clearOut()"
-    @ok="update()"
+    @hide="clearOutUpdateDto()"
+    @cancel="clearOutUpdateDto()"
+    @ok="updateDeliverySpace()"
   >
     <b-form-row>
+      <b-col lg="12" class="text-right mb-3">
+        <b-row no-gutters align-h="end">
+          <b-form-group
+            label="삭제 활성화"
+            label-size="sm"
+            label-text-align="right"
+            label-cols="8"
+          >
+            <b-form-checkbox
+              switch
+              size="lg"
+              v-model="deliverySpaceUpdateDto.delYn"
+              :value="delYn[0]"
+              :unchecked-value="delYn[1]"
+            ></b-form-checkbox>
+          </b-form-group>
+        </b-row>
+      </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           타입명
@@ -125,13 +143,13 @@
         </div>
         <div v-if="!dataLoading">
           <div
-            v-if="selectedImages && selectedImages.length > 0 && !changedImage"
+            v-if="uploadImages && uploadImages.length > 0"
             class="attatchments-list mt-2"
           >
             <b-form-row no-gutters>
               <b-col
                 cols="2"
-                v-for="images in selectedImages"
+                v-for="images in uploadImages"
                 :key="images.originFileName"
                 class="p-2"
               >
@@ -142,40 +160,12 @@
                     style="max-width:100%"
                     class="border rounded"
                   />
-                  <b-icon
+                  <!-- <b-icon
                     icon="backspace-fill"
                     variant="danger"
                     class="btn-delete-item"
                     @click="deleteImages(images)"
-                  ></b-icon>
-                </div>
-              </b-col>
-            </b-form-row>
-          </div>
-          <div
-            v-if="newImages && newImages.length > 0 && changedImage"
-            class="attatchments-list mt-2"
-          >
-            <b-form-row no-gutters>
-              <b-col
-                cols="2"
-                v-for="images in newImages"
-                :key="images.originFileName"
-                class="p-2"
-              >
-                <div class="attatchments-list-item">
-                  <b-img
-                    :src="images.endpoint"
-                    alt
-                    style="max-width:100%"
-                    class="border rounded"
-                  />
-                  <b-icon
-                    icon="backspace-fill"
-                    variant="danger"
-                    class="btn-delete-item"
-                    @click="deleteImages(images)"
-                  ></b-icon>
+                  ></b-icon> -->
                 </div>
               </b-col>
             </b-form-row>
@@ -209,6 +199,7 @@ import AmenityService from '../../../services/amenity.service';
 import DeliverySpaceService from '../../../services/delivery-space.service';
 import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
 import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
+import { YN, CONST_YN } from '@/common/interfaces';
 
 @Component({
   name: 'DeliverySpaceUpdate',
@@ -222,7 +213,9 @@ export default class DeliverySpaceUpdate extends BaseComponent {
   private attachments: FileAttachmentDto[] = [];
   private deliverySpaceOptionIds: number[] = [];
   private deliverySpaceOptionsList: DeliverySpaceOptionDto[] = [];
+  private delYn: YN[] = [...CONST_YN];
 
+  private uploadImages: FileAttachmentDto[] = [];
   private selectedImages = [];
   private newImages: FileAttachmentDto[] = [];
   private changedImage = false;
@@ -273,19 +266,27 @@ export default class DeliverySpaceUpdate extends BaseComponent {
   }
 
   // find delivery space dto
-  findOne(deliverySpaceDto: DeliverySpaceDto) {
-    this.deliverySpaceDto = deliverySpaceDto;
-
-    this.deliverySpaceUpdateDto = this.deliverySpaceDto;
+  findDeliverySpaceDto(deliverySpace: DeliverySpaceDto) {
+    this.deliverySpaceUpdateDto = deliverySpace;
+    // this.deliverySpaceUpdateDto.typeName = deliverySpace.typeName;
+    // this.deliverySpaceUpdateDto.buildingName = deliverySpace.buildingName;
+    // this.deliverySpaceUpdateDto.quantity = deliverySpace.quantity;
+    // this.deliverySpaceUpdateDto.deposit = deliverySpace.deposit;
+    // this.deliverySpaceUpdateDto.monthlyUtilityFee =
+    //   deliverySpace.monthlyUtilityFee;
+    // this.deliverySpaceUpdateDto.monthlyRentFee = deliverySpace.monthlyRentFee;
+    // this.deliverySpaceUpdateDto.size = deliverySpace.size;
+    // this.deliverySpaceUpdateDto.delYn = deliverySpace.delYn;
     this.deliverySpaceUpdateDto.companyDistrictNo =
-      deliverySpaceDto.companyDistrictNo;
+      deliverySpace.companyDistrictNo;
 
-    this.amenityIds = this.deliverySpaceDto.amenities.map(v => v.no);
-    this.deliverySpaceOptionIds = this.deliverySpaceDto.deliverySpaceOptions.map(
+    this.amenityIds = deliverySpace.amenities.map(v => v.no);
+    this.deliverySpaceOptionIds = deliverySpace.deliverySpaceOptions.map(
       v => v.no,
     );
 
-    this.selectedImages = this.deliverySpaceDto.images;
+    this.selectedImages = deliverySpace.images;
+    this.uploadImages = [...this.selectedImages];
   }
 
   // 이미지 업로드
@@ -295,42 +296,39 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       UPLOAD_TYPE.DELIVERY_SPACE,
       file,
     );
+    this.newImages = [];
     this.newImages.push(
       ...attachments.filter(
         fileUpload =>
           fileUpload.attachmentReasonType === ATTACHMENT_REASON_TYPE.SUCCESS,
       ),
     );
+    this.uploadImages = [...this.newImages];
     this.dataLoading = false;
     this.changedImage = true;
   }
 
-  // TODO: 이미지 리스트 상 삭제 리팩토링 필요..
+  // TODO: 이미지 리스트 상 삭제 리팩토링 필요.. 음..
   // delete images
   deleteImages(image) {
-    if (!this.changedImage) {
-      if (this.selectedImages.includes(image)) {
-        const index = this.selectedImages.indexOf(image);
-        if (index > -1) {
-          this.selectedImages.splice(index, 1);
-        }
-      }
-    } else {
-      if (this.newImages.includes(image)) {
-        const index = this.newImages.indexOf(image);
-        if (index > -1) {
-          this.newImages.splice(index, 1);
-        }
+    if (this.newImages.includes(image)) {
+      const index = this.newImages.indexOf(image);
+      if (index > -1) {
+        this.newImages.splice(index, 1);
       }
     }
   }
 
   // update delivery space dto
-  update() {
-    this.deliverySpaceUpdateDto.deliverySpaceOptionIds = this.deliverySpaceOptionIds;
-    this.deliverySpaceUpdateDto.amenityIds = this.amenityIds;
-    if (this.newImages.length > 0) {
-      this.deliverySpaceUpdateDto.images = this.newImages;
+  updateDeliverySpace() {
+    if (this.deliverySpaceOptionIds) {
+      this.deliverySpaceUpdateDto.deliverySpaceOptionIds = this.deliverySpaceOptionIds;
+    }
+    if (this.amenityIds) {
+      this.deliverySpaceUpdateDto.amenityIds = this.amenityIds;
+    }
+    if (this.uploadImages) {
+      this.deliverySpaceUpdateDto.images = this.uploadImages;
     }
 
     DeliverySpaceService.update(
@@ -339,14 +337,16 @@ export default class DeliverySpaceUpdate extends BaseComponent {
     ).subscribe(res => {
       if (res) {
         this.changedImage = false;
+        this.deliverySpaceUpdateDto = new DeliverySpaceUpdateDto();
         this.$root.$emit('find_delivery_space');
         toast.success('수정완료');
       }
     });
   }
 
-  clearOut() {
+  clearOutUpdateDto() {
     this.deliverySpaceUpdateDto = new DeliverySpaceUpdateDto();
+    this.$root.$emit('clearout_updatedto');
   }
 
   created() {
@@ -356,7 +356,7 @@ export default class DeliverySpaceUpdate extends BaseComponent {
 
   mounted() {
     this.$root.$on('update_delivery_space', deliverySpaceDto => {
-      this.findOne(deliverySpaceDto);
+      this.findDeliverySpaceDto(deliverySpaceDto);
     });
   }
 }
