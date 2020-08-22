@@ -27,7 +27,8 @@ export default class BaseCard extends BaseComponent {
 </script>
 <style lang="scss" scoped>
 .card {
-  border-color: #ddd;
+  border: 0;
+  border-radius: 0.5rem;
   background-color: #fff;
   height: 100%;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.05);

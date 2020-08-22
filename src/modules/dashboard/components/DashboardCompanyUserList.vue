@@ -1,6 +1,6 @@
 <template>
   <div v-if="!dataLoading">
-    <table class="table table-hover table-bordered" v-if="companyUserListCount">
+    <table class="table table-hover" v-if="companyUserListCount">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -8,65 +8,30 @@
           <th scope="col">COMPANY</th>
           <th scope="col">PHONE</th>
           <th scope="col">STATUS</th>
-          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="companyUser in companyUserDto" :key="companyUser.no">
+        <tr
+          v-for="companyUser in companyUserDto"
+          :key="companyUser.no"
+          @click="findOne(companyUser.no)"
+          style="cursor:pointer"
+        >
           <th scope="row">
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: { id: companyUser.no },
-              }"
-              class="text-primary"
-            >
-              {{ companyUser.no }}
-            </router-link>
+            {{ companyUser.no }}
           </th>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: { id: companyUser.no },
-              }"
-            >
-              {{ companyUser.name }}
-            </router-link>
+            {{ companyUser.name }}
           </td>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyDetail',
-                params: { id: companyUser.company.no },
-              }"
-            >
-              {{ companyUser.company.nameKr }}
-            </router-link>
+            {{ companyUser.company.nameKr }}
           </td>
           <td>{{ companyUser.phone | phoneTransformer }}</td>
 
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: { id: companyUser.no },
-              }"
-            >
-              <span class="badge badge-pill badge-warning p-2">{{
-                companyUser.codeManagement.value
-              }}</span>
-            </router-link>
-          </td>
-          <td>
-            <router-link
-              class="btn btn-sm btn-secondary"
-              :to="{
-                name: 'CompanyUserDetail',
-                params: { id: companyUser.no },
-              }"
-              >상세보기</router-link
-            >
+            <span class="badge badge-pill badge-warning p-2">{{
+              companyUser.codeManagement.value
+            }}</span>
           </td>
         </tr>
       </tbody>
@@ -116,6 +81,10 @@ export default class DashboardCompanyUserList extends BaseComponent {
       this.companyUserDto = data.items;
       this.companyUserListCount = data.totalCount;
     });
+  }
+
+  findOne(companyUserNo) {
+    this.$router.push(`/company/company-user/${companyUserNo}`);
   }
 
   created() {

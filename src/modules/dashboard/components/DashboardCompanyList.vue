@@ -8,31 +8,20 @@
           <th scope="col">CEO</th>
           <th scope="col">PHONE</th>
           <th scope="col">STATUS</th>
-          <th scope="col">VIEW</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="company in companyDto" :key="company.no">
+        <tr
+          v-for="company in companyDto"
+          :key="company.no"
+          @click="findOne(company.no)"
+          style="cursor:pointer"
+        >
           <th scope="row">
-            <router-link
-              :to="{
-                name: 'CompanyDetail',
-                params: { id: company.no },
-              }"
-              class="text-primary"
-            >
-              {{ company.no }}
-            </router-link>
+            {{ company.no }}
           </th>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyDetail',
-                params: { id: company.no },
-              }"
-            >
-              {{ company.nameKr }}
-            </router-link>
+            {{ company.nameKr }}
           </td>
           <td>{{ company.ceoKr }}</td>
           <td>{{ company.phone | phoneTransformer }}</td>
@@ -42,17 +31,6 @@
               v-if="company.codeManagement"
               >{{ company.codeManagement.value }}</span
             >
-          </td>
-          <td>
-            <router-link
-              class="btn btn-sm btn-secondary"
-              :to="{
-                name: 'CompanyDetail',
-                params: { id: company.no },
-              }"
-            >
-              상세보기
-            </router-link>
           </td>
         </tr>
       </tbody>
@@ -93,6 +71,10 @@ export default class DashboardCompanyList extends BaseComponent {
         this.companyListCount = res.data.totalCount;
       },
     );
+  }
+
+  findOne(companyNo) {
+    this.$router.push(`/company/${companyNo}`);
   }
 
   mounted() {
