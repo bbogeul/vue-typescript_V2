@@ -1,13 +1,12 @@
 <template>
   <section>
-    <b-row no-gutters align-h="between" align-v="end" class="title mb-2">
-      <h3>
-        <span>공지사항 등록</span>
-      </h3>
-      <router-link to="/notice-board" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
-    </b-row>
+    <SectionTitle title="공지사항 등록" divider>
+      <template v-slot:rightArea>
+        <router-link to="/notice-board" class="btn btn-secondary text-center"
+          >목록으로</router-link
+        >
+      </template>
+    </SectionTitle>
     <div class="mt-3">
       <div class="form-row">
         <div class="col-md-2 mb-3">
@@ -78,7 +77,7 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="col-12  mb-3">
+        <div class="col-12 mb-3">
           <label for="create_url">
             URL
           </label>
@@ -88,6 +87,44 @@
             v-model="noticeBoardCreateDto.url"
           />
         </div>
+      </div>
+      <div class="form-row">
+        <div class="col-12 mb-3">
+          <label for="">파일첨부</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFileLang"
+              lang="kr"
+              v-on:change="upload($event.target.files)"
+              multiple
+            />
+            <label class="custom-file-label" for="customFileLang"
+              >파일 첨부</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-if="attachments && attachments.length > 0"
+        class="board-view-attatchments"
+      >
+        <span
+          v-for="attachment in attachments"
+          :key="attachment.originFileName"
+          class="attatchment-item m-2"
+        >
+          <a
+            :href="attachment.endpoint"
+            target="_blank"
+            download
+            class="btn btn-sm btn-primary"
+            >{{ attachment.originFilename }}
+            <b-icon icon="cloud-download" class="ml-2"></b-icon>
+          </a>
+        </span>
       </div>
       <div class="text-center mt-4">
         <b-row
@@ -124,6 +161,7 @@
       header-bg-variant="success"
       header-text-variant="light"
       ok-title="등록하기"
+      cancel-title="취소하기"
       ok-variant="success"
       @ok="create()"
     >
@@ -148,8 +186,15 @@ import { VueEditor } from 'vue2-editor';
 import { EditorConfig } from '../../../config';
 import { NoticeBoardDto } from '@/dto';
 import { NOTICE_BOARD, CONST_NOTICE_BOARD } from '@/services/shared';
-import NoticeBoardService from '../../../services/notice-board.service';
 import toast from '../../../../resources/assets/js/services/toast.js';
+
+import {
+  ATTACHMENT_REASON_TYPE,
+  FileAttachmentDto,
+} from '../../../services/shared/file-upload';
+import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
+import NoticeBoardService from '../../../services/notice-board.service';
+import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
 
 @Component({
   name: 'NoticeBoardCreate',
@@ -164,9 +209,24 @@ export default class NoticeBoardCreate extends BaseComponent {
   private editorToolbar = EditorConfig;
   private startDate = new Date();
   private endDate = new Date();
+  private attachments = [];
 
   clearedOut() {
     this.noticeBoardCreateDto = new NoticeBoardDto();
+  }
+
+  async upload(files: FileList) {
+    const attaching = await FileUploadService.upload(
+      UPLOAD_TYPE.INQUIRY,
+      files,
+    );
+    this.attachments.push(
+      ...attaching.filter(
+        fileAttachment =>
+          fileAttachment.attachmentReasonType ===
+          ATTACHMENT_REASON_TYPE.SUCCESS,
+      ),
+    );
   }
 
   create() {
@@ -179,4 +239,9 @@ export default class NoticeBoardCreate extends BaseComponent {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.board-view-attatchments {
+  .attatchment-item {
+  }
+}
+</style>

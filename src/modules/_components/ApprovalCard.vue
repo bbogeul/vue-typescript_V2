@@ -23,7 +23,15 @@
                 <span v-else>
                   {{ name | stringTransformer }}
                 </span>
-                : {{ value }}
+                :
+                <div v-if="value[0].endpoint">
+                  <b-img-lazy
+                    :src="value[0].endpoint"
+                    :alt="value[0].originFilename"
+                    style="max-height:80px"
+                  ></b-img-lazy>
+                </div>
+                <span v-else>{{ value }} </span>
               </li>
             </ul>
           </div>

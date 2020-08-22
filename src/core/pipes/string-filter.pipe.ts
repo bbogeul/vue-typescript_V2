@@ -49,4 +49,7 @@ export const StringPipeTransformer = () =>
     if (value === 'refusalDesc') {
       return '거절 사유';
     }
+    if (value === 'logo') {
+      return '업체 로고';
+    }
   });

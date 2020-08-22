@@ -41,14 +41,28 @@
               <template v-if="reply.companyUserNo">
                 <div class="reply-user">
                   <span class="user-icon">
-                    <b-avatar size="4em"></b-avatar>
+                    <b-avatar
+                      size="4em"
+                      v-if="reply.company && reply.company.logo[0]"
+                      :src="reply.company.logo[0].endpoint"
+                      variant="light"
+                    ></b-avatar>
+                    <b-avatar size="4em" v-else></b-avatar>
                   </span>
                   <span class="user-name" v-if="reply.companyUser"
                     >{{ reply.companyUser.name }}
                   </span>
-                  <span class="user-company" v-if="reply.company">{{
-                    reply.company.nameKr
-                  }}</span>
+                  <span class="user-company" v-if="reply.company">
+                    <router-link
+                      :to="{
+                        name: 'CompanyDetail',
+                        params: {
+                          id: reply.company.no,
+                        },
+                      }"
+                      >{{ reply.company.nameKr }}
+                    </router-link>
+                  </span>
                 </div>
                 <div class="reply-area">
                   <div class="reply-content">

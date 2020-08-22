@@ -133,7 +133,6 @@ import { Pagination } from '@/common';
 
 import DeliverySpaceUpdate from './DeliverySpaceUpdate.vue';
 import DeliverySpaceDetailContractList from './DeliverySpaceDetailContractList.vue';
-import SectionTitle from '../../../modules/_components/SectionTitle.vue';
 import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
@@ -142,7 +141,6 @@ import toast from '../../../../resources/assets/js/services/toast.js';
     BaseCard,
     DeliverySpaceDetailContractList,
     DeliverySpaceUpdate,
-    SectionTitle,
   },
 })
 export default class DeliverySpaceList extends BaseComponent {
