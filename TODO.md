@@ -34,6 +34,7 @@
     - UPDATE CONTENTS [x]
     - CREATE [X]
     - DELETE [X]
+    - DETAIL : 로고이미지, 관리자 수정 오류
 17. COMPANY USER
     - UPDATE CONTENTS => 업체 사용자가 처리
     - UPDATE STATUS [x]

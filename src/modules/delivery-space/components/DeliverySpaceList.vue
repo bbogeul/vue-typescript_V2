@@ -42,6 +42,17 @@
         </b-btn-group>
       </b-row>
     </div>
+    <div class="table-top">
+      <div class="total-count">
+        <h5>
+          <span>TOTAL</span>
+          <strong class="text-primary">{{ deliverySpaceListCount }}</strong>
+        </h5>
+      </div>
+      <b-button variant="primary" v-b-modal.add_delivery_space
+        >지점 타입 추가</b-button
+      >
+    </div>
     <div v-if="!dataLoading">
       <table
         class="table table-hover table-sm table-responsive-sm table-bordered"
@@ -167,7 +178,7 @@
           </tr>
         </tbody>
       </table>
-      <div v-else class="empty-data">타입 정보 없음</div>
+      <div v-else class="empty-data border">타입 정보 없음</div>
       <b-pagination
         v-model="pagination.page"
         v-if="deliverySpaceListCount"
@@ -177,11 +188,13 @@
         @input="paginateSearch"
         class="mt-4 justify-content-center"
       ></b-pagination>
-      <div class="half-circle-spinner mt-5" v-if="dataLoading">
-        <div class="circle circle-1"></div>
-        <div class="circle circle-2"></div>
-      </div>
     </div>
+    <div class="half-circle-spinner mt-5" v-if="dataLoading">
+      <div class="circle circle-1"></div>
+      <div class="circle circle-2"></div>
+    </div>
+    <!-- 지점 추가 모달 -->
+    <DeliverySpaceCreate />
   </section>
 </template>
 <script lang="ts">
@@ -198,8 +211,13 @@ import { Pagination } from '@/common';
 import CompanyService from '../../../services/company.service';
 import DeliverSpaceService from '../../../services/delivery-space.service';
 
+import DeliverySpaceCreate from '../../company-district/components/DeliverySpaceCreate.vue';
+
 @Component({
   name: 'DeliverySpaceList',
+  components: {
+    DeliverySpaceCreate,
+  },
 })
 export default class DeliverySpaceList extends BaseComponent {
   private deliverySpaceList: DeliverySpaceDto[] = Array<DeliverySpaceDto>();
@@ -249,6 +267,12 @@ export default class DeliverySpaceList extends BaseComponent {
   created() {
     this.getCompanies();
     this.search();
+  }
+
+  mounted() {
+    this.$root.$on('delivery_space_create', () => {
+      this.search();
+    });
   }
 }
 </script>

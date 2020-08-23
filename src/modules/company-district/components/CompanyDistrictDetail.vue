@@ -60,7 +60,7 @@
                     </router-link>
                   </li>
                   <li>
-                    공용 시설 정보 :
+                    공통 시설 :
                     <b-badge
                       variant="info"
                       v-for="amenity in companyDistrictDto.amenities"
@@ -167,7 +167,7 @@
             type="text"
             v-model="addressData.address"
             class="form-control"
-            readonly
+            :readonly="addressData.address"
           />
           <!-- <input
             type="text"
@@ -181,7 +181,7 @@
           <label>공용 시설 정보</label>
           <b-form-checkbox-group
             id="common_amenity"
-            v-model="companyDistrictUpdateDto.amenityIds"
+            v-model="selectedAmenityIds"
             name="common_amenity"
           >
             <b-form-checkbox
@@ -245,6 +245,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
 
   private amenityList = [];
   private selectedAmenities: AmenityDto[] = [];
+  private selectedAmenityIds: number[] = [];
 
   private addressData = {
     address: '',
@@ -264,6 +265,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
   findDistrictInfo() {
     this.companyDistrictUpdateDto = this.companyDistrictDto;
     this.addressData.address = this.companyDistrictDto.address;
+    this.selectedAmenityIds = this.companyDistrictDto.amenities.map(v => v.no);
     this.findOne(this.$route.params.id);
     this.getAmenities();
   }
@@ -277,11 +279,15 @@ export default class CompanyDistrictDetail extends BaseComponent {
 
   // 지점 정보 수정
   updateDistrict() {
+    if (this.selectedAmenityIds) {
+      this.companyDistrictUpdateDto.amenityIds = this.selectedAmenityIds;
+    }
     CompanyDistrictService.update(
       this.$route.params.id,
       this.companyDistrictUpdateDto,
     ).subscribe(res => {
       if (res) {
+        toast.success('수정완료');
         this.findOne(this.$route.params.id);
       }
     });

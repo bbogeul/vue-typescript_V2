@@ -100,7 +100,7 @@
       <b-row>
         <b-col cols="12" md="4">
           <b-carousel
-            v-if="deliverySpaceDto.images"
+            v-if="deliverySpaceDto.images && deliverySpaceDto.images.length > 0"
             :interval="3000"
             controls
             indicators
@@ -221,6 +221,9 @@ export default class DeliverySpaceList extends BaseComponent {
   private deliverySpaceListCount = 0;
   private pagination = new Pagination();
 
+  private prevNo = null;
+  private nextNo = null;
+
   // 타입 공간 리스트
   findAll(isPagination?: boolean) {
     if (!isPagination) {
@@ -241,7 +244,7 @@ export default class DeliverySpaceList extends BaseComponent {
   }
 
   // 타입 상세 보기
-  findOne(typeNo) {
+  findOne(typeNo: number) {
     DeliverSpaceService.findOne(typeNo).subscribe(res => {
       if (res) {
         this.deliverySpaceDto = res.data;

@@ -1,44 +1,100 @@
 <template>
-  <b-modal id="add_delivery_space" size="xl" title="타입 추가" @cancel="clearOut()" @ok="create()">
+  <b-modal
+    id="add_delivery_space"
+    size="xl"
+    title="타입 추가"
+    @cancel="clearOut()"
+    @ok="create()"
+  >
     <b-form-row>
+      <b-col lg="3" class="mb-3" v-if="!this.$route.params.id">
+        <label>
+          업체명
+          <span class="red-text">*</span>
+        </label>
+        <select class="custom-select" @change="changeCompany($event)">
+          <option
+            v-for="company in companySelect"
+            :key="company.no"
+            :value="company.no"
+            >{{ company.nameKr }}</option
+          >
+        </select>
+      </b-col>
+      <b-col lg="3" class="mb-3" v-if="!this.$route.params.id">
+        <label>
+          지점명 {{ deliverySpaceCreateDto.companyDistrictNo }}
+          <span class="red-text">*</span>
+        </label>
+        <select
+          class="custom-select"
+          v-model="deliverySpaceCreateDto.companyDistrictNo"
+        >
+          <option value selected disabled>업체를 선택해주세요</option>
+          <option
+            v-for="district in districtSelect.items"
+            :key="district.no"
+            :value="district.no"
+            >{{ district.nameKr }}</option
+          >
+        </select>
+      </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           타입명
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.typeName"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.typeName"
+        ></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>건물명</label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.buildingName"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.buildingName"
+        ></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           평수
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.size"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.size"
+        ></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           공간 수
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="number" v-model="deliverySpaceCreateDto.quantity"></b-form-input>
+        <b-form-input
+          type="number"
+          v-model="deliverySpaceCreateDto.quantity"
+        ></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           보증금 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.deposit"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.deposit"
+        ></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           월 임대료 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.monthlyRentFee"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.monthlyRentFee"
+        ></b-form-input>
       </b-col>
 
       <b-col lg="3" class="mb-3">
@@ -46,7 +102,10 @@
           월 관리비 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input type="text" v-model="deliverySpaceCreateDto.monthlyUtilityFee"></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="deliverySpaceCreateDto.monthlyUtilityFee"
+        ></b-form-input>
       </b-col>
       <b-col lg="12" class="mb-3">
         <label>공간 옵션</label>
@@ -60,7 +119,8 @@
             :key="option.no"
             :value="option.no"
             @change="addDeliverySpaceOption(option.no)"
-          >{{ option.deliverySpaceOptionName }}</b-form-checkbox>
+            >{{ option.deliverySpaceOptionName }}</b-form-checkbox
+          >
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12" class="mb-3">
@@ -75,7 +135,8 @@
             :key="amenity.no"
             :value="amenity.no"
             @change="addAmenity(amenity.no)"
-          >{{ amenity.amenityName }}</b-form-checkbox>
+            >{{ amenity.amenityName }}</b-form-checkbox
+          >
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12">
@@ -89,7 +150,9 @@
             v-on:change="upload($event.target.files)"
             multiple
           />
-          <label class="custom-file-label" for="customFileLang">이미지 추가</label>
+          <label class="custom-file-label" for="customFileLang"
+            >이미지 추가</label
+          >
         </div>
         <div v-if="attachments && attachments.length > 0" class="mt-2">
           <b-form-row no-gutters>
@@ -99,7 +162,12 @@
               :key="attachment.originFileName"
               class="p-2"
             >
-              <b-img :src="attachment.endpoint" alt style="max-width:100%" class="border rounded" />
+              <b-img
+                :src="attachment.endpoint"
+                alt
+                style="max-width:100%"
+                class="border rounded"
+              />
             </b-col>
           </b-form-row>
         </div>
@@ -110,15 +178,19 @@
 <script lang="ts">
 import BaseComponent from '@/core/base.component';
 import {
+  AmenityDto,
+  CompanyDto,
+  CompanyDistrictDto,
   DeliverySpaceDto,
   DeliverSpaceCreateDto,
   DeliverySpaceListDto,
   DeliverySpaceOptionDto,
-  AmenityDto,
 } from '@/dto';
 import { Component, Prop } from 'vue-property-decorator';
 
 import AmenityService from '../../../services/amenity.service';
+import CompanyService from '../../../services/company.service';
+import CompanyDistrictService from '../../../services/company-district.service';
 import DeliverSpaceService from '../../../services/delivery-space.service';
 import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
 import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
@@ -141,6 +213,35 @@ export default class DeliverySpaceCreate extends BaseComponent {
     DeliverySpaceOptionDto
   >();
   private deliverySpaceOptionsIds: number[] = [];
+
+  private companySelect: CompanyDto[] = [];
+  private districtSelect: CompanyDistrictDto[] = [];
+  private companyDistrictDto = new CompanyDistrictDto();
+
+  // TODO: Create autocomplete box
+  getCompanies() {
+    CompanyService.findForSelect().subscribe(res => {
+      this.companySelect = res.data;
+    });
+  }
+
+  // change compay select
+  changeCompany(event) {
+    const companyNo = event.target.value;
+    this.getCompanyDistrict(companyNo);
+  }
+
+  // get company district select box
+  getCompanyDistrict(companyNo) {
+    this.companyDistrictDto.companyNo = companyNo;
+    CompanyDistrictService.findForSelect(this.companyDistrictDto).subscribe(
+      res => {
+        if (res) {
+          this.districtSelect = res.data;
+        }
+      },
+    );
+  }
 
   // add amenity array
   addAmenity(amenityId) {
@@ -172,17 +273,18 @@ export default class DeliverySpaceCreate extends BaseComponent {
 
   // 타입 생성
   create() {
-    this.deliverySpaceCreateDto.companyDistrictNo = parseInt(
-      this.$route.params.id,
-    );
+    if (this.$route.params.id) {
+      this.deliverySpaceCreateDto.companyDistrictNo = parseInt(
+        this.$route.params.id,
+      );
+    }
     this.deliverySpaceCreateDto.amenityIds = this.amenityIds;
     this.deliverySpaceCreateDto.deliverySpaceOptionIds = this.deliverySpaceOptionsIds;
     this.deliverySpaceCreateDto.images = this.attachments;
-    console.log(this.deliverySpaceCreateDto);
     DeliverSpaceService.create(this.deliverySpaceCreateDto).subscribe(res => {
       if (res) {
-        toast.success('추가완료');
         this.clearOut();
+        toast.success('추가완료');
         // 굳이 false보낼 필요는 없음
         this.$root.$emit('delivery_space_create', false);
       }
@@ -230,6 +332,7 @@ export default class DeliverySpaceCreate extends BaseComponent {
   created() {
     this.getSpaceOptions();
     this.getAmenities();
+    this.getCompanies();
   }
 }
 </script>

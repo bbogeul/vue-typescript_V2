@@ -1,6 +1,6 @@
 <template>
   <div v-if="companyUserListCount > 0">
-    <table class="table">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th scope="col">
@@ -25,6 +25,7 @@
           v-for="companyUser in companyUserList"
           :key="companyUser.no"
           @click="findOne(companyUser.no)"
+          style="cursor:pointer"
         >
           <th scope="row">
             {{ companyUser.no }}
@@ -106,7 +107,7 @@ export default class CompanyDetailCompanyUserList extends BaseComponent {
   }
 
   findOne(companyUserNo) {
-    this.$router.push(`/company/company-user-detail/${companyUserNo}`);
+    this.$router.push(`/company/company-user/${companyUserNo}`);
   }
 
   paginateSearch() {
