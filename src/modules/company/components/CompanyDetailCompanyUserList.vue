@@ -21,52 +21,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in companyUserList" :key="user.no">
+        <tr
+          v-for="companyUser in companyUserList"
+          :key="companyUser.no"
+          @click="findOne(companyUser.no)"
+        >
           <th scope="row">
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: {
-                  id: user.no,
-                },
-              }"
-              class="text-primary"
-            >
-              {{ user.no }}
-            </router-link>
+            {{ companyUser.no }}
           </th>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: {
-                  id: user.no,
-                },
-              }"
+            <strong
+              class="text-danger"
+              v-if="companyUser.authCode === 'ADMIN_COMPANY_USER'"
+              >M</strong
             >
-              <strong
-                class="text-danger"
-                v-if="user.authCode === 'ADMIN_COMPANY_USER'"
-                >M</strong
-              >
-              {{ user.name }}
-            </router-link>
+            {{ companyUser.name }}
           </td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.email }}</td>
+          <td>{{ companyUser.phone }}</td>
+          <td>{{ companyUser.email }}</td>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyUserDetail',
-                params: {
-                  id: user.no,
-                },
-              }"
+            <b-badge
+              :variant="getStatusColor(companyUser.companyUserStatus)"
+              class="badge-pill p-2 mr-2"
             >
-              <span class="badge badge-pill badge-warning p-2">
-                {{ user.companyUserStatus | enumTransformer }}
-              </span>
-            </router-link>
+              {{ companyUser.companyUserStatus | enumTransformer }}
+            </b-badge>
           </td>
         </tr>
       </tbody>
@@ -93,17 +72,24 @@ import CompanyUserService from '../../../services/company-user.service';
 import { Pagination } from '@/common';
 import { COMPANY_USER, CONST_COMPANY_USER } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
-  name: 'CompanyUserList',
+  name: 'CompanyDetailCompanyUserList',
 })
-export default class CompanyUserList extends BaseComponent {
+export default class CompanyDetailCompanyUserList extends BaseComponent {
   private pagination = new Pagination();
   private companyUserListDto = new CompanyUserListDto();
   private companyUserList: CompanyUserDto[] = [];
   private companyUserListCount = 0;
   private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
 
-  findUser(isPagination: boolean) {
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
+
+  search(isPagination?: boolean) {
     if (!isPagination) {
       this.pagination.page = 1;
     }
@@ -119,12 +105,16 @@ export default class CompanyUserList extends BaseComponent {
     });
   }
 
+  findOne(companyUserNo) {
+    this.$router.push(`/company/company-user-detail/${companyUserNo}`);
+  }
+
   paginateSearch() {
-    this.findUser(true);
+    this.search(true);
   }
 
   created() {
-    this.findUser(true);
+    this.search();
   }
 }
 </script>

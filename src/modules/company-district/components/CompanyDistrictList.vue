@@ -14,7 +14,7 @@
             v-model="companyDistrictSearchDto.no"
           ></b-form-input>
         </b-col>
-        <b-col sm="12" lg="1" class="mb-3">
+        <b-col sm="12" lg="2" class="mb-3">
           <label for="district_company">업체명</label>
           <select
             class="custom-select"
@@ -30,7 +30,7 @@
             >
           </select>
         </b-col>
-        <b-col sm="12" lg="3" class="mb-3">
+        <b-col sm="12" lg="2" class="mb-3">
           <label for="district_name_kr">지점명</label>
           <b-form-input
             type="text"
@@ -189,7 +189,7 @@
       pills
       :total-rows="companyDistrictListCount"
       :per-page="pagination.limit"
-      @input="search(true)"
+      @input="paginateSearch()"
       class="mt-4 justify-content-center"
     ></b-pagination>
     <div class="half-circle-spinner mt-5" v-if="dataLoading">
@@ -364,6 +364,11 @@ export default class CompanyDistrictList extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
+    if (this.$route.params.companyNo) {
+      this.companyDistrictSearchDto.companyNo = parseInt(
+        this.$route.params.companyNo,
+      );
+    }
     CompanyDistrictService.findAll(
       this.companyDistrictSearchDto,
       this.pagination,
@@ -372,6 +377,10 @@ export default class CompanyDistrictList extends BaseComponent {
       this.companyDistrictList = res.data.items;
       this.companyDistrictListCount = res.data.totalCount;
     });
+  }
+
+  paginateSearch() {
+    this.search(true);
   }
 
   clearOut() {

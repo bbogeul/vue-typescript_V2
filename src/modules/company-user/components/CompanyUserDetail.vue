@@ -1,73 +1,95 @@
 <template>
   <section>
-    <div
-      v-if="companyUser"
-      class="d-flex justify-content-between align-items-end mb-2"
+    <SectionTitle
+      v-if="companyUserDto && companyUserDto.name"
+      :title="`${companyUserDto.name} - 사용자 정보`"
+      divider
     >
-      <h3>{{ companyUser.name }} - 사용자 정보</h3>
-      <router-link
-        to="/company/company-user"
-        class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
-    </div>
+      <template v-slot:rightArea>
+        <router-link
+          to="/company/company-user"
+          class="btn btn-secondary text-center"
+          >목록으로</router-link
+        >
+      </template>
+    </SectionTitle>
     <div class="row d-flex align-items-stretch">
       <div class="col col-12 col-lg-6 my-3">
         <BaseCard title="사용자 정보">
           <template v-slot:head>
             <div>
-              <b-button variant="danger" v-b-modal.delete_user
+              <b-button variant="danger" v-b-modal.delete_company_user
                 >삭제하기</b-button
+              >
+              <b-button
+                variant="primary"
+                v-b-modal.update_company_user
+                @click="showUpdateModal()"
+                >수정하기</b-button
               >
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="companyUser">
+            <div v-if="companyUserDto">
               <ul>
                 <li>
                   사용자 ID :
-                  <b>{{ companyUser.no }}</b>
+                  <b>{{ companyUserDto.no }}</b>
                 </li>
                 <li>
                   사용자명 :
-                  <b>{{ companyUser.name }}</b>
+                  <b>{{ companyUserDto.name }}</b>
                 </li>
-                <li v-if="companyUser.company">
+                <li v-if="companyUserDto.company">
                   업체명 :
                   <router-link
                     :to="{
                       name: 'CompanyDetail',
                       params: {
-                        id: companyUser.company.no,
+                        id: companyUserDto.company.no,
                       },
                     }"
                   >
-                    <b>{{ companyUser.company.nameKr }}</b>
+                    <b>{{ companyUserDto.company.nameKr }}</b>
                   </router-link>
                 </li>
                 <li>
-                  휴대폰 번호 : {{ companyUser.phone | phoneTransformer }}
+                  휴대폰 번호 :
+                  <b>{{ companyUserDto.phone | phoneTransformer }} </b>
+                  <b-button
+                    size="sm"
+                    variant="info"
+                    pill
+                    v-b-modal.send_message
+                    class="mx-2 p-1"
+                  >
+                    <b-icon icon="envelope"></b-icon>
+                    <span class="d-none">문자전송</span>
+                  </b-button>
                 </li>
-                <li>이메일 : {{ companyUser.email }}</li>
+                <li>이메일 : {{ companyUserDto.email }}</li>
                 <li>
-                  관리자 등급 : {{ companyUser.authCode | enumTransformer }}
+                  관리자 등급 : {{ companyUserDto.authCode | enumTransformer }}
                 </li>
-                <li v-if="companyUser.createdAt">
-                  등록일 : {{ companyUser.createdAt | dateTransformer }}
+                <li v-if="companyUserDto.createdAt">
+                  등록일 : {{ companyUserDto.createdAt | dateTransformer }}
                 </li>
-                <li v-if="companyUser.companyUserStatus">
+                <li v-if="companyUserDto.companyUserStatus">
                   승인 상태 :
-                  <span class="badge badge-pill badge-warning p-2 mr-2">
-                    {{ companyUser.companyUserStatus | enumTransformer }}
-                  </span>
-                  <span v-if="companyUser.updatedAt" class="d-inline-block"
-                    >({{ companyUser.updatedAt | dateTransformer }})</span
+                  <b-badge
+                    :variant="getStatusColor(companyUserDto.companyUserStatus)"
+                    class="badge-pill p-2 mr-2"
+                  >
+                    {{ companyUserDto.companyUserStatus | enumTransformer }}
+                  </b-badge>
+                  <span v-if="companyUserDto.updatedAt" class="d-inline-block"
+                    >({{ companyUserDto.updatedAt | dateTransformer }})</span
                   >
                 </li>
               </ul>
             </div>
             <ApprovalCard
-              :data="companyUser"
+              :data="companyUserDto"
               :dto="companyUserUpdateRefusalDto"
               :reasonDto="companyUserUpdateRefusalReasonDto"
               status="companyUserStatus"
@@ -79,8 +101,9 @@
         </BaseCard>
       </div>
     </div>
+    <!-- 사용자 삭제 모달 -->
     <b-modal
-      id="delete_user"
+      id="delete_company_user"
       title="사용자 삭제"
       header-bg-variant="danger"
       header-text-variant="light"
@@ -107,13 +130,40 @@
         </div>
       </div>
     </b-modal>
-    <!-- <b-modal
-      id="company-user-info"
+    <!-- 사용자 수정 모달 -->
+    <b-modal
+      id="update_company_user"
       title="사용자 정보 수정"
-      @ok="updateUserInfo()"
+      ok-title="수정"
+      cancel-title="취소"
+      @ok="updateCompanyUser()"
     >
-      <div>
-        <div class="col-12 col-md-6">
+      <b-form-row>
+        <b-col cols="12" lg="6">
+          <b-form-group label="사용자명">
+            <b-form-input
+              v-model="companyUserUpdateDto.name"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" lg="6">
+          <b-form-group label="휴대폰 번호">
+            <b-form-input
+              v-model="companyUserUpdateDto.phone"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" lg="6">
+          <b-form-group label="이메일">
+            <b-form-input
+              v-model="companyUserUpdateDto.email"
+              disabled
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" lg="6">
           <label>관리자 등급</label>
           <select class="custom-select" v-model="companyUserUpdateDto.authCode">
             <option
@@ -123,9 +173,30 @@
               >{{ role | enumTransformer }}</option
             >
           </select>
-        </div>
-      </div>
-    </b-modal> -->
+        </b-col>
+      </b-form-row>
+    </b-modal>
+    <!-- 문자 전송 모달 -->
+    <b-modal
+      v-if="companyUserDto"
+      id="send_message"
+      ok-title="전송"
+      cancel-title="취소"
+      :title="`${companyUserDto.name} 사용자에게 문자하기`"
+    >
+      <p class="mb-2">
+        휴대폰 번호 :
+        <b class="text-primary">{{
+          companyUserDto.phone | phoneTransformer
+        }}</b>
+      </p>
+      <b-form-textarea
+        id="message"
+        placeholder="메세지를 입력해주세요.."
+        rows="3"
+        max-rows="6"
+      ></b-form-textarea>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
@@ -149,6 +220,8 @@ import {
   CONST_COMPANY_USER,
 } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'CompanyUserDetail',
   components: {
@@ -157,34 +230,44 @@ import {
   },
 })
 export default class CompanyUserDetail extends BaseComponent {
-  private companyUser = new CompanyUserDto(BaseUser);
+  private companyUserDto = new CompanyUserDto(BaseUser);
   private companyUserUpdateDto = new CompanyUserUpdateDto();
   private companyUserUpdateRefusalDto = new CompanyUserUpdateRefusalDto();
   private companyUserUpdateRefusalReasonDto = (this.companyUserUpdateRefusalDto.refusalReasons = new CompanyUserUpdateRefusalReasonDto());
   private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
   private deleteUserName = '';
 
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
+
   findOne(id) {
     CompanyUserService.findOne(id).subscribe(res => {
-      this.companyUser = res.data;
+      this.companyUserDto = res.data;
     });
   }
 
-  // 사용자 정보 수정
-  // updateUserInfo() {
-  //   CompanyUserService.update(
-  //     this.$route.params.id,
-  //     this.companyUserUpdateDto,
-  //   ).subscribe(res => {
-  //     if (res) {
-  //       this.findOne(this.$route.params.id);
-  //     }
-  //   });
-  // }
+  showUpdateModal() {
+    this.companyUserUpdateDto = this.companyUserDto;
+    this.findOne(this.$route.params.id);
+  }
+
+  //사용자 정보 수정
+  updateCompanyUser() {
+    CompanyUserService.update(
+      this.$route.params.id,
+      this.companyUserUpdateDto,
+    ).subscribe(res => {
+      if (res) {
+        toast.success('수정완료');
+        this.findOne(this.$route.params.id);
+      }
+    });
+  }
 
   // 삭제
   deleteCompanyUser() {
-    if (this.deleteUserName === this.companyUser.name) {
+    if (this.deleteUserName === this.companyUserDto.name) {
       CompanyUserService.deleteCompanyUser(this.$route.params.id).subscribe(
         res => {
           if (res) {

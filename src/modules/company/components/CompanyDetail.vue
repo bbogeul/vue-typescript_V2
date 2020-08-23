@@ -1,16 +1,16 @@
 <template>
   <section>
-    <div
-      v-if="company"
-      class="d-flex justify-content-between align-items-end mb-2"
+    <SectionTitle
+      v-if="companyDto && companyDto.nameKr"
+      :title="`${companyDto.nameKr} -업체 정보`"
+      divider
     >
-      <h3 v-if="company.nameKr" class="mb-0">
-        {{ company.nameKr }} - 업체 정보
-      </h3>
-      <router-link to="/company" class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
-    </div>
+      <template v-slot:rightArea>
+        <router-link to="/company" class="btn btn-secondary text-center"
+          >목록으로</router-link
+        >
+      </template>
+    </SectionTitle>
     <div class="row d-flex align-items-stretch">
       <div class="my-3 col-12 col-lg-6">
         <BaseCard title="업체 정보">
@@ -22,81 +22,91 @@
               <b-button
                 variant="primary"
                 v-b-modal.company_info
-                @click="findCompanyInfo()"
-                v-if="company.companyStatus === 'APPROVAL'"
+                @click="showUpdateModal()"
+                v-if="companyDto.companyStatus === 'APPROVAL'"
                 >수정하기</b-button
               >
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="company">
-              <div v-if="company.logo && company.logo.length > 0">
-                <div v-for="logo in company.logo" :key="logo.endpoint">
-                  <img
+            <div v-if="companyDto">
+              <div v-if="companyDto.logo && companyDto.logo.length > 0">
+                <div v-for="logo in companyDto.logo" :key="logo.endpoint">
+                  <b-img-lazy
                     :src="logo.endpoint"
                     class="rounded mx-auto d-block company-logo"
+                    style="max-height:80px"
                   />
                 </div>
               </div>
               <ul>
-                <li v-if="company.no">
+                <li v-if="companyDto.no">
                   업체 ID :
-                  <b>{{ company.no }}</b>
+                  <b>{{ companyDto.no }}</b>
                 </li>
-                <li v-if="company.nameKr">
+                <li v-if="companyDto.nameKr">
                   업체명 :
-                  <b>{{ company.nameKr }}</b>
-                  <span v-if="company.nameEng">({{ company.nameEng }})</span>
+                  <b>{{ companyDto.nameKr }}</b>
+                  <span v-if="companyDto.nameEng"
+                    >({{ companyDto.nameEng }})</span
+                  >
                 </li>
-                <li v-if="company.businessNo">
+                <li v-if="companyDto.businessNo">
                   사업자 번호 :
-                  <b>{{ company.businessNo }}</b>
+                  <b>{{ companyDto.businessNo }}</b>
                 </li>
-                <li v-if="company.ceoKr">
+                <li v-if="companyDto.ceoKr">
                   대표명 :
-                  <b>{{ company.ceoKr }}</b>
-                  <span v-if="company.ceoEng">({{ company.ceoEng }})</span>
+                  <b>{{ companyDto.ceoKr }}</b>
+                  <span v-if="companyDto.ceoEng"
+                    >({{ companyDto.ceoEng }})</span
+                  >
                 </li>
-                <li v-if="company.phone">
-                  전화번호 : {{ company.phone | phoneTransformer }}
+                <li v-if="companyDto.phone">
+                  전화번호 : {{ companyDto.phone | phoneTransformer }}
                 </li>
-                <li v-if="company.email">
+                <li v-if="companyDto.email">
                   이메일 :
 
                   <a
                     :href="
-                      `https://mail.google.com/mail/?view=cm&fs=1&to=${company.email}`
+                      `https://mail.google.com/mail/?view=cm&fs=1&to=${companyDto.email}`
                     "
                     target="_blank"
-                    >{{ company.email }}
+                    >{{ companyDto.email }}
                   </a>
                 </li>
-                <li v-if="company.fax">
-                  팩스 : {{ company.fax | phoneTransformer }}
+                <li v-if="companyDto.fax">
+                  팩스 : {{ companyDto.fax | phoneTransformer }}
                 </li>
-                <li v-if="company.address">주소 : {{ company.address }}</li>
-                <li v-if="company.website">
+                <li v-if="companyDto.address">
+                  주소 : {{ companyDto.address }}
+                </li>
+                <li v-if="companyDto.website">
                   웹사이트 :
-                  <a :href="company.website" target="_blank">
-                    {{ company.website }}
+                  <a :href="companyDto.website" target="_blank">
+                    {{ companyDto.website }}
                   </a>
                 </li>
-                <li v-if="company.createdAt">
-                  등록일 : {{ company.createdAt | dateTransformer }}
+                <li v-if="companyDto.createdAt">
+                  등록일 : {{ companyDto.createdAt | dateTransformer }}
                 </li>
-                <li v-if="company.createdAt">
+                <li v-if="companyDto.createdAt">
                   승인 상태 :
-                  <span class="badge badge-pill badge-warning p-2 mr-2">{{
-                    company.companyStatus | enumTransformer
-                  }}</span>
-                  <span v-if="company.updatedAt" class="d-inline-block"
-                    >({{ company.updatedAt | dateTransformer }})</span
+                  <b-badge
+                    :variant="getStatusColor(companyDto.companyStatus)"
+                    class="badge-pill p-2 mr-2"
+                  >
+                    {{ companyDto.companyStatus | enumTransformer }}
+                  </b-badge>
+                  <span v-if="companyDto.updatedAt" class="d-inline-block"
+                    >({{ companyDto.updatedAt | dateTransformer }})</span
                   >
                 </li>
               </ul>
             </div>
             <ApprovalCard
-              :data="company"
+              :data="companyDto"
               :dto="companyUpdateRefusalDto"
               :reasonDto="companyUpdateRefusalReasonDto"
               status="companyStatus"
@@ -107,6 +117,7 @@
           </template>
         </BaseCard>
       </div>
+      <!-- TODO: 관리자 처음 추가시 에러 -->
       <div class="my-3 col-12 col-lg-6" v-if="adminList">
         <BaseCard title="관리자 정보">
           <template v-slot:head>
@@ -120,24 +131,24 @@
             </div>
           </template>
           <template v-slot:body>
-            <div v-if="company.admin">
+            <div v-if="companyDto.admin">
               <ul>
                 <li>
                   관리자 ID:
                   <span>
-                    <b>{{ company.admin.no }}</b>
+                    <b>{{ companyDto.admin.no }}</b>
                   </span>
                 </li>
                 <li>
                   관리자 이름:
                   <span>
-                    <b>{{ company.admin.name }}</b>
+                    <b>{{ companyDto.admin.name }}</b>
                   </span>
                 </li>
                 <li>
                   관리자 휴대폰번호:
                   <span>
-                    <b>{{ company.admin.phone }}</b>
+                    <b>{{ companyDto.admin.phone }}</b>
                   </span>
                 </li>
               </ul>
@@ -146,21 +157,24 @@
           </template>
         </BaseCard>
       </div>
-      <div class="my-3 col-12 col-lg-6" v-if="company">
-        <BaseCard title="지점 정보">
-          <template v-slot:head></template>
-          <template v-slot:body>
-            <div>
-              <CompanyDistrictList />
-            </div>
+      <div class="my-3 col-12 col-lg-6" v-if="companyDto">
+        <BaseCard title="업체 지점 정보" no-body>
+          <template v-slot:head>
+            <b-button variant="outline-info" @click="findAllDistrict()">
+              전체보기
+            </b-button>
           </template>
+          <CompanyDetailDistrictList />
         </BaseCard>
       </div>
-      <div class="my-3 col-12 col-lg-6" v-if="company">
-        <BaseCard title="업체 사용자 정보">
-          <template v-slot:body>
-            <CompanyUserList />
+      <div class="my-3 col-12 col-lg-6" v-if="companyDto">
+        <BaseCard title="업체 사용자 정보" no-body>
+          <template v-slot:head>
+            <b-button variant="outline-info" @click="findAllCompanyUser()">
+              전체보기
+            </b-button>
           </template>
+          <CompanyDetailCompanyUserList />
         </BaseCard>
       </div>
     </div>
@@ -242,19 +256,21 @@
       @ok="updateCompany()"
       @cancel="cancelSelection()"
     >
-      <div v-if="company.logo && company.logo.length > 0 && !logoChanged">
-        <div v-for="logo in company.logo" :key="logo.endpoint">
-          <img
+      <div v-if="companyDto.logo && companyDto.logo.length > 0 && !logoChanged">
+        <div v-for="logo in companyDto.logo" :key="logo.endpoint">
+          <b-img-lazy
             :src="logo.endpoint"
             class="rounded mx-auto d-block company-logo"
+            style="max-height:80px"
           />
         </div>
       </div>
       <div v-if="newLogo.length > 0 && logoChanged">
         <div v-for="logo in newLogo" :key="logo.endpoint">
-          <img
+          <b-img-lazy
             :src="logo.endpoint"
             class="rounded mx-auto d-block company-logo"
+            style="max-height:80px"
           />
         </div>
       </div>
@@ -371,8 +387,8 @@ import {
 import { Pagination, YN, CONST_YN } from '../../../common';
 import { BaseUser } from '../../../services/shared/auth';
 import BaseCard from '../../_components/BaseCard.vue';
-import CompanyDistrictList from './CompanyDistrictList.vue';
-import CompanyUserList from './CompanyUserList.vue';
+import CompanyDetailDistrictList from './CompanyDetailDistrictList.vue';
+import CompanyDetailCompanyUserList from './CompanyDetailCompanyUserList.vue';
 
 import AdminService from '../../../services/admin.service';
 import CompanyService from '../../../services/company.service';
@@ -385,14 +401,15 @@ import { FileAttachmentDto } from '@/services/shared/file-upload';
 import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
 import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
 import { ATTACHMENT_REASON_TYPE } from '@/services/shared/file-upload';
+import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({
   name: 'CompanyDetail',
   components: {
     ApprovalCard,
     BaseCard,
-    CompanyDistrictList,
-    CompanyUserList,
+    CompanyDetailDistrictList,
+    CompanyDetailCompanyUserList,
   },
 })
 export default class CompanyDetail extends BaseComponent {
@@ -401,7 +418,7 @@ export default class CompanyDetail extends BaseComponent {
   private adminListCount = 0;
   private approvalStatusSelect: APPROVAL_STATUS[] = [...CONST_APPROVAL_STATUS];
 
-  private company = new CompanyDto();
+  private companyDto = new CompanyDto();
   private companyUpdateDto = new CompanyUpdateDto();
   private companyUpdateRefusalDto = new CompanyUpdateRefusalDto();
   private companyUpdateRefusalReasonDto = (this.companyUpdateRefusalDto.refusalReasons = new CompanyUpdateRefusalReasonDto());
@@ -411,10 +428,15 @@ export default class CompanyDetail extends BaseComponent {
   private logoChanged = false;
   private deleteCompanyName = '';
 
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
+
   findOne(id) {
     // find founder consult detail
     CompanyService.findOne(id).subscribe(res => {
-      this.company = res.data;
+      this.companyDto = res.data;
     });
   }
 
@@ -429,8 +451,28 @@ export default class CompanyDetail extends BaseComponent {
     });
   }
 
-  findCompanyInfo() {
-    this.companyUpdateDto = this.company;
+  // 업체 지점 전체 보기
+  findAllDistrict() {
+    this.$router.push({
+      name: 'CompanyDistrictList',
+      params: {
+        companyNo: this.$route.params.id,
+      },
+    });
+  }
+
+  // 업체 사용자 전체 보기
+  findAllCompanyUser() {
+    this.$router.push({
+      name: 'CompanyUserList',
+      params: {
+        companyNo: this.$route.params.id,
+      },
+    });
+  }
+
+  showUpdateModal() {
+    this.companyUpdateDto = this.companyDto;
     this.findOne(this.$route.params.id);
   }
 
@@ -453,7 +495,7 @@ export default class CompanyDetail extends BaseComponent {
 
   // 삭제
   deleteCompany() {
-    if (this.deleteCompanyName === this.company.nameKr) {
+    if (this.deleteCompanyName === this.companyDto.nameKr) {
       CompanyService.deleteCompany(this.$route.params.id).subscribe(res => {
         if (res) {
           this.$router.push('/company');
@@ -523,8 +565,8 @@ export default class CompanyDetail extends BaseComponent {
   }
 
   created() {
-    const companyId = this.$route.params.id;
-    this.findOne(companyId);
+    const id = this.$route.params.id;
+    this.findOne(id);
   }
 }
 </script>

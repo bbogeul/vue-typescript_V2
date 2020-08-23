@@ -1,6 +1,6 @@
 <template>
   <section>
-    <SectionTitle title="지점 타입" divider> </SectionTitle>
+    <SectionTitle title="지점 타입 관리" divider> </SectionTitle>
     <div class="search-box my-4" v-on:keyup.enter="search()">
       <b-form-row>
         <b-col cols="6" md="2" class="mb-3">
@@ -42,9 +42,10 @@
         </b-btn-group>
       </b-row>
     </div>
-    <div v-if="deliverySpaceListCount">
+    <div v-if="!dataLoading">
       <table
         class="table table-hover table-sm table-responsive-sm table-bordered"
+        v-if="deliverySpaceListCount"
       >
         <thead>
           <tr>
@@ -166,6 +167,7 @@
           </tr>
         </tbody>
       </table>
+      <div v-else class="empty-data">타입 정보 없음</div>
       <b-pagination
         v-model="pagination.page"
         v-if="deliverySpaceListCount"
@@ -175,8 +177,11 @@
         @input="paginateSearch"
         class="mt-4 justify-content-center"
       ></b-pagination>
+      <div class="half-circle-spinner mt-5" v-if="dataLoading">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+      </div>
     </div>
-    <div v-else class="empty-data">타입 정보 없음</div>
   </section>
 </template>
 <script lang="ts">
@@ -204,6 +209,7 @@ export default class DeliverySpaceList extends BaseComponent {
   private pagination = new Pagination();
 
   private companySelect: CompanyDto[] = Array<CompanyDto>();
+  private dataLoading = false;
 
   // 업체 셀렉트 박스
   getCompanies() {
@@ -214,6 +220,7 @@ export default class DeliverySpaceList extends BaseComponent {
 
   // 타입 공간 리스트
   search(isPagination?: boolean) {
+    this.dataLoading = true;
     if (!isPagination) {
       this.pagination.page = 1;
     }
@@ -223,7 +230,7 @@ export default class DeliverySpaceList extends BaseComponent {
       this.deliverySpaceSearchDto,
       this.pagination,
     ).subscribe(res => {
-      console.log(res);
+      this.dataLoading = false;
       this.deliverySpaceList = res.data.items;
       this.deliverySpaceListCount = res.data.totalCount;
     });

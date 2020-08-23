@@ -18,47 +18,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="district in companyDistrictList" :key="district.no">
+        <tr
+          v-for="district in companyDistrictList"
+          :key="district.no"
+          @click="findOne(district.no)"
+          style="cursor:pointer"
+        >
           <th scope="row">
-            <router-link
-              :to="{
-                name: 'CompanyDistrictDetail',
-                params: {
-                  id: district.no,
-                },
-              }"
-              class="text-primary"
-            >
-              {{ district.no }}
-            </router-link>
+            {{ district.no }}
           </th>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyDistrictDetail',
-                params: {
-                  id: district.no,
-                },
-              }"
-            >
-              {{ district.nameKr }}
-            </router-link>
+            {{ district.nameKr }}
           </td>
           <td>{{ district.address }}</td>
           <td>
-            <router-link
-              :to="{
-                name: 'CompanyDistrictDetail',
-                params: {
-                  id: district.no,
-                },
-              }"
-              class="text-primary"
+            <b-badge
+              :variant="getStatusColor(district.companyDistrictStatus)"
+              class="badge-pill p-2 mr-2"
             >
-              <span class="badge badge-pill badge-warning p-2">
-                {{ district.companyDistrictStatus | enumTransformer }}
-              </span>
-            </router-link>
+              {{ district.companyDistrictStatus | enumTransformer }}
+            </b-badge>
           </td>
         </tr>
       </tbody>
@@ -84,22 +63,30 @@ import { CompanyDistrictListDto, CompanyDistrictDto } from '../../../dto';
 import CompanyDistrictService from '../../../services/company-district.service';
 import { Pagination } from '@/common';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
-  name: 'CompanyDistrictList',
+  name: 'CompanyDetailDistrictList',
 })
-export default class CompanyDistrictList extends BaseComponent {
+export default class CompanyDetailDistrictList extends BaseComponent {
   private pagination = new Pagination();
   private companyDistrictListDto = new CompanyDistrictListDto();
   private companyDistrictList: CompanyDistrictDto[] = [];
   private companyDistrictListCount = 0;
 
-  findDistrict(isPagination: boolean) {
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
+
+  search(isPagination?: boolean) {
     if (!isPagination) {
       this.pagination.page = 1;
     }
     this.pagination.limit = 5;
 
     this.companyDistrictListDto.companyNo = parseInt(this.$route.params.id);
+
     CompanyDistrictService.findAll(
       this.companyDistrictListDto,
       this.pagination,
@@ -109,12 +96,16 @@ export default class CompanyDistrictList extends BaseComponent {
     });
   }
 
+  findOne(districtNo) {
+    this.$router.push(`/company/company-district/${districtNo}`);
+  }
+
   paginateSearch() {
-    this.findDistrict(true);
+    this.search(true);
   }
 
   created() {
-    this.findDistrict(true);
+    this.search();
   }
 }
 </script>

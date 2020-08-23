@@ -60,7 +60,7 @@ const componentsRouter: RouteConfig[] = [
       },
       {
         path: '/company/company-user',
-        name: '업체 사용자 관리',
+        name: 'CompanyUserList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/company-user/components/CompanyUserList.vue'
@@ -89,7 +89,7 @@ const componentsRouter: RouteConfig[] = [
       },
       {
         path: '/company/company-district',
-        name: '업체 지점 관리',
+        name: 'CompanyDistrictList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/company-district/components/CompanyDistrictList.vue'

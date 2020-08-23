@@ -1,12 +1,9 @@
 <template>
   <section>
-    <div class="title pb-2 mb-2">
-      <h3>업체 사용자 관리</h3>
-    </div>
-    <div class="divider"></div>
-    <div class="serach-box my-4" v-on:keyup.enter="search()">
+    <SectionTitle title="업체 사용자 관리" divider> </SectionTitle>
+    <div class="search-box my-4" v-on:keyup.enter="search()">
       <b-form-row>
-        <b-col cols="6" md="2" class="mb-2">
+        <b-col cols="6" md="1" class="mb-2">
           <label for="username">사용자 ID</label>
           <input
             type="text"
@@ -16,7 +13,7 @@
           />
         </b-col>
         <b-col cols="6" md="2" class="mb-3">
-          <label>업체 선택</label>
+          <label>업체명</label>
           <select
             class="custom-select"
             v-model="companyUserSearchDto.companyNo"
@@ -31,15 +28,15 @@
           </select>
         </b-col>
         <b-col cols="6" md="2" class="mb-3">
-          <label>사용자명</label>
+          <label>이름</label>
           <input
             type="text"
             class="form-control"
             v-model="companyUserSearchDto.name"
           />
         </b-col>
-        <b-col cols="6" md="3" class="mb-3">
-          <label>사용자 전화번호</label>
+        <b-col cols="6" md="2" class="mb-3">
+          <label>휴대폰 번호</label>
           <input
             type="text"
             class="form-control"
@@ -47,7 +44,7 @@
           />
         </b-col>
         <b-col cols="6" md="3" class="mb-3">
-          <label>사용자 이메일</label>
+          <label>이메일</label>
           <input
             type="text"
             class="form-control"
@@ -55,7 +52,7 @@
           />
         </b-col>
         <b-col cols="6" md="2" class="mb-3">
-          <label>사용자 승인 상태</label>
+          <label>승인 상태</label>
           <select
             class="custom-select"
             v-model="companyUserSearchDto.companyUserStatus"
@@ -91,124 +88,126 @@
         >업체 사용자 추가</b-button
       >
     </div>
-    <table
-      class="table table-bordered table-hover table-sm text-center"
-      v-if="!dataLoading"
-    >
-      <thead>
-        <tr>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.no }"
-          >
-            ID
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: companyUserSearchDto.companyNo,
-            }"
-          >
-            COMPANY
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: companyUserSearchDto.name,
-            }"
-          >
-            NAME
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.phone }"
-          >
-            PHONE
-          </th>
-          <th
-            scope="col"
-            v-bind:class="{ highlighted: companyUserSearchDto.email }"
-          >
-            EMAIL
-          </th>
-          <th scope="col">CREATED</th>
-          <th
-            scope="col"
-            v-bind:class="{
-              highlighted: companyUserSearchDto.companyUserStatus,
-            }"
-          >
-            STATUS
-          </th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-
-      <tbody v-if="companyUserListTotalCount">
-        <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
-          <th scope="row">{{ companyUser.no }}</th>
-          <td>{{ companyUser.company.nameKr }}</td>
-          <td>
-            <strong
-              class="text-danger"
-              v-if="companyUser.authCode === companyUserAdminRole[0]"
-              >M</strong
+    <div v-if="!dataLoading">
+      <table
+        class="table table-bordered table-hover table-sm text-center"
+        v-if="companyUserListTotalCount"
+      >
+        <thead>
+          <tr>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: companyUserSearchDto.no }"
             >
-            {{ companyUser.name }}
-          </td>
-          <td>{{ companyUser.phone | phoneTransformer }}</td>
-          <td>{{ companyUser.email }}</td>
-          <td>
-            {{ companyUser.createdAt | dateTransformer }}
-          </td>
-          <td>
-            <span class="badge badge-pill badge-warning p-2">{{
-              companyUser.codeManagement.value
-            }}</span>
-          </td>
-          <td>
-            <router-link
-              v-if="companyUser.no"
-              class="btn btn-sm btn-secondary"
-              :to="{
-                name: 'CompanyUserDetail',
-                params: {
-                  id: companyUser.no,
-                },
+              ID
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: companyUserSearchDto.companyNo,
               }"
-              >상세보기</router-link
             >
-          </td>
-        </tr>
-      </tbody>
-      <tbody v-else>
-        <tr>
-          <td colspan="8" class="empty-data">검색결과가 없습니다.</td>
-        </tr>
-      </tbody>
-    </table>
+              업체명
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: companyUserSearchDto.name,
+              }"
+            >
+              이름
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: companyUserSearchDto.phone }"
+            >
+              휴대폰 번호
+            </th>
+            <th
+              scope="col"
+              v-bind:class="{ highlighted: companyUserSearchDto.email }"
+            >
+              이메일
+            </th>
+            <th scope="col">등록일</th>
+            <th
+              scope="col"
+              v-bind:class="{
+                highlighted: companyUserSearchDto.companyUserStatus,
+              }"
+            >
+              승인 상태
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
+            <th scope="row">{{ companyUser.no }}</th>
+            <td>{{ companyUser.company.nameKr }}</td>
+            <td>
+              <strong
+                class="text-danger"
+                v-if="companyUser.authCode === companyUserAdminRole[0]"
+                >M</strong
+              >
+              {{ companyUser.name }}
+            </td>
+            <td>{{ companyUser.phone | phoneTransformer }}</td>
+            <td>{{ companyUser.email }}</td>
+            <td>
+              {{ companyUser.createdAt | dateTransformer }}
+            </td>
+            <td>
+              <b-badge
+                :variant="getStatusColor(companyUser.companyUserStatus)"
+                class="badge-pill p-2 mr-2"
+              >
+                {{ companyUser.codeManagement.value }}
+              </b-badge>
+            </td>
+            <td>
+              <router-link
+                v-if="companyUser.no"
+                class="btn btn-sm btn-secondary"
+                :to="{
+                  name: 'CompanyUserDetail',
+                  params: {
+                    id: companyUser.no,
+                  },
+                }"
+                >상세보기</router-link
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="empty-data border" v-else>검색결과가 없습니다.</div>
+    </div>
     <b-pagination
       v-model="pagination.page"
       v-if="companyUserListTotalCount"
       pills
       :total-rows="companyUserListTotalCount"
       :per-page="pagination.limit"
-      @input="paginateSearch"
+      @input="paginateSearch()"
       class="mt-4 justify-content-center"
     ></b-pagination>
     <div class="half-circle-spinner mt-5" v-if="dataLoading">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
+    <!--사용자 추가 모달 -->
     <b-modal
       id="add_company_user"
-      title="업체 사용자 추가하기"
-      size="xl"
+      title="업체 사용자 추가"
+      ok-title="추가"
+      cancel-title="취소"
       @ok="createCompanyUser()"
     >
       <div class="form-row">
         <div class="col-12 col-md-6">
-          <label>사용자 이름</label>
+          <label>사용자명 <span class="red-text">*</span></label>
           <input
             type="text"
             v-model="companyUserCreateDto.name"
@@ -216,7 +215,7 @@
           />
         </div>
         <div class="col-12 col-md-6">
-          <label>사용자 전회번호</label>
+          <label>휴대폰 번호 <span class="red-text">*</span></label>
           <input
             type="text"
             v-model="companyUserCreateDto.phone"
@@ -226,7 +225,7 @@
       </div>
       <div class="form-row mt-3">
         <div class="col-12 col-md-6">
-          <label for="password">비밀번호</label>
+          <label for="password">비밀번호 <span class="red-text">*</span></label>
           <input
             type="password"
             class="form-control"
@@ -234,7 +233,9 @@
           />
         </div>
         <div class="col-12 col-md-6">
-          <label for="password">비밀번호 확인</label>
+          <label for="password"
+            >비밀번호 확인 <span class="red-text">*</span></label
+          >
           <input
             type="password"
             class="form-control"
@@ -244,7 +245,7 @@
       </div>
       <div class="form-row mt-3">
         <div class="col-12 col-md-6">
-          <label>이메일</label>
+          <label>이메일 <span class="red-text">*</span></label>
           <input
             type="text"
             v-model="companyUserCreateDto.email"
@@ -252,8 +253,7 @@
           />
         </div>
         <div class="col-12 col-md-6">
-          <label for></label>
-          <label>업체 선택</label>
+          <label>업체명 <span class="red-text">*</span></label>
           <select
             class="custom-select"
             v-model="companyUserCreateDto.companyNo"
@@ -269,7 +269,18 @@
       </div>
       <div class="form-row mt-3">
         <div class="col-12 col-md-6">
-          <label>사용자 승인 상태</label>
+          <label>관리자 등급 <span class="red-text">*</span></label>
+          <select class="custom-select" v-model="companyUserCreateDto.authCode">
+            <option
+              v-for="role in companyUserAdminRole"
+              :key="role"
+              :value="role"
+              >{{ role | enumTransformer }}</option
+            >
+          </select>
+        </div>
+        <div class="col-12 col-md-6">
+          <label>승인 상태 <span class="red-text">*</span></label>
           <select
             class="custom-select"
             v-model="companyUserCreateDto.companyUserStatus"
@@ -280,17 +291,6 @@
               :key="status"
               :value="status"
               >{{ status | enumTransformer }}</option
-            >
-          </select>
-        </div>
-        <div class="col-12 col-md-6">
-          <label>관리자 등급</label>
-          <select class="custom-select" v-model="companyUserCreateDto.authCode">
-            <option
-              v-for="role in companyUserAdminRole"
-              :key="role"
-              :value="role"
-              >{{ role | enumTransformer }}</option
             >
           </select>
         </div>
@@ -313,6 +313,8 @@ import {
   CONST_COMPANY_USER,
 } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'CompanyUserList',
 })
@@ -327,6 +329,11 @@ export default class Company extends BaseComponent {
   private companyUserAdminRole: COMPANY_USER[] = [...CONST_COMPANY_USER];
   private totalPage = null;
   private dataLoading = false;
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   // TODO: Create autocomplete box
   getCompanies() {
@@ -354,6 +361,11 @@ export default class Company extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
+    if (this.$route.params.companyNo) {
+      this.companyUserSearchDto.companyNo = parseInt(
+        this.$route.params.companyNo,
+      );
+    }
     CompanyUserService.findAll(
       this.companyUserSearchDto,
       this.pagination,
@@ -371,8 +383,9 @@ export default class Company extends BaseComponent {
   createCompanyUser() {
     CompanyUserService.createCompanyUser(this.companyUserCreateDto).subscribe(
       res => {
-        this.search();
-        this.getCompanies();
+        if (res) {
+          this.search();
+        }
       },
     );
   }
