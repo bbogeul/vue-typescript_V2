@@ -260,7 +260,7 @@ const componentsRouter: RouteConfig[] = [
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '사용자 관리',
+          title: '시설 관리',
         },
       },
     ],

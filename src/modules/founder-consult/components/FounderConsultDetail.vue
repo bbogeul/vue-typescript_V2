@@ -270,23 +270,13 @@
                   <b>{{ founderConsult.space.rentalFee }} 만원</b>
                 </li>
                 <li v-if="founderConsult.space.amenities.length > 0">
-                  공용시설 :
+                  공통시설 :
                   <b-badge
                     variant="info"
                     v-for="amenity in founderConsult.space.amenities"
                     :key="amenity.no"
                     class="m-1"
                     >{{ amenity.amenityName }}</b-badge
-                  >
-                </li>
-                <li v-if="founderConsult.space.deliverySpaceOptions.length > 0">
-                  공간옵션 :
-                  <b-badge
-                    variant="info"
-                    v-for="option in founderConsult.space.deliverySpaceOptions"
-                    :key="option.no"
-                    class="m-1"
-                    >{{ option.deliverySpaceOptionName }}</b-badge
                   >
                 </li>
               </ul>

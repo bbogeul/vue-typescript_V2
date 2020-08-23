@@ -228,6 +228,21 @@
       </b-col>
       <b-col md="4" class="my-3">
         <BaseCard title="타입 정보">
+          <template v-slot:head>
+            <router-link
+              v-if="deliveryFounderConsult.deliverySpaces"
+              variant="outline-info"
+              :to="{
+                name: 'DeliverySpaceDetail',
+                params: {
+                  id: deliveryFounderConsult.deliverySpaces.no,
+                },
+              }"
+              class="btn btn-outline-info"
+            >
+              상세보기
+            </router-link>
+          </template>
           <template v-slot:body>
             <div v-if="deliveryFounderConsult.deliverySpaces">
               <ul>
@@ -282,15 +297,16 @@
                 </li>
                 <li
                   v-if="
-                    deliveryFounderConsult.deliverySpaces.deliverySpaceOptions
-                      .length > 0
+                    deliveryFounderConsult.deliverySpaces &&
+                      deliveryFounderConsult.deliverySpaces.deliverySpaceOptions
+                        .length > 0
                   "
                 >
                   공간옵션 :
                   <b-badge
                     variant="info"
                     v-for="option in deliveryFounderConsult.deliverySpaces
-                      .companyDistrict.deliverySpaceOptions"
+                      .deliverySpaceOptions"
                     :key="option.no"
                     class="m-1"
                     >{{ option.deliverySpaceOptionName }}</b-badge
