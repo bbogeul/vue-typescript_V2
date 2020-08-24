@@ -1,5 +1,6 @@
 export * from './admin';
 export * from './amenity';
+export * from './brand';
 export * from './company';
 export * from './company-update-history';
 export * from './company-user';
