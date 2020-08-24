@@ -1,9 +1,6 @@
 <template>
   <div v-if="!dataLoading">
-    <table
-      class="table table-hover table-md  text-center"
-      v-if="founderConsultListCount"
-    >
+    <table class="table table-hover table-md text-center" v-if="founderConsultListCount">
       <thead>
         <tr>
           <th scope="col">공간 ID</th>
@@ -11,6 +8,7 @@
           <th scope="col">휴대폰 번호</th>
           <th scope="col">업체</th>
           <th scope="col">희망상담시간</th>
+          <th scope="col">공간 공실</th>
           <th scope="col">등록일</th>
           <th scope="col">상태</th>
         </tr>
@@ -26,19 +24,20 @@
           <td>{{ founderConsult.nanudaUser.name }}</td>
           <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
 
-          <td v-if="founderConsult.deliverySpaces.companyDistrict">
-            {{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}
-          </td>
+          <td
+            v-if="founderConsult.deliverySpaces.companyDistrict"
+          >{{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}</td>
           <td>
-            <div v-if="founderConsult.availableTime">
-              {{ founderConsult.availableTime.value }}
-            </div>
+            <div v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</div>
           </td>
+          <td
+            v-if="founderConsult.deliverySpaces && founderConsult.deliverySpaces.contracts"
+          >{{founderConsult.deliverySpaces.quantity - founderConsult.deliverySpaces.contracts.length}}/{{founderConsult.deliverySpaces.quantity}}</td>
           <td>{{ founderConsult.createdAt | dateTransformer }}</td>
           <td>
-            <span class="badge badge-pill badge-warning p-2">
-              {{ founderConsult.codeManagement.value }}
-            </span>
+            <span
+              class="badge badge-pill badge-warning p-2"
+            >{{ founderConsult.codeManagement.value }}</span>
           </td>
         </tr>
       </tbody>

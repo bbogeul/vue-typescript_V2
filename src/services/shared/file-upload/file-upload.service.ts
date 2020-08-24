@@ -22,6 +22,7 @@ export enum UPLOAD_TYPE {
   POPUP = 'popup',
   INQUIRY = 'inquiry',
   COMPANY_LOGO = 'company-logo',
+  BRAND_LOGO = 'brand-logo',
 }
 
 type UploadOptionConfig = {
@@ -69,6 +70,14 @@ class FileUploadService extends BaseService {
       mimeType: FileType.DOCUMENT,
       accessType: FileAccessType.PUBLIC,
       acl: ACL.PRIVATE,
+    },
+    [UPLOAD_TYPE.BRAND_LOGO]: {
+      path: 'brand-logo',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.IMAGE,
+      mimeType: FileType.IMAGE,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PUBLIC,
     },
     [UPLOAD_TYPE.COMPANY_LOGO]: {
       path: 'company-logo',

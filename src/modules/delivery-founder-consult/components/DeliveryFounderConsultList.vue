@@ -45,8 +45,7 @@
               v-for="gender in genderSelect"
               :key="gender"
               :value="gender"
-              >{{ gender | enumTransformer }}</option
-            >
+            >{{ gender | enumTransformer }}</option>
           </select>
         </div>
         <div class="col-6 col-lg-1 mb-3">
@@ -57,9 +56,11 @@
             v-model="deliveryFounderConsultSearchDto.changUpExpYn"
           >
             <option value selected>전체</option>
-            <option v-for="yn in delYn" :key="yn" :value="yn">{{
+            <option v-for="yn in delYn" :key="yn" :value="yn">
+              {{
               yn | enumTransformer
-            }}</option>
+              }}
+            </option>
           </select>
         </div>
         <div class="col-6 col-lg-2 mb-3">
@@ -74,8 +75,7 @@
               v-for="company in companySelect"
               :key="company.no"
               :value="company.no"
-              >{{ company.nameKr }}</option
-            >
+            >{{ company.nameKr }}</option>
           </select>
         </div>
         <div class="col-12 col-lg-2 mb-3">
@@ -102,8 +102,7 @@
                 v-for="admin in adminList.items"
                 :key="admin.no"
                 :value="admin.name"
-                >{{ admin.name }}</option
-              >
+              >{{ admin.name }}</option>
             </datalist>
           </template>
         </div>
@@ -120,8 +119,7 @@
               v-for="time in availableTimesSelect"
               :key="time.no"
               :value="time.key"
-              >{{ time.value }}</option
-            >
+            >{{ time.value }}</option>
           </select>
         </div>
         <div class="col-6 col-lg-2 mb-3">
@@ -136,8 +134,7 @@
               v-for="status in statusSelect"
               :key="status.no"
               :value="status.key"
-              >{{ status.value }}</option
-            >
+            >{{ status.value }}</option>
           </select>
         </div>
         <div class="col-6 col-lg-2 mb-3">
@@ -148,9 +145,11 @@
             v-model="deliveryFounderConsultSearchDto.viewCount"
           >
             <option value selected>전체</option>
-            <option v-for="yn in delYn" :key="yn" :value="yn">{{
+            <option v-for="yn in delYn" :key="yn" :value="yn">
+              {{
               yn | viewTransformer
-            }}</option>
+              }}
+            </option>
           </select>
         </div>
       </div>
@@ -165,14 +164,10 @@
       <div class="total-count">
         <h5>
           <span>TOTAL</span>
-          <strong class="text-primary">
-            {{ deliveryFounderConsultListCount }}
-          </strong>
+          <strong class="text-primary">{{ deliveryFounderConsultListCount }}</strong>
         </h5>
       </div>
-      <b-button variant="primary" v-b-modal.add_founder_consult
-        >방문 신청 추가</b-button
-      >
+      <b-button variant="primary" v-b-modal.add_founder_consult>방문 신청 추가</b-button>
     </div>
     <div v-if="!dataLoading">
       <table
@@ -187,123 +182,93 @@
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.deliverySpaceNo,
               }"
-            >
-              SPACE ID
-            </th>
+            >SPACE ID</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.nanudaUserName,
               }"
-            >
-              USER NAME
-            </th>
+            >USER NAME</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.phone,
               }"
-            >
-              USER PHONE
-            </th>
+            >USER PHONE</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.gender,
               }"
-            >
-              GENDER
-            </th>
+            >GENDER</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.companyNo,
               }"
-            >
-              COMPANY
-            </th>
+            >COMPANY</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted:
                   deliveryFounderConsultSearchDto.companyDistrictNameKr,
               }"
-            >
-              DISTRICT
-            </th>
+            >DISTRICT</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.hopeTime,
               }"
-            >
-              AVAILABLE TIME
-            </th>
+            >AVAILABLE TIME</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.changUpExpYn,
               }"
-            >
-              EXPERIENCE
-            </th>
+            >EXPERIENCE</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.viewCount,
               }"
-            >
-              VIEW
-            </th>
+            >VIEW</th>
             <th scope="col">CREATED</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.adminUserName,
               }"
-            >
-              ADMIN
-            </th>
+            >ADMIN</th>
             <th
               scope="col"
               v-bind:class="{
                 highlighted: deliveryFounderConsultSearchDto.status,
               }"
-            >
-              STATUS
-            </th>
+            >STATUS</th>
+            <th scope="col">공간 공실 수</th>
             <th scope="col"></th>
           </tr>
         </thead>
 
         <tbody>
-          <tr
-            v-for="founderConsult in deliveryFounderConsultList"
-            :key="founderConsult.no"
-          >
-            <th scope="row">
-              {{ founderConsult.no }}
-            </th>
-            <td>
-              {{ founderConsult.deliverySpaceNo }}
-            </td>
+          <tr v-for="founderConsult in deliveryFounderConsultList" :key="founderConsult.no">
+            <th scope="row">{{ founderConsult.no }}</th>
+            <td>{{ founderConsult.deliverySpaceNo }}</td>
             <td>{{ founderConsult.nanudaUser.name }}</td>
             <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
             <td>
-              <div v-if="founderConsult.nanudaUser.genderInfo">
-                {{ founderConsult.nanudaUser.genderInfo.value }}
-              </div>
+              <div
+                v-if="founderConsult.nanudaUser.genderInfo"
+              >{{ founderConsult.nanudaUser.genderInfo.value }}</div>
             </td>
-            <td v-if="founderConsult.deliverySpaces">
-              {{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}
-            </td>
-            <td v-if="founderConsult.deliverySpaces">
-              {{ founderConsult.deliverySpaces.companyDistrict.nameKr }}
-            </td>
+            <td
+              v-if="founderConsult.deliverySpaces"
+            >{{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}</td>
+            <td
+              v-if="founderConsult.deliverySpaces"
+            >{{ founderConsult.deliverySpaces.companyDistrict.nameKr }}</td>
             <td>
-              <div v-if="founderConsult.availableTime">
-                {{ founderConsult.availableTime.value }}
-              </div>
+              <div v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</div>
             </td>
             <td>
               <b-badge
@@ -311,12 +276,8 @@
                 :variant="
                   founderConsult.changUpExpYn === 'Y' ? 'success' : 'danger'
                 "
-              >
-                {{ founderConsult.changUpExpYn }}
-              </b-badge>
-              <div v-else>
-                -
-              </div>
+              >{{ founderConsult.changUpExpYn }}</b-badge>
+              <div v-else>-</div>
             </td>
             <td>
               <div v-if="founderConsult.viewCount">
@@ -324,27 +285,24 @@
                   :variant="
                     founderConsult.viewCount === 'Y' ? 'success' : 'danger'
                   "
-                >
-                  {{ founderConsult.viewCount }}
-                </b-badge>
+                >{{ founderConsult.viewCount }}</b-badge>
               </div>
             </td>
+            <td>{{ founderConsult.createdAt | dateTransformer }}</td>
             <td>
-              {{ founderConsult.createdAt | dateTransformer }}
+              <div v-if="founderConsult.admin">{{ founderConsult.admin.name }}</div>
+              <div v-else>-</div>
             </td>
             <td>
-              <div v-if="founderConsult.admin">
-                {{ founderConsult.admin.name }}
-              </div>
-              <div v-else>
-                -
-              </div>
-            </td>
-            <td>
-              <b-badge variant="warning" class="badge-pill p-2">{{
+              <b-badge variant="warning" class="badge-pill p-2">
+                {{
                 founderConsult.codeManagement.value
-              }}</b-badge>
+                }}
+              </b-badge>
             </td>
+            <td
+              v-if="founderConsult.deliverySpaces && founderConsult.deliverySpaces.contracts"
+            >{{founderConsult.deliverySpaces.quantity - founderConsult.deliverySpaces.contracts.length}}/{{founderConsult.deliverySpaces.quantity}}</td>
             <td>
               <router-link
                 v-if="founderConsult.no"
@@ -355,8 +313,7 @@
                     id: founderConsult.no,
                   },
                 }"
-                >상세보기</router-link
-              >
+              >상세보기</router-link>
             </td>
           </tr>
         </tbody>
@@ -390,19 +347,15 @@
             <label>사용자명</label>
             <div>
               <div
-                class="border rounded  bg-light light p-2 mb-2"
+                class="border rounded bg-light light p-2 mb-2"
                 v-if="nanudaUserData"
-              >
-                {{ nanudaUserData }}
-              </div>
+              >{{ nanudaUserData }}</div>
               <b-button
                 variant="primary"
                 size="md"
                 v-b-modal.add_nanuda_user
                 @click="findUser()"
-              >
-                사용자 추가하기
-              </b-button>
+              >사용자 추가하기</b-button>
             </div>
           </div>
           <div class="mb-3">
@@ -415,8 +368,7 @@
               :value="yn"
               name="changup_exp_yn"
               :id="`changup_exp_yn_${yn}`"
-              >{{ yn | enumTransformer }}</b-form-radio
-            >
+            >{{ yn | enumTransformer }}</b-form-radio>
           </div>
           <div class="mb-3">
             <label>공간 소유 유무</label>
@@ -427,8 +379,7 @@
               :value="yn"
               name="space_own_yn"
               :id="`space_own_yn_${yn}`"
-              >{{ yn | enumTransformer }}</b-form-radio
-            >
+            >{{ yn | enumTransformer }}</b-form-radio>
           </div>
           <div class="mb-3">
             <label>희망 업종</label>
@@ -443,24 +394,19 @@
                   v-for="category in foodCategorySelect.items"
                   :key="category.code"
                   :value="category.nameKr"
-                  >{{ category.nameKr }}</option
-                >
+                >{{ category.nameKr }}</option>
               </datalist>
             </template>
           </div>
           <div class="mb-3">
             <label>희망 시간 대</label>
-            <select
-              class="custom-select"
-              v-model="deliveryFounderConsultCreateDto.hopeTime"
-            >
+            <select class="custom-select" v-model="deliveryFounderConsultCreateDto.hopeTime">
               <option value selected>전체</option>
               <option
                 v-for="time in availableTimesSelect"
                 :key="time.no"
                 :value="time.key"
-                >{{ time.value }}</option
-              >
+              >{{ time.value }}</option>
             </select>
           </div>
         </b-col>
@@ -476,8 +422,7 @@
                 v-for="company in companySelect"
                 :key="company.no"
                 :value="company.no"
-                >{{ company.nameKr }}</option
-              >
+              >{{ company.nameKr }}</option>
             </select>
           </div>
           <div class="mb-3">
@@ -492,23 +437,18 @@
                 v-for="district in districtSelect.items"
                 :key="district.no"
                 :value="district.no"
-                >{{ district.nameKr }}</option
-              >
+              >{{ district.nameKr }}</option>
             </select>
           </div>
           <div class="mb-3">
             <label>타입명</label>
-            <select
-              class="custom-select"
-              v-model="deliveryFounderConsultCreateDto.deliverySpaceNo"
-            >
+            <select class="custom-select" v-model="deliveryFounderConsultCreateDto.deliverySpaceNo">
               <option value selected disabled>지점을 선택해주세요</option>
               <option
                 v-for="space in deliverySpaceSelect.items"
                 :key="space.no"
                 :value="space.no"
-                >{{ space.typeName }}</option
-              >
+              >{{ space.typeName }}</option>
             </select>
           </div>
         </b-col>
@@ -524,8 +464,7 @@
                 v-for="admin in adminList.items"
                 :key="admin.no"
                 :value="admin.no"
-                >{{ admin.name }}</option
-              >
+              >{{ admin.name }}</option>
             </select>
           </div>
           <div class="mb-3">
@@ -540,8 +479,7 @@
                 v-for="status in statusSelect"
                 :key="status.no"
                 :value="status.key"
-                >{{ status.value }}</option
-              >
+              >{{ status.value }}</option>
             </select>
           </div>
           <div class="mb-3">
