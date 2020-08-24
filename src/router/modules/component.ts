@@ -25,6 +25,27 @@ const componentsRouter: RouteConfig[] = [
     ],
   },
   {
+    path: '/brand',
+    name: '브랜드',
+    component: () => import('../../modules/brand/Brand.vue'),
+    children: [
+      {
+        path: '/brand',
+        name: '브랜드 관리',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/brand/components/BrandList.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          title: '브랜드 관리',
+        },
+      },
+    ],
+  },
+  {
     path: '/company',
     name: '업체',
     component: () => import('../../modules/company/Company.vue'),

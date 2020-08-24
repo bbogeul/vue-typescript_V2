@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <section>
+    <SectionTitle title="브랜드 관리" divider></SectionTitle>
+  </section>
 </template>
 
 <script lang="ts">
@@ -10,5 +12,4 @@ import BaseComponent from '../../../core/base.component';
   name: 'BrandList',
 })
 export default class BrandList extends BaseComponent {}
-</script>
 </script>
