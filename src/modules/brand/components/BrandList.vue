@@ -147,6 +147,14 @@
       <div class="circle circle-2"></div>
     </div>
     <b-modal id="add_brand" title="브랜드 추가" @ok="create()">
+      <div v-if="brandLogo && brandLogo.length > 0" class="mb-4">
+        <div v-for="logo in brandLogo" :key="logo.endpoint">
+          <img
+            :src="logo.endpoint"
+            class="rounded mx-auto d-block company-logo"
+          />
+        </div>
+      </div>
       <b-form-row>
         <b-col cols="12" md="6" class="mb-3">
           <label>업종 카테고리 <span class="red-text">*</span></label>
@@ -231,7 +239,7 @@ export default class BrandList extends BaseComponent {
   private dataLoading = false;
 
   private brandCreateDto = new BrandDto();
-  private brandLogo = [];
+  private brandLogo: FileAttachmentDto[] = [];
   private logoChanged = false;
 
   // get food category
