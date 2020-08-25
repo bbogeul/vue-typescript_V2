@@ -1,17 +1,19 @@
 <template>
-  <section>
-    <b-row no-gutters align-h="between" align-v="end" class="mb-2">
-      <h3>
-        <span v-if="deliveryFounderConsult.space"
-          >{{ deliveryFounderConsult.space.name }} - 방문 신청</span
+  <section v-if="deliveryFounderConsult">
+    <SectionTitle
+      :title="
+        `${deliveryFounderConsult.deliverySpaces.typeName} - 방문
+          신청`
+      "
+    >
+      <template v-slot:rightArea>
+        <router-link
+          to="/delivery-founder-consult"
+          class="btn btn-secondary text-center"
+          >목록으로</router-link
         >
-      </h3>
-      <router-link
-        to="/delivery-founder-consult"
-        class="btn btn-secondary text-center"
-        >목록으로</router-link
-      >
-    </b-row>
+      </template>
+    </SectionTitle>
     <b-row align-h="start" align-v="stretch">
       <b-col md="4" class="my-3" v-if="deliveryFounderConsult.nanudaUser">
         <BaseCard title="사용자 정보">
@@ -454,7 +456,7 @@
                       }}
                     </b-badge>
                   </li>
-                  <!-- <li
+                  <li
                     v-if="
                       deliveryFounderConsultManagements &&
                         deliveryFounderConsultManagements.memo
@@ -498,7 +500,7 @@
                         메모 이력 보기
                       </b-button>
                     </div>
-                  </li>-->
+                  </li>
                 </ul>
               </b-row>
             </div>
@@ -510,7 +512,7 @@
     <!-- for the text message -->
     <b-modal id="managemnt_history" title="업체 메모 이력" hide-footer>
       <div>
-        <!-- <FounderConsultManagementHistory /> -->
+        <FounderConsultManagementHistory />
       </div>
     </b-modal>
     <b-modal
@@ -708,7 +710,7 @@ import {
   name: 'DeliveryFounderConsultDetail',
   components: {
     BaseCard,
-    // FounderConsultManagementHistory,
+    FounderConsultManagementHistory,
   },
 })
 export default class FounderConsultDetail extends BaseComponent {
