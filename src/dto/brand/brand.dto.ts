@@ -8,6 +8,7 @@ export class BrandDto extends BaseDto<BrandDto> {
   no?: number;
   nameKr?: string;
   nameEng?: string;
+  desc?: string;
   adminNo?: number;
   categoryNo?: number;
   admin?: AdminDto;

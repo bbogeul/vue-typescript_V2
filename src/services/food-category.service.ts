@@ -17,7 +17,7 @@ class FoodCategoryService extends BaseService {
   }
 
   findForSelect() {
-    return super.get<FoodCategoryDto[]>('admin/food-category');
+    return super.get<FoodCategoryDto[]>('admin/food-category/select-option');
   }
 }
 

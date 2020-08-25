@@ -43,6 +43,21 @@ const componentsRouter: RouteConfig[] = [
           title: '브랜드 관리',
         },
       },
+      {
+        path: '/brand/:id([0-9]+)',
+        name: 'BrandDetail',
+        component: () =>
+          import(
+            /* webpackChunkName: "lazyLoaded" */ '../../modules/brand/components/BrandDetail.vue'
+          ),
+        meta: {
+          authRequired: true,
+          layout: 'MainLayout',
+          roles: [...CONST_ADMIN_USER],
+          detailPage: true,
+          title: '브랜드 관리',
+        },
+      },
     ],
   },
   {
