@@ -17,11 +17,15 @@ class BrandService extends BaseService {
   }
 
   create(brandDto: BrandDto) {
-    return super.post<BrandDto>(`admin/brand`, brandDto);
+    return super.post<BrandDto>('admin/brand', brandDto);
   }
 
   update(brandNo, brandUpdateDto: BrandUpdateDto) {
     return super.patch<BrandDto>(`admin/brand/${brandNo}`, brandUpdateDto);
+  }
+
+  findForSelect() {
+    return super.get<BrandDto[]>('admin/brand/select-option');
   }
 }
 

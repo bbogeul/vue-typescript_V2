@@ -88,6 +88,15 @@
               >
             </li>
           </ul>
+          <div>
+            <b-img-lazy
+              v-for="brand in deliverySpaceDto.brnad"
+              :src="brand.endpoint"
+              :alt="brand.nameKr"
+              :key="brand.no"
+            >
+            </b-img-lazy>
+          </div>
           <div
             v-if="deliverySpaceDto.quantity"
             class="border bg-light rounded p-3 mt-3"
@@ -158,6 +167,7 @@ export default class DeliverySpaceList extends BaseComponent {
 
   showUpdateModal() {
     this.$root.$emit('update_delivery_space', this.deliverySpaceDto);
+    this.findOne(this.$route.params.id);
   }
 
   created() {

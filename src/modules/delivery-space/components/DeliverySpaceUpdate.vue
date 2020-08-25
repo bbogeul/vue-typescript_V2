@@ -3,6 +3,7 @@
     id="update_delivery_space"
     title="타입 수정"
     size="xl"
+    scrollable
     @hide="clearOutUpdateDto()"
     @cancel="clearOutUpdateDto()"
     @ok="updateDeliverySpace()"
@@ -126,6 +127,22 @@
           >
         </b-form-checkbox-group>
       </b-col>
+      <b-col lg="12" class="mb-3">
+        <label>브랜드</label>
+        <b-form-checkbox-group
+          id="update_available_barnd"
+          v-model="brandIds"
+          name="update_available_barnd"
+        >
+          <b-form-checkbox
+            v-for="brand in brandList"
+            :key="brand.no"
+            :value="brand.no"
+            @change="addBrand(brand.no)"
+            >{{ brand.nameKr }}</b-form-checkbox
+          >
+        </b-form-checkbox-group>
+      </b-col>
       <b-col lg="12">
         <label for>이미지</label>
         <div class="custom-file">
@@ -189,6 +206,7 @@ import {
   DeliverySpaceDto,
   DeliverySpaceOptionDto,
   DeliverySpaceUpdateDto,
+  BrandDto,
 } from '../../../dto';
 
 import {
@@ -196,6 +214,7 @@ import {
   FileAttachmentDto,
 } from '../../../services/shared/file-upload';
 import AmenityService from '../../../services/amenity.service';
+import BrandService from '../../../services/brand.service';
 import DeliverySpaceService from '../../../services/delivery-space.service';
 import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
 import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
@@ -208,18 +227,39 @@ export default class DeliverySpaceUpdate extends BaseComponent {
   private deliverySpaceDto = new DeliverySpaceDto();
   private deliverySpaceUpdateDto = new DeliverySpaceUpdateDto();
 
-  private amenityIds: number[] = [];
   private amenityList: AmenityDto[] = [];
+  private amenityIds: number[] = [];
   private attachments: FileAttachmentDto[] = [];
+  private brandList: BrandDto[] = [];
+  private brandIds: number[] = [];
   private deliverySpaceOptionIds: number[] = [];
   private deliverySpaceOptionsList: DeliverySpaceOptionDto[] = [];
   private delYn: YN[] = [...CONST_YN];
 
+  private newImages: FileAttachmentDto[] = [];
   private uploadImages: FileAttachmentDto[] = [];
   private selectedImages = [];
-  private newImages: FileAttachmentDto[] = [];
+
   private changedImage = false;
   private dataLoading = false;
+
+  // get common facility list
+  getSpaceOptions() {
+    DeliverySpaceService.findSpaceOption().subscribe(res => {
+      if (res) {
+        this.deliverySpaceOptionsList = res.data;
+      }
+    });
+  }
+
+  // get kitchen facility list
+  getAmenities() {
+    AmenityService.findAmenities('kitchen-facility').subscribe(res => {
+      if (res) {
+        this.amenityList = res.data;
+      }
+    });
+  }
 
   // add amenity array
   addAmenity(amenityId) {
@@ -247,36 +287,30 @@ export default class DeliverySpaceUpdate extends BaseComponent {
     }
   }
 
-  // get common facility list
-  getSpaceOptions() {
-    DeliverySpaceService.findSpaceOption().subscribe(res => {
+  // get brand
+  getBrands() {
+    BrandService.findForSelect().subscribe(res => {
       if (res) {
-        this.deliverySpaceOptionsList = res.data;
+        this.brandList = res.data;
       }
     });
   }
 
-  // get kitchen facility list
-  getAmenities() {
-    AmenityService.findAmenities('kitchen-facility').subscribe(res => {
-      if (res) {
-        this.amenityList = res.data;
+  // add brand ids
+  addBrand(brandId) {
+    if (this.brandIds.includes(parseInt(brandId))) {
+      const index = this.brandIds.indexOf(parseInt(brandId));
+      if (index > -1) {
+        this.brandIds.splice(index, 1);
       }
-    });
+    } else {
+      this.brandIds.unshift(parseInt(brandId));
+    }
   }
 
   // find delivery space dto
   findDeliverySpaceDto(deliverySpace: DeliverySpaceDto) {
     this.deliverySpaceUpdateDto = deliverySpace;
-    // this.deliverySpaceUpdateDto.typeName = deliverySpace.typeName;
-    // this.deliverySpaceUpdateDto.buildingName = deliverySpace.buildingName;
-    // this.deliverySpaceUpdateDto.quantity = deliverySpace.quantity;
-    // this.deliverySpaceUpdateDto.deposit = deliverySpace.deposit;
-    // this.deliverySpaceUpdateDto.monthlyUtilityFee =
-    //   deliverySpace.monthlyUtilityFee;
-    // this.deliverySpaceUpdateDto.monthlyRentFee = deliverySpace.monthlyRentFee;
-    // this.deliverySpaceUpdateDto.size = deliverySpace.size;
-    // this.deliverySpaceUpdateDto.delYn = deliverySpace.delYn;
     this.deliverySpaceUpdateDto.companyDistrictNo =
       deliverySpace.companyDistrictNo;
 
@@ -327,6 +361,11 @@ export default class DeliverySpaceUpdate extends BaseComponent {
     if (this.amenityIds) {
       this.deliverySpaceUpdateDto.amenityIds = this.amenityIds;
     }
+
+    if (this.brandIds) {
+      this.deliverySpaceUpdateDto.brandIds = this.brandIds;
+    }
+
     if (this.uploadImages) {
       this.deliverySpaceUpdateDto.images = this.uploadImages;
     }
@@ -352,6 +391,7 @@ export default class DeliverySpaceUpdate extends BaseComponent {
   created() {
     this.getAmenities();
     this.getSpaceOptions();
+    this.getBrands();
   }
 
   mounted() {

@@ -3,6 +3,7 @@
     id="add_delivery_space"
     size="xl"
     title="타입 추가"
+    scrollable
     @cancel="clearOut()"
     @ok="create()"
   >
@@ -124,7 +125,7 @@
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12" class="mb-3">
-        <label>주방 시설 정보</label>
+        <label>주방 시설</label>
         <b-form-checkbox-group
           id="kitchen_amenity"
           v-model="deliverySpaceCreateDto.amenityIds"
@@ -136,6 +137,22 @@
             :value="amenity.no"
             @change="addAmenity(amenity.no)"
             >{{ amenity.amenityName }}</b-form-checkbox
+          >
+        </b-form-checkbox-group>
+      </b-col>
+      <b-col lg="12" class="mb-3">
+        <label>브랜드</label>
+        <b-form-checkbox-group
+          id="create_space_brand"
+          v-model="deliverySpaceCreateDto.brandIds"
+          name="create_space_brand"
+        >
+          <b-form-checkbox
+            v-for="brand in brandList"
+            :key="brand.no"
+            :value="brand.no"
+            @change="addBrand(brand.no)"
+            >{{ brand.nameKr }}</b-form-checkbox
           >
         </b-form-checkbox-group>
       </b-col>
@@ -182,13 +199,15 @@ import {
   CompanyDto,
   CompanyDistrictDto,
   DeliverySpaceDto,
-  DeliverSpaceCreateDto,
+  DeliverySpaceCreateDto,
   DeliverySpaceListDto,
   DeliverySpaceOptionDto,
+  BrandDto,
 } from '@/dto';
 import { Component, Prop } from 'vue-property-decorator';
 
 import AmenityService from '../../../services/amenity.service';
+import BrandService from '../../../services/brand.service';
 import CompanyService from '../../../services/company.service';
 import CompanyDistrictService from '../../../services/company-district.service';
 import DeliverSpaceService from '../../../services/delivery-space.service';
@@ -205,18 +224,26 @@ import toast from '../../../../resources/assets/js/services/toast.js';
   name: 'DeliverySpaceCreate',
 })
 export default class DeliverySpaceCreate extends BaseComponent {
-  private deliverySpaceCreateDto = new DeliverSpaceCreateDto();
+  private deliverySpaceCreateDto = new DeliverySpaceCreateDto();
   private attachments: FileAttachmentDto[] = [];
-  private amenityList: AmenityDto[] = Array<AmenityDto>();
+  private amenityList: AmenityDto[] = [];
   private amenityIds: number[] = [];
-  private spaceOptions: DeliverySpaceOptionDto[] = Array<
-    DeliverySpaceOptionDto
-  >();
-  private deliverySpaceOptionsIds: number[] = [];
-
+  private brandList: BrandDto[] = [];
+  private brandIds: number[] = [];
+  private deliverySpaceOptionIds: number[] = [];
   private companySelect: CompanyDto[] = [];
-  private districtSelect: CompanyDistrictDto[] = [];
   private companyDistrictDto = new CompanyDistrictDto();
+  private districtSelect: CompanyDistrictDto[] = [];
+  private spaceOptions: DeliverySpaceOptionDto[] = [];
+
+  // get brand
+  getBrands() {
+    BrandService.findForSelect().subscribe(res => {
+      if (res) {
+        this.brandList = res.data;
+      }
+    });
+  }
 
   // TODO: Create autocomplete box
   getCompanies() {
@@ -257,17 +284,27 @@ export default class DeliverySpaceCreate extends BaseComponent {
 
   // add delivery space option ids
   addDeliverySpaceOption(deliverySpaceOptionId) {
-    if (
-      this.deliverySpaceOptionsIds.includes(parseInt(deliverySpaceOptionId))
-    ) {
-      const index = this.deliverySpaceOptionsIds.indexOf(
+    if (this.deliverySpaceOptionIds.includes(parseInt(deliverySpaceOptionId))) {
+      const index = this.deliverySpaceOptionIds.indexOf(
         parseInt(deliverySpaceOptionId),
       );
       if (index > -1) {
-        this.deliverySpaceOptionsIds.splice(index, 1);
+        this.deliverySpaceOptionIds.splice(index, 1);
       }
     } else {
-      this.deliverySpaceOptionsIds.unshift(parseInt(deliverySpaceOptionId));
+      this.deliverySpaceOptionIds.unshift(parseInt(deliverySpaceOptionId));
+    }
+  }
+
+  // add brand ids
+  addBrand(brandId) {
+    if (this.brandIds.includes(parseInt(brandId))) {
+      const index = this.brandIds.indexOf(parseInt(brandId));
+      if (index > -1) {
+        this.brandIds.splice(index, 1);
+      }
+    } else {
+      this.brandIds.unshift(parseInt(brandId));
     }
   }
 
@@ -279,7 +316,9 @@ export default class DeliverySpaceCreate extends BaseComponent {
       );
     }
     this.deliverySpaceCreateDto.amenityIds = this.amenityIds;
-    this.deliverySpaceCreateDto.deliverySpaceOptionIds = this.deliverySpaceOptionsIds;
+    this.deliverySpaceCreateDto.deliverySpaceOptionIds = this.deliverySpaceOptionIds;
+    this.deliverySpaceCreateDto.brandIds = this.brandIds;
+
     this.deliverySpaceCreateDto.images = this.attachments;
     DeliverSpaceService.create(this.deliverySpaceCreateDto).subscribe(res => {
       if (res) {
@@ -295,7 +334,7 @@ export default class DeliverySpaceCreate extends BaseComponent {
   clearOut() {
     this.deliverySpaceCreateDto = new DeliverySpaceDto();
     this.amenityIds = [];
-    this.deliverySpaceOptionsIds = [];
+    this.deliverySpaceOptionIds = [];
     this.attachments = [];
   }
 
@@ -333,6 +372,7 @@ export default class DeliverySpaceCreate extends BaseComponent {
     this.getSpaceOptions();
     this.getAmenities();
     this.getCompanies();
+    this.getBrands();
   }
 }
 </script>
