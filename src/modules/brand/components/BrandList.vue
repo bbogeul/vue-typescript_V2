@@ -3,7 +3,6 @@
     <SectionTitle title="브랜드 관리" divider></SectionTitle>
     <div class="search-box my-4" v-on:keyup.enter="search()">
       <b-form-row>
-<<<<<<< HEAD
         <div class="col-md-2 mb-3">
           <label>업종 카테고리</label>
           <b-form-input
@@ -33,28 +32,6 @@
               yn | enumTransformer
             }}</option>
           </select>
-=======
-        <div class="col-md-1 mb-3">
-          <label for="brandNo">브랜드 ID</label>
-          <input type="text" class="form-control" id="brandNo" v-model="brandListDto.no" />
-        </div>
-        <div class="col-md-2 mb-3">
-          <label>브랜드 영어명</label>
-          <input type="text" class="form-control" v-model="brandListDto.nameEng" />
-        </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <label for="admin_user">관리자명</label>
-          <template>
-            <b-form-input list="admin_list" id="admin_user" v-model="brandListDto.adminName"></b-form-input>
-            <datalist id="admin_list">
-              <option
-                v-for="admin in adminList.items"
-                :key="admin.no"
-                :value="admin.name"
-              >{{ admin.name }}</option>
-            </datalist>
-          </template>
->>>>>>> 4a84e4bcffd041141acd2007372ab94b6ffc126f
         </div>
       </b-form-row>
       <!-- second row -->
@@ -69,7 +46,6 @@
       <div class="total-count">
         <h5>
           <span>TOTAL</span>
-<<<<<<< HEAD
           <strong class="text-primary">{{ brandListCount }}</strong>
         </h5>
       </div>
@@ -232,32 +208,12 @@
         </b-col>
       </b-form-row>
     </b-modal>
-=======
-          <strong class="text-primary">{{ brandsTotalCount }}</strong>
-        </h5>
-      </div>
-    </div>
-    <b-pagination
-      v-model="pagination.page"
-      v-if="brandsTotalCount"
-      pills
-      :total-rows="brandsTotalCount"
-      :per-page="pagination.limit"
-      @input="paginateSearch"
-      class="mt-4 justify-content-center"
-    ></b-pagination>
-    <div class="half-circle-spinner mt-5" v-if="dataLoading">
-      <div class="circle circle-1"></div>
-      <div class="circle circle-2"></div>
-    </div>
->>>>>>> 4a84e4bcffd041141acd2007372ab94b6ffc126f
   </section>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import BaseComponent from '../../../core/base.component';
-<<<<<<< HEAD
 import { BrandDto, BrandListDto, FoodCategoryDto } from '../../../dto';
 import BrandService from '../../../services/brand.service';
 import FoodCategoryService from '../../../services/food-category.service';
@@ -269,18 +225,11 @@ import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.se
 import { ATTACHMENT_REASON_TYPE } from '@/services/shared/file-upload';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
-=======
-import { AdminDto, BrandDto, BrandListDto } from '../../../dto';
-import BrandService from '../../../services/brand.service';
-import { Pagination } from '../../../common';
-import AdminService from '../../../services/admin.service';
->>>>>>> 4a84e4bcffd041141acd2007372ab94b6ffc126f
 
 @Component({
   name: 'BrandList',
 })
 export default class BrandList extends BaseComponent {
-<<<<<<< HEAD
   private brandList: BrandDto[] = [];
   private brandListCount = null;
   private brandSearchDto = new BrandListDto();
@@ -313,34 +262,12 @@ export default class BrandList extends BaseComponent {
         }
       },
     );
-=======
-  private brandListDto = new BrandListDto();
-  private brands: BrandDto[] = [];
-  private adminList: AdminDto[] = [];
-
-  private brandsTotalCount = null;
-  private totalPage = null;
-  private pagination = new Pagination();
-  private dataLoading = false;
-
-  findAdmin() {
-    AdminService.findForSelect().subscribe(res => {
-      if (res) {
-        this.adminList = res.data;
-      }
-    });
-  }
-
-  clearOut() {
-    this.brandListDto = new BrandListDto();
->>>>>>> 4a84e4bcffd041141acd2007372ab94b6ffc126f
   }
 
   paginateSearch() {
     this.search(true);
   }
 
-<<<<<<< HEAD
   clearOut() {
     this.brandSearchDto = new BrandListDto();
     this.search();
@@ -389,23 +316,3 @@ export default class BrandList extends BaseComponent {
   }
 }
 </script>
-=======
-  search(isPagination?: boolean) {
-    this.dataLoading = true;
-    if (!isPagination) {
-      this.pagination.page = 1;
-    }
-    BrandService.findAll(this.brandListDto, this.pagination).subscribe(res => {
-      this.brands = res.data.items;
-      this.brandsTotalCount = res.data.totalCount;
-      this.totalPage = Math.ceil(this.brandsTotalCount / this.pagination.limit);
-    });
-  }
-
-  created() {
-    this.search();
-    this.findAdmin();
-  }
-}
-</script>
->>>>>>> 4a84e4bcffd041141acd2007372ab94b6ffc126f
