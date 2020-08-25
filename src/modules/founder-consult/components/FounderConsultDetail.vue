@@ -513,7 +513,7 @@
             ></b-form-input>
             <datalist id="food-category-list">
               <option
-                v-for="category in foodCategorySelect.items"
+                v-for="category in foodCategorySelect"
                 :key="category.code"
                 :value="category.nameKr"
                 >{{ category.nameKr }}</option
