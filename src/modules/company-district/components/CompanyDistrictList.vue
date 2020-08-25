@@ -364,11 +364,6 @@ export default class CompanyDistrictList extends BaseComponent {
     if (!isPagination) {
       this.pagination.page = 1;
     }
-    if (this.$route.params.companyNo) {
-      this.companyDistrictSearchDto.companyNo = parseInt(
-        this.$route.params.companyNo,
-      );
-    }
     CompanyDistrictService.findAll(
       this.companyDistrictSearchDto,
       this.pagination,
@@ -410,6 +405,12 @@ export default class CompanyDistrictList extends BaseComponent {
   }
 
   created() {
+    if (this.$route.params.companyNo) {
+      this.companyDistrictSearchDto.companyNo = parseInt(
+        this.$route.params.companyNo,
+      );
+    }
+    this.pagination.page = 1;
     this.search();
     this.getCompanies();
   }
