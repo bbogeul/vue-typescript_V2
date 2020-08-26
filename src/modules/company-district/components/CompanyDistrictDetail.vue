@@ -223,7 +223,7 @@ import CompanyDistrictService from '../../../services/company-district.service';
 import ApprovalCard from '../../../modules/_components/ApprovalCard.vue';
 import BaseCard from '../../_components/BaseCard.vue';
 import DeliverySpaceList from './DeliverySpaceList.vue';
-import DeliverySpaceCreate from './DeliverySpaceCreate.vue';
+import DeliverySpaceCreate from '../../delivery-space/components/DeliverySpaceCreate.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
 import { getStatusColor } from '../../../core/utils/status-color.util';

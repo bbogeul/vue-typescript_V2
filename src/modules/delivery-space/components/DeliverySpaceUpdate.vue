@@ -203,10 +203,10 @@ import toast from '../../../../resources/assets/js/services/toast.js';
 
 import {
   AmenityDto,
+  BrandDto,
   DeliverySpaceDto,
   DeliverySpaceOptionDto,
   DeliverySpaceUpdateDto,
-  BrandDto,
 } from '../../../dto';
 
 import {
@@ -318,6 +318,7 @@ export default class DeliverySpaceUpdate extends BaseComponent {
     this.deliverySpaceOptionIds = deliverySpace.deliverySpaceOptions.map(
       v => v.no,
     );
+    this.brandIds = deliverySpace.brands.map(v => v.no);
 
     this.selectedImages = deliverySpace.images;
     this.uploadImages = [...this.selectedImages];

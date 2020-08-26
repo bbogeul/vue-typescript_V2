@@ -211,7 +211,7 @@ import { Pagination } from '@/common';
 import CompanyService from '../../../services/company.service';
 import DeliverSpaceService from '../../../services/delivery-space.service';
 
-import DeliverySpaceCreate from '../../company-district/components/DeliverySpaceCreate.vue';
+import DeliverySpaceCreate from './DeliverySpaceCreate.vue';
 
 @Component({
   name: 'DeliverySpaceList',

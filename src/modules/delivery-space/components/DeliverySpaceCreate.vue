@@ -14,6 +14,7 @@
           <span class="red-text">*</span>
         </label>
         <select class="custom-select" @change="changeCompany($event)">
+          <option value selected disabled>선택해주세요</option>
           <option
             v-for="company in companySelect"
             :key="company.no"

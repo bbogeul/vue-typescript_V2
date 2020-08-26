@@ -5,6 +5,7 @@ import { CompanyDistrictDto } from '../company-district';
 import { AmenityDto } from '../amenity';
 import { DeliverySpaceOptionDto } from '../delivery-space-option';
 import { DeliveryFounderConsultContractDto } from '../delivery-founder-consult-contract';
+import { BrandDto } from '../brand';
 
 export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   no?: number;
@@ -21,6 +22,7 @@ export class DeliverySpaceDto extends BaseDto<DeliverySpaceDto> {
   monthlyUtilityFee?: string;
   companyDistrict?: CompanyDistrictDto;
   remainingCount?: number;
+  brands?: BrandDto[];
   amenities?: AmenityDto[];
   deliverySpaceOptions?: DeliverySpaceOptionDto[];
   contracts?: DeliveryFounderConsultContractDto[];
