@@ -1,6 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import Axios from 'axios-observable';
-import * as env from '../../environments/development.environment';
+import {
+  DevelopmentEnvironment,
+  StagingEnvironment,
+  ProductionEnvironment,
+  EnvironmentType,
+  Environment,
+} from '../../environments';
 import { Pagination, PaginatedResponse } from '../common';
 import JwtStorageService from '../services/shared/auth/jwt-storage.service';
 import toast from '../../resources/assets/js/services/toast.js';
@@ -88,6 +94,16 @@ export class BaseService extends Vue {
     path: string,
     params?: any,
   ): AxiosObservable<T> {
+    let baseUrl;
+    if (process.env.NODE_ENV === EnvironmentType.development) {
+      baseUrl = DevelopmentEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.staging) {
+      baseUrl = StagingEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.production) {
+      baseUrl = ProductionEnvironment.baseURL;
+    }
     // axios observable에서 글로벌 에러 catch하는 코드
     Axios.interceptors.response.use(
       response => {
@@ -107,10 +123,10 @@ export class BaseService extends Vue {
       },
     );
     if (path.indexOf('http') !== 0) {
-      path = env.DevelopmentEnvironment.baseURL + path;
+      path = baseUrl + path;
     }
     const headers: any = {
-      'x-client-name': env.DevelopmentEnvironment.clientName,
+      'x-client-name': baseUrl.clientName,
       'Content-type': 'application/json',
       //   'Accept': 'application/json',
     };
@@ -134,15 +150,35 @@ export class BaseService extends Vue {
   }
 
   public fileGet(path: string, params?: any) {
+    let baseUrl;
+    if (process.env.NODE_ENV === EnvironmentType.development) {
+      baseUrl = DevelopmentEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.staging) {
+      baseUrl = StagingEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.production) {
+      baseUrl = ProductionEnvironment.baseURL;
+    }
     if (path.indexOf('http') !== 0) {
-      path = env.DevelopmentEnvironment.baseURL + path;
+      path = baseUrl + path;
     }
     return axios.get(path, params);
   }
 
   public filePost(path: string, params?: any) {
+    let baseUrl;
+    if (process.env.NODE_ENV === EnvironmentType.development) {
+      baseUrl = DevelopmentEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.staging) {
+      baseUrl = StagingEnvironment.baseURL;
+    }
+    if (process.env.NODE_ENV === EnvironmentType.production) {
+      baseUrl = ProductionEnvironment.baseURL;
+    }
     if (path.indexOf('http') !== 0) {
-      path = env.DevelopmentEnvironment.baseURL + path;
+      path = baseUrl + path;
     }
     return axios.post(path, params);
   }

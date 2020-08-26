@@ -4,8 +4,10 @@ import store from './store';
 import router from '../src/router';
 import {
   DevelopmentEnvironment,
+  StagingEnvironment,
   Environment,
   EnvironmentType,
+  ProductionEnvironment,
 } from '../environments';
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 // import 'bootstrap/dist/css/bootstrap.css';
@@ -31,6 +33,14 @@ let env = new Environment();
 if (process.env.NODE_ENV === EnvironmentType.development) {
   console.log(process.env.NODE_ENV);
   env = DevelopmentEnvironment;
+}
+if (process.env.NODE_ENV === EnvironmentType.staging) {
+  console.log(process.env.NODE_ENV);
+  env = StagingEnvironment;
+}
+if (process.env.NODE_ENV === EnvironmentType.production) {
+  // console.log(process.env.NODE_ENV);
+  env = ProductionEnvironment;
 }
 Vue.config.productionTip = env.productionTip;
 
