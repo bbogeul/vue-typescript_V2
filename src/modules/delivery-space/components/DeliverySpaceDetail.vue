@@ -88,14 +88,21 @@
               >
             </li>
           </ul>
-          <div>
-            <b-img-lazy
-              v-for="brand in deliverySpaceDto.brnad"
-              :src="brand.endpoint"
-              :alt="brand.nameKr"
-              :key="brand.no"
-            >
-            </b-img-lazy>
+          <div
+            v-if="deliverySpaceDto.brands && deliverySpaceDto.brands.length > 0"
+          >
+            창업 가능 브랜드
+            <div class="mt-2">
+              <b-img-lazy
+                v-for="brand in deliverySpaceDto.brands"
+                :src="brand.logo[0].endpoint"
+                :alt="brand.logo[0].nameKr"
+                :key="brand.logo[0].no"
+                style="max-height:40px"
+                class="border m-1"
+              >
+              </b-img-lazy>
+            </div>
           </div>
           <div
             v-if="deliverySpaceDto.quantity"

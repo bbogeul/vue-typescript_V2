@@ -337,7 +337,7 @@ export default class DeliverySpaceUpdate extends BaseComponent {
           fileUpload.attachmentReasonType === ATTACHMENT_REASON_TYPE.SUCCESS,
       ),
     );
-    this.uploadImages = [...this.newImages];
+    // this.uploadImages = [...this.newImages];
     this.dataLoading = false;
     this.changedImage = true;
   }
@@ -366,9 +366,11 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       this.deliverySpaceUpdateDto.brandIds = this.brandIds;
     }
 
-    if (this.uploadImages) {
-      this.deliverySpaceUpdateDto.images = this.uploadImages;
-    }
+    console.log(this.deliverySpaceUpdateDto);
+    // if (this.uploadImages && this.uploadImages.length > 0) {
+    //   this.deliverySpaceUpdateDto.images = this.uploadImages;
+    // }
+    delete this.deliverySpaceUpdateDto.images;
 
     DeliverySpaceService.update(
       this.$route.params.id,

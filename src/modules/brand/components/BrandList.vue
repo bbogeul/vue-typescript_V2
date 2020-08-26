@@ -146,7 +146,13 @@
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
-    <b-modal id="add_brand" title="브랜드 추가" @ok="create()">
+    <b-modal
+      id="add_brand"
+      title="브랜드 추가"
+      @hide="clearBrandCreateDto()"
+      @cancel="clearBrandCreateDto()"
+      @ok="create()"
+    >
       <div v-if="brandLogo && brandLogo.length > 0" class="mb-4">
         <div v-for="logo in brandLogo" :key="logo.endpoint">
           <img
@@ -273,6 +279,11 @@ export default class BrandList extends BaseComponent {
     this.search();
   }
 
+  // find detail
+  findOne(barndNo) {
+    this.$router.push(`/brand/${barndNo}`);
+  }
+
   // create brand
   create() {
     if (this.brandLogo) {
@@ -304,9 +315,8 @@ export default class BrandList extends BaseComponent {
     this.logoChanged = true;
   }
 
-  // find detail
-  findOne(barndNo) {
-    this.$router.push(`/brand/${barndNo}`);
+  clearBrandCreateDto() {
+    this.brandCreateDto = new BrandDto();
   }
 
   created() {
