@@ -65,7 +65,7 @@ export const EnumPipeTransformer = () =>
 
     // 문의 유형 타입
     if (value === INQUIRY.FOUNDER_CONSULT) {
-      return '방문자 신청';
+      return '상담 신청 문의';
     }
     if (value === INQUIRY.SYSTEM) {
       return '사이트 기능 문의';

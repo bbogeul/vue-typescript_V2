@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="title pb-2 mb-2">
-      <h3>배달형 방문자 신청 관리</h3>
+      <h3>배달형 상담 신청</h3>
     </div>
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">
@@ -171,7 +171,7 @@
         </h5>
       </div>
       <b-button variant="primary" v-b-modal.add_founder_consult
-        >방문 신청 추가</b-button
+        >상담 신청 추가</b-button
       >
     </div>
     <div v-if="!dataLoading">
@@ -379,7 +379,7 @@
     <b-modal
       id="add_founder_consult"
       size="xl"
-      title="방문 신청 추가"
+      title="상담 신청 추가"
       @hide="clearOutCreateDto()"
       @cancel="clearOutCreateDto()"
       @ok="create()"

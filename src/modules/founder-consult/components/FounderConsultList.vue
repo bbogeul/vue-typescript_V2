@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="title pb-2 mb-2">
-      <h3>방문자 신청 관리</h3>
+      <h3>식당형 상담 신청</h3>
     </div>
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">

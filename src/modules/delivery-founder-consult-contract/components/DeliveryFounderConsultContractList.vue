@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="title pb-2 mb-2">
-      <h3>배달형 방문신청 계약 관리</h3>
+      <h3>배달형 계약 내역</h3>
     </div>
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">

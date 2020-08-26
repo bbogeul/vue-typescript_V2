@@ -41,17 +41,20 @@
               <template v-if="reply.companyUserNo">
                 <div class="reply-user">
                   <span class="user-icon">
-                    <b-avatar
+                    <b-avatar variant="warning" size="4em">
+                      <strong>{{ reply.companyUser.name }}</strong>
+                    </b-avatar>
+                    <!-- <b-avatar
                       size="4em"
                       v-if="reply.company && reply.company.logo[0]"
                       :src="reply.company.logo[0].endpoint"
                       variant="light"
                     ></b-avatar>
-                    <b-avatar size="4em" v-else></b-avatar>
+                    <b-avatar size="4em" v-else></b-avatar> -->
                   </span>
-                  <span class="user-name" v-if="reply.companyUser"
+                  <!-- <span class="user-name" v-if="reply.companyUser"
                     >{{ reply.companyUser.name }}
-                  </span>
+                  </span> -->
                   <span class="user-company" v-if="reply.company">
                     <router-link
                       :to="{
@@ -368,6 +371,7 @@ export default class InquiryReplyList extends BaseComponent {
           border-radius: 0.25rem;
           background-color: #f5f5f5;
           padding: 1rem;
+          word-break: break-all;
           // min-height: 60px;
 
           &:before {

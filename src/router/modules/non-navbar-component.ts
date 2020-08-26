@@ -5,7 +5,7 @@ import { CONST_ADMIN_USER } from '@/services/shared';
 const nonNavBarRouter: RouteConfig[] = [
   {
     path: '/graph-by-cities',
-    name: '방문자 신청 추이',
+    name: '상담 신청 추이',
     component: () => import('../../modules/graph-playground/GraphByCity.vue'),
     meta: {
       authRequired: true,
@@ -16,7 +16,7 @@ const nonNavBarRouter: RouteConfig[] = [
     children: [
       {
         path: '/graph-by-cities',
-        name: '방문자 신청 추이',
+        name: '상담 신청 추이',
         component: () =>
           import(
             '../../modules/graph-playground/components/GraphByCitySelect.vue'
@@ -25,7 +25,7 @@ const nonNavBarRouter: RouteConfig[] = [
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '업체관리',
+          title: '업체 관리',
         },
       },
     ],

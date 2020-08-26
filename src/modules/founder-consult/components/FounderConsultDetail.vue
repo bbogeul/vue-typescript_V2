@@ -3,7 +3,7 @@
     <b-row no-gutters align-h="between" align-v="end" class="mb-2">
       <h3>
         <span v-if="founderConsult.space">
-          {{ founderConsult.space.name }} - 방문 신청</span
+          {{ founderConsult.space.name }} - 상담 신청</span
         >
       </h3>
       <router-link to="/founder-consult" class="btn btn-secondary text-center"
@@ -11,7 +11,7 @@
       >
     </b-row>
     <b-row align-h="start" align-v="stretch">
-      <b-col md="4" class="my-3" v-if="founderConsult.nanudaUser">
+      <b-col md="6" class="my-3" v-if="founderConsult.nanudaUser">
         <BaseCard title="사용자 정보">
           <template v-slot:head>
             <div v-if="founderConsult.status !== 'F_DIST_COMPLETE'">
@@ -57,7 +57,7 @@
                   <b>{{ founderConsult.nanudaUser.genderInfo.value }}</b>
                 </li>
                 <li v-if="founderConsult.nanudaUser.remainVisitCount">
-                  남은 공간 방문 신청 횟수 :
+                  남은 공간 신청 횟수 :
                   <b> {{ founderConsult.nanudaUser.remainVisitCount }}</b>
                 </li>
                 <li v-if="founderConsult.nanudaUser.lastLoginAt">
@@ -81,7 +81,7 @@
           </template>
         </BaseCard>
       </b-col>
-      <b-col md="4" class="my-3">
+      <b-col md="6" class="my-3">
         <BaseCard title="관리자 정보">
           <template v-slot:head>
             <div>
@@ -118,7 +118,7 @@
           </template>
         </BaseCard>
       </b-col>
-      <b-col md="4" class="my-3">
+      <!-- <b-col md="6" class="my-3">
         <BaseCard title="업체 정보">
           <template v-slot:body>
             <div
@@ -144,14 +144,6 @@
                     </b>
                   </router-link>
                 </li>
-                <!-- <li
-                  v-if="founderConsult.space.companyDistricts[0].company.ceoKr"
-                >
-                  대표명 :
-                  <b>
-                    {{ founderConsult.space.companyDistricts[0].company.ceoKr }}
-                  </b>
-                </li> -->
                 <li
                   v-if="founderConsult.space.companyDistricts[0].company.phone"
                 >
@@ -171,50 +163,6 @@
                     {{ founderConsult.space.companyDistricts[0].company.email }}
                   </b>
                 </li>
-                <!-- <li v-if="founderConsult.space.companyDistricts[0].company.fax">
-                  팩스 :
-                  <b>
-                    {{ founderConsult.space.companyDistricts[0].company.fax }}
-                  </b>
-                </li>
-                <li
-                  v-if="
-                    founderConsult.space.companyDistricts[0].company.website
-                  "
-                >
-                  웹사이트 :
-                  <a
-                    :href="
-                      founderConsult.space.companyDistricts[0].company.website
-                    "
-                    target="_blank"
-                  >
-                    <b>
-                      {{
-                        founderConsult.space.companyDistricts[0].company.website
-                      }}
-                    </b>
-                  </a>
-                </li>
-                <li>
-                  사업 등록번호 :
-                  <b>
-                    {{
-                      founderConsult.space.companyDistricts[0].company
-                        .businessNo
-                    }}
-                  </b>
-                </li> 
-                <li>
-                  승인 상태:
-                  <span class="badge badge-pill badge-warning p-2 mr-2">
-                    {{
-                      founderConsult.space.companyDistricts[0].company
-                        .codeManagement.value
-                    }}
-                  </span>
-                </li>
-                -->
                 <li>
                   지점명 :
                   <b>{{ founderConsult.space.companyDistricts[0].nameKr }}</b>
@@ -239,8 +187,8 @@
             </div>
           </template>
         </BaseCard>
-      </b-col>
-      <b-col md="4" class="my-3">
+      </b-col> -->
+      <b-col md="6" class="my-3">
         <BaseCard title="공간 정보">
           <template v-slot:body>
             <div v-if="founderConsult.space">
@@ -287,7 +235,7 @@
           </template>
         </BaseCard>
       </b-col>
-      <b-col md="8" class="my-3">
+      <b-col md="6" class="my-3">
         <BaseCard title="상담 상세 정보">
           <template v-slot:head>
             <div v-if="founderConsult.createdAt">

@@ -130,7 +130,7 @@
                   }"
                   class="btn btn-outline-info"
                 >
-                  방문 신청 내용 보기
+                  상담 신청 내용 보기
                 </router-link>
                 <router-link
                   :to="{

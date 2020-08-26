@@ -27,7 +27,7 @@
     </b-row>
     <b-row class="my-0">
       <b-col lg="4" class="my-3">
-        <BaseCard title="배달형 방문자 신청">
+        <BaseCard title="배달형 상담 신청">
           <template v-slot:body>
             <DashboardDeliveryConsultGraph />
           </template>
@@ -36,14 +36,14 @@
       <b-col lg="8">
         <b-row>
           <b-col md="6" class="my-3">
-            <BaseCard title="식당형 방문자 신청">
+            <BaseCard title="식당형 상담 신청">
               <template v-slot:body>
                 <DashboardGraph />
               </template>
             </BaseCard>
           </b-col>
           <b-col md="6" class="my-3">
-            <BaseCard title="식당형 지역별 방문 신청 추이">
+            <BaseCard title="식당형 지역별 신청 추이">
               <template v-slot:head>
                 <div>
                   <router-link
@@ -63,7 +63,7 @@
     </b-row>
     <b-row class="my-0">
       <b-col lg="6" class="my-3">
-        <BaseCard title="최신 배달형 방문자 신청" no-body>
+        <BaseCard title="최신 배달형 상담 신청" no-body>
           <template v-slot:head>
             <router-link
               to="/delivery-founder-consult"
@@ -75,7 +75,7 @@
         </BaseCard>
       </b-col>
       <b-col lg="6" class="my-3">
-        <BaseCard title="최신 식당형 방문자 신청" no-body>
+        <BaseCard title="최신 식당형 상담 신청" no-body>
           <template v-slot:head>
             <router-link
               to="/founder-consult"

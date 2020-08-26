@@ -10,7 +10,7 @@ const componentsRouter: RouteConfig[] = [
     children: [
       {
         path: '/nanuda-user',
-        name: '사용자 관리',
+        name: 'NanudaUserList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/nanuda-user/components/NanudaUserList.vue'
@@ -31,7 +31,7 @@ const componentsRouter: RouteConfig[] = [
     children: [
       {
         path: '/brand',
-        name: '브랜드 관리',
+        name: 'BrandList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/brand/components/BrandList.vue'
@@ -67,7 +67,7 @@ const componentsRouter: RouteConfig[] = [
     children: [
       {
         path: '/company',
-        name: '업체 관리',
+        name: 'CompanyList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/company/components/CompanyList.vue'
@@ -76,7 +76,7 @@ const componentsRouter: RouteConfig[] = [
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '업체관리',
+          title: '업체 관리',
         },
       },
       {
@@ -91,7 +91,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
-          title: '업체관리',
+          title: '업체 관리',
         },
       },
       {
@@ -154,7 +154,7 @@ const componentsRouter: RouteConfig[] = [
       },
       {
         path: '/company/delivery-space',
-        name: '지점 타입 관리',
+        name: 'DeliverySpaceList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/delivery-space/components/DeliverySpaceList.vue'
@@ -185,7 +185,7 @@ const componentsRouter: RouteConfig[] = [
   },
   {
     path: '/founder-consult',
-    name: '방문자 신청',
+    name: '상담 신청',
     component: () => import('../../modules/founder-consult/FounderConsult.vue'),
     children: [
       {
@@ -195,12 +195,12 @@ const componentsRouter: RouteConfig[] = [
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/founder-consult/components/FounderConsultList.vue'
           ),
-        name: '방문자 신청 관리',
+        name: 'FounderConsultList',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '방문자 신청',
+          title: '식당형 상담 신청 관리',
         },
       },
       {
@@ -215,7 +215,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
-          title: '방문자 신청',
+          title: '식당형 상담 신청 상세',
         },
       },
       {
@@ -225,12 +225,12 @@ const componentsRouter: RouteConfig[] = [
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/delivery-founder-consult/components/DeliveryFounderConsultList.vue'
           ),
-        name: '배달형 방문자 신청 관리',
+        name: 'DeliveryFounderConsultList',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '배달형 방문자 신청',
+          title: '배달형 상담 신청 관리',
         },
       },
       {
@@ -245,7 +245,7 @@ const componentsRouter: RouteConfig[] = [
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
           detailPage: true,
-          title: '배달형 방문자 신청',
+          title: '배달형 상담 신청 상세',
         },
       },
       {
@@ -255,12 +255,12 @@ const componentsRouter: RouteConfig[] = [
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/delivery-founder-consult-contract/components/DeliveryFounderConsultContractList.vue'
           ),
-        name: '배달형 계약 관리',
+        name: 'DeliveryFounderConsultContractList',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '배달형 계약',
+          title: '배달형 계약 내역 관리',
         },
       },
       {
@@ -287,7 +287,7 @@ const componentsRouter: RouteConfig[] = [
     children: [
       {
         path: '/amenity',
-        name: '시설 관리',
+        name: 'AmenityList',
         component: () =>
           import(
             /* webpackChunkName: "lazyLoaded" */ '../../modules/amenity/components/AmenityList.vue'
@@ -344,12 +344,12 @@ const componentsRouter: RouteConfig[] = [
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/notice-board/components/NoticeBoardCreate.vue'
           ),
-        name: '공지사항 생성',
+        name: 'NoticeBoardCreate',
         meta: {
           authRequired: true,
           layout: 'MainLayout',
           roles: [...CONST_ADMIN_USER],
-          title: '공지사항 생성',
+          title: '공지사항 작성',
         },
       },
     ],
@@ -366,7 +366,7 @@ const componentsRouter: RouteConfig[] = [
             /* webpackChunkName: "lazyLoaded" */
             '../../modules/inquiry/components/InquiryList.vue'
           ),
-        name: 'Q&A 관리',
+        name: 'InquiryList',
         meta: {
           authRequired: true,
           layout: 'MainLayout',

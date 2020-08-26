@@ -2,7 +2,7 @@
   <section v-if="deliveryFounderConsult">
     <SectionTitle
       :title="
-        `${deliveryFounderConsult.deliverySpaces.typeName} - 방문
+        `${deliveryFounderConsult.deliverySpaces.typeName} - 상담
           신청`
       "
     >
@@ -66,7 +66,7 @@
                   </b>
                 </li>
                 <li v-if="deliveryFounderConsult.nanudaUser.remainVisitCount">
-                  남은 공간 방문 신청 횟수 :
+                  남은 공간 신청 횟수 :
                   <b>{{
                     deliveryFounderConsult.nanudaUser.remainVisitCount
                   }}</b>

@@ -88,7 +88,7 @@
           />
         </div>
       </div>
-      <div class="form-row">
+      <!-- <div class="form-row">
         <div class="col-12 mb-3">
           <label for="">파일첨부</label>
           <div class="custom-file">
@@ -105,9 +105,9 @@
             >
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div
+      <!-- <div
         v-if="attachments && attachments.length > 0"
         class="board-view-attatchments"
       >
@@ -125,7 +125,7 @@
             <b-icon icon="cloud-download" class="ml-2"></b-icon>
           </a>
         </span>
-      </div>
+      </div> -->
       <div class="text-center mt-4">
         <b-row
           no-gutters
@@ -215,19 +215,19 @@ export default class NoticeBoardCreate extends BaseComponent {
     this.noticeBoardCreateDto = new NoticeBoardDto();
   }
 
-  async upload(files: FileList) {
-    const attaching = await FileUploadService.upload(
-      UPLOAD_TYPE.INQUIRY,
-      files,
-    );
-    this.attachments.push(
-      ...attaching.filter(
-        fileAttachment =>
-          fileAttachment.attachmentReasonType ===
-          ATTACHMENT_REASON_TYPE.SUCCESS,
-      ),
-    );
-  }
+  // async upload(files: FileList) {
+  //   const attaching = await FileUploadService.upload(
+  //     UPLOAD_TYPE.INQUIRY,
+  //     files,
+  //   );
+  //   this.attachments.push(
+  //     ...attaching.filter(
+  //       fileAttachment =>
+  //         fileAttachment.attachmentReasonType ===
+  //         ATTACHMENT_REASON_TYPE.SUCCESS,
+  //     ),
+  //   );
+  // }
 
   create() {
     NoticeBoardService.create(this.noticeBoardCreateDto).subscribe(res => {
@@ -239,9 +239,3 @@ export default class NoticeBoardCreate extends BaseComponent {
   }
 }
 </script>
-<style lang="scss" scoped>
-.board-view-attatchments {
-  .attatchment-item {
-  }
-}
-</style>
