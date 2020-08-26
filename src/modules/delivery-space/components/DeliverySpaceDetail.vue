@@ -93,15 +93,24 @@
           >
             창업 가능 브랜드
             <div class="mt-2">
-              <b-img-lazy
+              <router-link
+                :to="{
+                  name: 'BrandDetail',
+                  params: {
+                    id: brand.no,
+                  },
+                }"
                 v-for="brand in deliverySpaceDto.brands"
-                :src="brand.logo[0].endpoint"
-                :alt="brand.logo[0].nameKr"
                 :key="brand.logo[0].no"
-                style="max-height:40px"
-                class="border m-1"
+                class="d-inline-block border m-1"
               >
-              </b-img-lazy>
+                <b-img-lazy
+                  :src="brand.logo[0].endpoint"
+                  :alt="brand.logo[0].nameKr"
+                  style="max-height:40px"
+                >
+                </b-img-lazy>
+              </router-link>
             </div>
           </div>
           <div
