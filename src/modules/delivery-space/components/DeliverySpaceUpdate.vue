@@ -269,6 +269,8 @@ export default class DeliverySpaceUpdate extends BaseComponent {
   private changedImage = false;
   private dataLoading = false;
 
+  private delSpace = new DeliverySpaceDto();
+
   // get common facility list
   getSpaceOptions() {
     DeliverySpaceService.findSpaceOption().subscribe(res => {
@@ -422,7 +424,10 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       if (res) {
         this.changedImage = false;
         this.deliverySpaceUpdateDto = new DeliverySpaceUpdateDto();
-        DeliverySpaceService.findOne(this.$route.params.id);
+        DeliverySpaceService.findOne(this.$route.params.id).subscribe(res => {
+          this.newImages = [];
+          this.deliverySpaceUpdateDto = res.data;
+        });
         this.$root.$emit('find_delivery_space');
         toast.success('수정완료');
       }
