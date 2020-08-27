@@ -3,7 +3,6 @@
     id="add_delivery_space"
     size="xl"
     title="타입 추가"
-    scrollable
     @cancel="clearOut()"
     @ok="create()"
   >
@@ -172,7 +171,10 @@
             >이미지 추가</label
           >
         </div>
-        <div v-if="attachments && attachments.length > 0" class="mt-2">
+        <div
+          v-if="attachments && attachments.length > 0"
+          class="attatchments-list mt-2"
+        >
           <b-form-row no-gutters>
             <b-col
               cols="2"
@@ -180,12 +182,20 @@
               :key="attachment.originFileName"
               class="p-2"
             >
-              <b-img
-                :src="attachment.endpoint"
-                alt
-                style="max-width:100%"
-                class="border rounded"
-              />
+              <div class="attatchments-list-item">
+                <b-img
+                  :src="attachment.endpoint"
+                  alt
+                  style="max-width:100%"
+                  class="border rounded"
+                />
+                <b-icon
+                  icon="x-circle-fill"
+                  variant="danger"
+                  class="btn-delete-item"
+                  @click="deleteImages(attachment)"
+                ></b-icon>
+              </div>
             </b-col>
           </b-form-row>
         </div>
@@ -236,6 +246,16 @@ export default class DeliverySpaceCreate extends BaseComponent {
   private companyDistrictDto = new CompanyDistrictDto();
   private districtSelect: CompanyDistrictDto[] = [];
   private spaceOptions: DeliverySpaceOptionDto[] = [];
+
+  // delete images
+  deleteImages(image) {
+    if (this.attachments.includes(image)) {
+      const index = this.attachments.indexOf(image);
+      if (index > -1) {
+        this.attachments.splice(index, 1);
+      }
+    }
+  }
 
   // get brand
   getBrands() {
