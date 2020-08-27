@@ -406,6 +406,14 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       this.deliverySpaceUpdateDto.images = this.uploadImages;
       this.deliverySpaceUpdateDto.newImages = this.newImages;
     }
+    if (
+      this.uploadImages &&
+      this.uploadImages.length === 0 &&
+      this.newImages &&
+      this.newImages.length > 0
+    ) {
+      this.deliverySpaceUpdateDto.newImages = this.newImages;
+    }
 
     DeliverySpaceService.update(
       this.$route.params.id,
