@@ -92,16 +92,24 @@
               {{ inquiry.no }}
             </th>
             <td>
-              {{ inquiry.codeManagement.value }}
+              <div v-if="inquiry.codeManagement.value">
+                {{ inquiry.codeManagement.value }}
+              </div>
             </td>
             <td>
-              {{ inquiry.title }}
+              <div v-if="inquiry.title">
+                {{ inquiry.title }}
+              </div>
             </td>
             <td>
-              {{ inquiry.company.nameKr }}
+              <div v-if="inquiry.company && inquiry.company.nameKr">
+                {{ inquiry.company.nameKr }}
+              </div>
             </td>
             <td>
-              {{ inquiry.companyUser.name }}
+              <div v-if="inquiry.companyUser && inquiry.companyUser.name">
+                {{ inquiry.companyUser.name }}
+              </div>
             </td>
             <td>
               {{ inquiry.createdAt | dateTransformer }}
