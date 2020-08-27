@@ -174,9 +174,9 @@
         >상담 신청 추가</b-button
       >
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered table-responsive">
       <table
-        class="table table-bordered table-hover table-sm table-responsive-sm text-center"
+        class="table  table-hover table-sm  text-center"
         v-if="deliveryFounderConsultListCount"
       >
         <thead>
@@ -285,7 +285,9 @@
             <th scope="row">{{ founderConsult.no }}</th>
             <td>{{ founderConsult.deliverySpaceNo }}</td>
             <td>{{ founderConsult.nanudaUser.name }}</td>
-            <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
+            <td class="text-nowrap">
+              {{ founderConsult.nanudaUser.phone | phoneTransformer }}
+            </td>
             <td>
               <div v-if="founderConsult.nanudaUser.genderInfo">
                 {{ founderConsult.nanudaUser.genderInfo.value }}
@@ -330,9 +332,11 @@
               <div v-else>-</div>
             </td>
             <td>
-              <b-badge variant="warning" class="badge-pill p-2">
-                {{ founderConsult.codeManagement.value }}
-              </b-badge>
+              <b-badge
+                :variant="getStatusColor(founderConsult.codeManagement.key)"
+                class="badge-pill p-2 mr-2"
+                >{{ founderConsult.codeManagement.value }}</b-badge
+              >
             </td>
             <td
               v-if="
@@ -582,6 +586,8 @@ import NanudaUserList from './NanudaUserList.vue';
 
 import toast from '../../../../resources/assets/js/services/toast.js';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 import {
   AdminDto,
   CompanyDto,
@@ -639,6 +645,11 @@ export default class DeliveryFounderConsult extends BaseComponent {
 
   private userData = new NanudaUserDto(BaseUser);
   private nanudaUserData = '';
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   getAdmin() {
     AdminService.findForSelect().subscribe(res => {

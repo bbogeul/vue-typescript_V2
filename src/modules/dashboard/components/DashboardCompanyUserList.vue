@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!dataLoading">
-    <table class="table table-hover" v-if="companyUserListCount">
+  <div v-if="!dataLoading" class="table-responsive">
+    <table class="table table-hover table-nowrap" v-if="companyUserListCount">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -29,9 +29,11 @@
           <td>{{ companyUser.phone | phoneTransformer }}</td>
 
           <td>
-            <span class="badge badge-pill badge-warning p-2">{{
-              companyUser.codeManagement.value
-            }}</span>
+            <b-badge
+              :variant="getStatusColor(companyUser.codeManagement.key)"
+              class="badge-pill p-2 mr-2"
+              >{{ companyUser.codeManagement.value }}</b-badge
+            >
           </td>
         </tr>
       </tbody>
@@ -57,6 +59,8 @@ import {
 import { Pagination } from '../../../common';
 import { APPROVAL_STATUS } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'DashboardCompanyUserList',
 })
@@ -66,6 +70,11 @@ export default class DashboardCompanyUserList extends BaseComponent {
   private companyUserListDto = new CompanyUserListDto();
   private companyUserListCount = null;
   private dataLoading = false;
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   // TODO: 등록 승인 요청, 수정 승인 요청 건 둘다 노출 필요
   getUserWithUpdateStatus() {

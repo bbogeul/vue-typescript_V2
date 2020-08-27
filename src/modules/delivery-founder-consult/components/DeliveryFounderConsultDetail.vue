@@ -1,6 +1,7 @@
 <template>
   <section v-if="deliveryFounderConsult">
     <SectionTitle
+      v-if="deliveryFounderConsult.deliverySpaces"
       :title="
         `${deliveryFounderConsult.deliverySpaces.typeName} - 상담
           신청`
@@ -220,12 +221,19 @@
                 </li>
                 <li>
                   승인 상태 :
-                  <b-badge variant="warning" class="badge-pill p-2">
-                    {{
+                  <b-badge
+                    :variant="
+                      getStatusColor(
+                        deliveryFounderConsult.deliverySpaces.companyDistrict
+                          .companyDistrictStatus,
+                      )
+                    "
+                    class="badge-pill p-2 mr-2"
+                    >{{
                       deliveryFounderConsult.deliverySpaces.companyDistrict
                         .companyDistrictStatus | enumTransformer
-                    }}
-                  </b-badge>
+                    }}</b-badge
+                  >
                 </li>
               </ul>
             </div>
@@ -408,9 +416,17 @@
                   </li>
                   <li>
                     신청 상태 :
-                    <b-badge variant="warning" class="badge-pill p-2">
-                      {{ deliveryFounderConsult.codeManagement.value }}
-                    </b-badge>
+                    <b-badge
+                      :variant="
+                        getStatusColor(
+                          deliveryFounderConsult.codeManagement.key,
+                        )
+                      "
+                      class="badge-pill p-2 mr-2"
+                      >{{
+                        deliveryFounderConsult.codeManagement.value
+                      }}</b-badge
+                    >
                     <span
                       class="ml-1"
                       v-if="deliveryFounderConsult.deliveredAt"
@@ -450,11 +466,17 @@
                   </li>
                   <li v-if="deliveryFounderConsult.companyDecisionStatusCode">
                     업체 지정 상태 :
-                    <b-badge variant="primary" class="badge-pill p-2">
-                      {{
+                    <b-badge
+                      :variant="
+                        getStatusColor(
+                          deliveryFounderConsult.companyDecisionStatusCode.key,
+                        )
+                      "
+                      class="badge-pill p-2 mr-2"
+                      >{{
                         deliveryFounderConsult.companyDecisionStatusCode.value
-                      }}
-                    </b-badge>
+                      }}</b-badge
+                    >
                   </li>
                   <li
                     v-if="
@@ -706,6 +728,8 @@ import {
   CONST_FOUNDER_CONSULT,
 } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'DeliveryFounderConsultDetail',
   components: {
@@ -732,6 +756,11 @@ export default class FounderConsultDetail extends BaseComponent {
   private elapsedTime = null;
   private deliveredTime = new Date();
   private createdTime = new Date();
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   // 사용자 정보 수정
   updateNanudaUser() {

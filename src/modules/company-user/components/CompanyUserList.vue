@@ -88,9 +88,9 @@
         >업체 사용자 추가</b-button
       >
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered table-responsive">
       <table
-        class="table table-bordered table-hover table-sm text-center"
+        class="table  table-hover table-sm text-center"
         v-if="companyUserListTotalCount"
       >
         <thead>
@@ -144,8 +144,8 @@
         <tbody>
           <tr v-for="companyUser in companyUserListDto" :key="companyUser.no">
             <th scope="row">{{ companyUser.no }}</th>
-            <td>{{ companyUser.company.nameKr }}</td>
-            <td>
+            <td class="text-nowrap">{{ companyUser.company.nameKr }}</td>
+            <td class="text-nowrap">
               <strong
                 class="text-danger"
                 v-if="companyUser.authCode === companyUserAdminRole[0]"
@@ -153,7 +153,9 @@
               >
               {{ companyUser.name }}
             </td>
-            <td>{{ companyUser.phone | phoneTransformer }}</td>
+            <td class="text-nowrap">
+              {{ companyUser.phone | phoneTransformer }}
+            </td>
             <td>{{ companyUser.email }}</td>
             <td>
               {{ companyUser.createdAt | dateTransformer }}
@@ -166,7 +168,7 @@
                 {{ companyUser.codeManagement.value }}
               </b-badge>
             </td>
-            <td>
+            <td class="text-nowrap">
               <router-link
                 v-if="companyUser.no"
                 class="btn btn-sm btn-secondary"

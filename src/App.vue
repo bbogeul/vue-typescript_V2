@@ -112,6 +112,14 @@ img {
 
 .table {
   margin-bottom: 0;
+
+  &.table-nowrap {
+    th,
+    td {
+      white-space: nowrap;
+    }
+  }
+
   th,
   td {
     vertical-align: middle;

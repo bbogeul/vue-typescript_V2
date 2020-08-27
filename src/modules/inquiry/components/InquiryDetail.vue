@@ -184,5 +184,13 @@ export default class InquiryDetail extends BaseComponent {
       }
     }
   }
+  @media screen and (max-width: 1023px) {
+    .board-view-header {
+      display: block;
+    }
+    .board-view-info {
+      margin-top: 1em;
+    }
+  }
 }
 </style>

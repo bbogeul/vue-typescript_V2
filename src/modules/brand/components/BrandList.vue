@@ -15,7 +15,8 @@
               v-for="category in foodCategorySelect"
               :key="category.code"
               :value="category.nameKr"
-            >{{ category.nameKr }}</option>
+              >{{ category.nameKr }}</option
+            >
           </datalist>
         </div>
         <div class="col-md-3 mb-3">
@@ -28,9 +29,7 @@
           <select class="custom-select" v-model="brandSearchDto.showYn">
             <option value>전체</option>
             <option v-for="yn in ynSelect" :key="yn" :value="yn">
-              {{
-              yn | enumTransformer
-              }}
+              {{ yn | enumTransformer }}
             </option>
           </select>
         </div>
@@ -52,8 +51,8 @@
       </div>
       <b-button variant="primary" v-b-modal.add_brand>브랜드 추가</b-button>
     </div>
-    <div v-if="!dataLoading">
-      <table class="table table-sm table-bordered table-hover" v-if="brandListCount">
+    <div v-if="!dataLoading" class="table-bordered  table-responsive">
+      <table class="table table-sm table-hover" v-if="brandListCount">
         <thead>
           <th scope="row">NO</th>
           <th
@@ -61,21 +60,27 @@
             v-bind:class="{
               highlighted: brandSearchDto.categoryName,
             }"
-          >업종</th>
+          >
+            업종
+          </th>
           <th scope="row">로고</th>
           <th
             scope="row"
             v-bind:class="{
               highlighted: brandSearchDto.nameKr,
             }"
-          >브랜드명</th>
+          >
+            브랜드명
+          </th>
           <th scope="row">설명</th>
           <th
             scope="row"
             v-bind:class="{
               highlighted: brandSearchDto.showYn,
             }"
-          >노출 여부</th>
+          >
+            노출 여부
+          </th>
         </thead>
         <tbody>
           <tr
@@ -86,7 +91,7 @@
           >
             <td>{{ brand.no }}</td>
             <td>{{ brand.category.nameKr }}</td>
-            <td>
+            <td style="width:80px">
               <div v-if="brand.logo && brand.logo.length > 0">
                 <div v-for="logo in brand.logo" :key="logo.endpoint">
                   <b-img-lazy
@@ -103,26 +108,24 @@
             </td>
             <td>
               <b-badge :variant="brand.showYn === 'Y' ? 'success' : 'danger'">
-                {{
-                brand.showYn
-                }}
+                {{ brand.showYn }}
               </b-badge>
             </td>
           </tr>
         </tbody>
       </table>
       <div v-else class="empty-data border">검색결과가 없습니다.</div>
-      <b-pagination
-        v-model="pagination.page"
-        v-if="brandListCount"
-        pills
-        :total-rows="brandListCount"
-        :per-page="pagination.limit"
-        @input="paginateSearch()"
-        class="mt-4 justify-content-center"
-      ></b-pagination>
     </div>
-    <div class="half-circle-spinner mt-5" v-else>
+    <b-pagination
+      v-model="pagination.page"
+      v-if="brandListCount"
+      pills
+      :total-rows="brandListCount"
+      :per-page="pagination.limit"
+      @input="paginateSearch()"
+      class="mt-4 justify-content-center"
+    ></b-pagination>
+    <div class="half-circle-spinner mt-5" v-if="dataLoading">
       <div class="circle circle-1"></div>
       <div class="circle circle-2"></div>
     </div>
@@ -135,7 +138,10 @@
     >
       <div v-if="brandLogo && brandLogo.length > 0" class="mb-4">
         <div v-for="logo in brandLogo" :key="logo.endpoint">
-          <img :src="logo.endpoint" class="rounded mx-auto d-block company-logo" />
+          <img
+            :src="logo.endpoint"
+            class="rounded mx-auto d-block company-logo"
+          />
         </div>
       </div>
       <b-form-row>
@@ -153,7 +159,8 @@
               v-for="category in foodCategorySelect"
               :key="category.code"
               :value="category.no"
-            >{{ category.nameKr }}</option>
+              >{{ category.nameKr }}</option
+            >
           </select>
         </b-col>
         <b-col cols="12" md="6" class="mb-3">
@@ -169,7 +176,9 @@
               lang="kr"
               v-on:change="upload($event.target.files)"
             />
-            <label class="custom-file-label" for="customFileLang">로고 추가</label>
+            <label class="custom-file-label" for="customFileLang"
+              >로고 추가</label
+            >
           </div>
         </b-col>
         <b-col cols="12" md="6" class="mb-3">

@@ -1,6 +1,9 @@
 <template>
-  <div v-if="!dataLoading">
-    <table class="table table-hover table-md text-center" v-if="founderConsultListCount">
+  <div v-if="!dataLoading" class="table-responsive">
+    <table
+      class="table table-hover table-md table-nowrap text-center"
+      v-if="founderConsultListCount"
+    >
       <thead>
         <tr>
           <th scope="col">공간 ID</th>
@@ -24,20 +27,32 @@
           <td>{{ founderConsult.nanudaUser.name }}</td>
           <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
 
-          <td
-            v-if="founderConsult.deliverySpaces.companyDistrict"
-          >{{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}</td>
+          <td v-if="founderConsult.deliverySpaces.companyDistrict">
+            {{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}
+          </td>
           <td>
-            <div v-if="founderConsult.availableTime">{{ founderConsult.availableTime.value }}</div>
+            <div v-if="founderConsult.availableTime">
+              {{ founderConsult.availableTime.value }}
+            </div>
           </td>
           <td
-            v-if="founderConsult.deliverySpaces && founderConsult.deliverySpaces.contracts"
-          >{{founderConsult.deliverySpaces.quantity - founderConsult.deliverySpaces.contracts.length}}/{{founderConsult.deliverySpaces.quantity}}</td>
+            v-if="
+              founderConsult.deliverySpaces &&
+                founderConsult.deliverySpaces.contracts
+            "
+          >
+            {{
+              founderConsult.deliverySpaces.quantity -
+                founderConsult.deliverySpaces.contracts.length
+            }}/{{ founderConsult.deliverySpaces.quantity }}
+          </td>
           <td>{{ founderConsult.createdAt | dateTransformer }}</td>
           <td>
-            <span
-              class="badge badge-pill badge-warning p-2"
-            >{{ founderConsult.codeManagement.value }}</span>
+            <b-badge
+              :variant="getStatusColor(founderConsult.codeManagement.key)"
+              class="badge-pill p-2 mr-2"
+              >{{ founderConsult.codeManagement.value }}</b-badge
+            >
           </td>
         </tr>
       </tbody>
@@ -60,6 +75,8 @@ import {
 } from '../../../dto/delivery-founder-consult';
 import { SPACE_TYPE } from '@/services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'DashboardFounderConsultList',
 })
@@ -69,6 +86,11 @@ export default class DashboardFounderConsultList extends BaseComponent {
   private pagination = new Pagination();
   private founderConsultListDto = new DeliveryFounderConsultListDto();
   private dataLoading = false;
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   //TODO:  need to refactor base service
   getDashboardList() {

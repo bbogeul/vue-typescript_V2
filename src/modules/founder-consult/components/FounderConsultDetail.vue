@@ -297,9 +297,13 @@
                   </li>
                   <li>
                     신청 상태 :
-                    <b-badge variant="warning" class="badge-pill p-2">{{
-                      founderConsult.codeManagement.value
-                    }}</b-badge>
+                    <b-badge
+                      :variant="
+                        getStatusColor(founderConsult.codeManagement.key)
+                      "
+                      class="badge-pill p-2 mr-2"
+                      >{{ founderConsult.codeManagement.value }}</b-badge
+                    >
                     <span class="ml-1" v-if="founderConsult.deliveredAt"
                       >({{
                         founderConsult.deliveredAt | dateTransformer
@@ -588,6 +592,8 @@ import {
   CONST_FOUNDER_CONSULT,
 } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'FounderConsultDetail',
   components: {
@@ -614,6 +620,11 @@ export default class FounderConsultDetail extends BaseComponent {
   private elapsedTime = null;
   private deliveredTime = new Date();
   private createdTime = new Date();
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   // 사용자 정보 수정
   updateNanudaUser() {

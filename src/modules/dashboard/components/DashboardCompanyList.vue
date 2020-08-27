@@ -1,6 +1,6 @@
 <template>
-  <div v-if="!dataLoading">
-    <table class="table table-hover" v-if="companyListCount">
+  <div v-if="!dataLoading" class="table-responsive">
+    <table class="table table-hover table-nowrap" v-if="companyListCount">
       <thead>
         <tr>
           <th scope="col">ID</th>
@@ -26,10 +26,10 @@
           <td>{{ company.ceoKr }}</td>
           <td>{{ company.phone | phoneTransformer }}</td>
           <td>
-            <span
-              class="badge badge-pill badge-warning p-2"
-              v-if="company.codeManagement"
-              >{{ company.codeManagement.value }}</span
+            <b-badge
+              :variant="getStatusColor(company.codeManagement.key)"
+              class="badge-pill p-2 mr-2"
+              >{{ company.codeManagement.value }}</b-badge
             >
           </td>
         </tr>
@@ -50,6 +50,8 @@ import { CompanyDto, CompanyListDto } from '../../../dto';
 import { Pagination } from '../../../common';
 import { APPROVAL_STATUS } from '../../../services/shared';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 @Component({
   name: 'DashboardCompanyList',
 })
@@ -59,6 +61,11 @@ export default class DashboardCompanyList extends BaseComponent {
   private companyListCount = null;
   private companyDto: CompanyDto[] = [];
   private dataLoading = false;
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   getCompanyUpdateStatusList() {
     this.dataLoading = true;

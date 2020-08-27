@@ -48,7 +48,7 @@
       </div>
     </div>
     <table
-      class="table table-bordered table-hover table-sm text-center"
+      class="table table-bordered table-hover table-sm text-center table-nowrap"
       v-if="!dataLoading"
     >
       <colgroup>

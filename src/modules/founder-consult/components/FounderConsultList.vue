@@ -197,9 +197,9 @@
         </h5>
       </div>
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered table-responsive">
       <table
-        class="table table-bordered table-hover table-sm table-responsive text-center"
+        class="table  table-hover table-sm text-center"
         v-if="founderConsultListCount"
       >
         <thead>
@@ -310,7 +310,9 @@
             </td>
             <!-- <td>{{ founderConsult.space.spaceType.displayName }}</td> -->
             <td>{{ founderConsult.nanudaUser.name }}</td>
-            <td>{{ founderConsult.nanudaUser.phone | phoneTransformer }}</td>
+            <td class="text-nowrap">
+              {{ founderConsult.nanudaUser.phone | phoneTransformer }}
+            </td>
             <td>
               <div v-if="founderConsult.nanudaUser.genderInfo">
                 {{ founderConsult.nanudaUser.genderInfo.value }}
@@ -389,9 +391,11 @@
               </div>
             </td>
             <td>
-              <b-badge variant="warning" class="badge-pill p-2">{{
-                founderConsult.codeManagement.value
-              }}</b-badge>
+              <b-badge
+                :variant="getStatusColor(founderConsult.codeManagement.key)"
+                class="badge-pill p-2 mr-2"
+                >{{ founderConsult.codeManagement.value }}</b-badge
+              >
             </td>
             <td>
               <router-link
@@ -444,6 +448,8 @@ import CodeManagementService from '../../../services/code-management.service';
 import FounderConsultService from '../../../services/founder-consult.service';
 import SpaceTypeService from '../../../services/space-type.service';
 
+import { getStatusColor } from '../../../core/utils/status-color.util';
+
 import {
   AdminDto,
   FounderConsultListDto,
@@ -477,6 +483,11 @@ export default class FounderConsult extends BaseComponent {
   private dataLoading = false;
 
   private adminList: AdminDto[] = [];
+
+  // get status color
+  getStatusColor(status) {
+    return getStatusColor(status);
+  }
 
   findAdmin() {
     AdminService.findForSelect().subscribe(res => {

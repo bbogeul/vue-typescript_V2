@@ -54,131 +54,135 @@
       >
     </div>
     <div v-if="!dataLoading">
-      <table
-        class="table table-hover table-sm table-responsive-sm table-bordered"
-        v-if="deliverySpaceListCount"
-      >
-        <thead>
-          <tr>
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: deliverySpaceSearchDto.no }"
-            >
-              ID
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: deliverySpaceSearchDto.companyName }"
-            >
-              업체명
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: deliverySpaceSearchDto.companyDistrictName,
-              }"
-            >
-              지점명
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: deliverySpaceSearchDto.typeName }"
-            >
-              타입명
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: deliverySpaceSearchDto.buildingName,
-              }"
-            >
-              건물명
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: deliverySpaceSearchDto.size }"
-            >
-              평수
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: deliverySpaceSearchDto.deposit }"
-            >
-              보증금
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: deliverySpaceSearchDto.monthlyRentFee,
-              }"
-            >
-              월 임대료
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: deliverySpaceSearchDto.monthlyUtilityFee,
-              }"
-            >
-              월 관리비
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="type in deliverySpaceList" :key="type.no">
-            <td>
-              {{ type.no }}
-            </td>
-            <td>
-              <div v-if="type.companyDistrict.company.nameKr">
-                {{ type.companyDistrict.company.nameKr }}
-              </div>
-            </td>
-            <td>
-              <div v-if="type.companyDistrict.nameKr">
-                {{ type.companyDistrict.nameKr }}
-              </div>
-            </td>
-            <td>
-              <div v-if="type.typeName">
-                {{ type.typeName }}
-              </div>
-            </td>
-            <td>
-              <div v-if="type.buildingName">{{ type.buildingName }}</div>
-            </td>
-            <td v-if="type.size">{{ type.size }} 평</td>
-            <td>
-              <div v-if="type.deposit">{{ type.deposit }} 만원</div>
-            </td>
-            <td>
-              <div v-if="type.monthlyRentFee">
-                {{ type.monthlyRentFee }} 만원
-              </div>
-            </td>
-            <td>
-              <div v-if="type.monthlyUtilityFee">
-                {{ type.monthlyUtilityFee }} 만원
-              </div>
-            </td>
-            <td>
-              <router-link
-                v-if="type.no"
-                class="btn btn-sm btn-secondary text-nowrap"
-                :to="{
-                  name: 'DeliverySpaceDetail',
-                  params: {
-                    id: type.no,
-                  },
-                }"
-                >상세보기</router-link
+      <div class="table-bordered table-responsive">
+        <table
+          class="table table-hover table-sm table-nowrap"
+          v-if="deliverySpaceListCount"
+        >
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                v-bind:class="{ highlighted: deliverySpaceSearchDto.no }"
               >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else class="empty-data border">타입 정보 없음</div>
+                ID
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{
+                  highlighted: deliverySpaceSearchDto.companyName,
+                }"
+              >
+                업체명
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{
+                  highlighted: deliverySpaceSearchDto.companyDistrictName,
+                }"
+              >
+                지점명
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{ highlighted: deliverySpaceSearchDto.typeName }"
+              >
+                타입명
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{
+                  highlighted: deliverySpaceSearchDto.buildingName,
+                }"
+              >
+                건물명
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{ highlighted: deliverySpaceSearchDto.size }"
+              >
+                평수
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{ highlighted: deliverySpaceSearchDto.deposit }"
+              >
+                보증금
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{
+                  highlighted: deliverySpaceSearchDto.monthlyRentFee,
+                }"
+              >
+                월 임대료
+              </th>
+              <th
+                scope="col"
+                v-bind:class="{
+                  highlighted: deliverySpaceSearchDto.monthlyUtilityFee,
+                }"
+              >
+                월 관리비
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="type in deliverySpaceList" :key="type.no">
+              <td>
+                {{ type.no }}
+              </td>
+              <td class="text-nowrap">
+                <div v-if="type.companyDistrict.company.nameKr">
+                  {{ type.companyDistrict.company.nameKr }}
+                </div>
+              </td>
+              <td class="text-nowrap">
+                <div v-if="type.companyDistrict.nameKr">
+                  {{ type.companyDistrict.nameKr }}
+                </div>
+              </td>
+              <td>
+                <div v-if="type.typeName">
+                  {{ type.typeName }}
+                </div>
+              </td>
+              <td>
+                <div v-if="type.buildingName">{{ type.buildingName }}</div>
+              </td>
+              <td v-if="type.size">{{ type.size }} 평</td>
+              <td>
+                <div v-if="type.deposit">{{ type.deposit }} 만원</div>
+              </td>
+              <td>
+                <div v-if="type.monthlyRentFee">
+                  {{ type.monthlyRentFee }} 만원
+                </div>
+              </td>
+              <td>
+                <div v-if="type.monthlyUtilityFee">
+                  {{ type.monthlyUtilityFee }} 만원
+                </div>
+              </td>
+              <td>
+                <router-link
+                  v-if="type.no"
+                  class="btn btn-sm btn-secondary text-nowrap"
+                  :to="{
+                    name: 'DeliverySpaceDetail',
+                    params: {
+                      id: type.no,
+                    },
+                  }"
+                  >상세보기</router-link
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-else class="empty-data border">타입 정보 없음</div>
+      </div>
       <b-pagination
         v-model="pagination.page"
         v-if="deliverySpaceListCount"

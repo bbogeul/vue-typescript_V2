@@ -83,9 +83,9 @@
         >공지사항 등록</b-button
       >
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered table-responsive">
       <table
-        class="table table-bordered table-hover table-sm text-center"
+        class="table  table-hover table-sm table-nowrap text-center"
         v-if="noticeBoardListCount"
       >
         <colgroup>

@@ -83,11 +83,8 @@
         >업체 지점 추가</b-button
       >
     </div>
-    <div v-if="!dataLoading">
-      <table
-        class="table table-sm table-hover table-bordered table-responsive-sm table-border"
-        v-if="companyDistrictListCount"
-      >
+    <div v-if="!dataLoading" class="table-bordered table-responsive ">
+      <table class="table table-sm table-hover" v-if="companyDistrictListCount">
         <thead>
           <tr>
             <th
@@ -146,7 +143,7 @@
             <th scope="row">{{ district.no }}</th>
             <td>{{ district.company.nameKr }}</td>
             <td>{{ district.nameKr }}</td>
-            <td>{{ district.address }}</td>
+            <td class="text-left">{{ district.address }}</td>
             <td>
               {{ district.createdAt | dateTransformer }}
               <!-- <br />

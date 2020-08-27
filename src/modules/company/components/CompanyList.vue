@@ -90,9 +90,9 @@
         >업체 추가</b-button
       >
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered table-responsive">
       <table
-        class="table table-bordered table-hover table-sm table-responsive-md text-center"
+        class="table  table-hover table-sm  text-center"
         v-if="companyListTotalCount"
       >
         <thead>
@@ -153,9 +153,9 @@
             <th scope="row">{{ company.no }}</th>
             <td class="text-nowrap">{{ company.nameKr }}</td>
             <td class="text-nowrap">{{ company.ceoKr }}</td>
-            <td>{{ company.phone | phoneTransformer }}</td>
+            <td class="text-nowrap">{{ company.phone | phoneTransformer }}</td>
             <td>{{ company.email }}</td>
-            <td>
+            <td class="text-nowrap">
               {{ company.fax | phoneTransformer }}
             </td>
             <td class="text-left">{{ company.address }}</td>

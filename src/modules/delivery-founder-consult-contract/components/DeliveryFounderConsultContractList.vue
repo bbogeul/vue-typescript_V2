@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="title pb-2 mb-2">
-      <h3>배달형 계약 내역</h3>
+      <h3>배달형 계약 내역 관리</h3>
     </div>
     <div class="divider"></div>
     <div class="search-box my-4" v-on:keyup.enter="search()">
@@ -56,9 +56,9 @@
         </h5>
       </div>
     </div>
-    <div v-if="!dataLoading">
+    <div v-if="!dataLoading" class="table-bordered  table-responsive">
       <table
-        class="table table-sm table-hover table-bordered table-responsive-sm table-border"
+        class="table table-sm table-hover table-nowrap"
         v-if="deliveryFounderConsultContractListCount"
       >
         <thead>
@@ -157,7 +157,9 @@
             <td>{{ contract.deliverySpace.companyDistrict.nameKr }}</td>
             <td>{{ contract.deliverySpace.typeName }}</td>
             <td>{{ contract.nanudaUser.name }}</td>
-            <td>{{ contract.nanudaUser.phone | phoneTransformer }}</td>
+            <td class="text-nowrap">
+              {{ contract.nanudaUser.phone | phoneTransformer }}
+            </td>
             <!-- <td>
               {{ contract.createdAt | dateTransformer }}
             </td> -->
