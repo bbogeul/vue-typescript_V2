@@ -159,11 +159,11 @@
           >
         </div>
         <div v-if="!dataLoading">
-          <div
-            v-if="uploadImages && uploadImages.length > 0"
-            class="attatchments-list mt-2"
-          >
-            <b-form-row no-gutters>
+          <b-form-row no-gutters>
+            <div
+              v-if="uploadImages && uploadImages.length > 0"
+              class="attatchments-list mt-2"
+            >
               <b-col
                 cols="2"
                 v-for="images in uploadImages"
@@ -177,16 +177,42 @@
                     style="max-width:100%"
                     class="border rounded"
                   />
-                  <!-- <b-icon
+                  <b-icon
                     icon="backspace-fill"
                     variant="danger"
                     class="btn-delete-item"
-                    @click="deleteImages(images)"
-                  ></b-icon> -->
+                    @click="deleteOldImages(images)"
+                  ></b-icon>
                 </div>
               </b-col>
-            </b-form-row>
-          </div>
+            </div>
+            <div
+              v-if="newImages && newImages.length > 0"
+              class="attatchments-list mt-2"
+            >
+              <b-col
+                cols="2"
+                v-for="images in newImages"
+                :key="images.originFileName"
+                class="p-2"
+              >
+                <div class="attatchments-list-item">
+                  <b-img
+                    :src="images.endpoint"
+                    alt
+                    style="max-width:100%"
+                    class="border rounded"
+                  />
+                  <b-icon
+                    icon="backspace-fill"
+                    variant="danger"
+                    class="btn-delete-item"
+                    @click="deleteNewImages(images)"
+                  ></b-icon>
+                </div>
+              </b-col>
+            </div>
+          </b-form-row>
         </div>
         <div class="half-circle-spinner mt-5" v-if="dataLoading">
           <div class="circle circle-1"></div>
@@ -345,11 +371,20 @@ export default class DeliverySpaceUpdate extends BaseComponent {
 
   // TODO: 이미지 리스트 상 삭제 리팩토링 필요.. 음..
   // delete images
-  deleteImages(image) {
+  deleteNewImages(image) {
     if (this.newImages.includes(image)) {
       const index = this.newImages.indexOf(image);
       if (index > -1) {
         this.newImages.splice(index, 1);
+      }
+    }
+  }
+
+  deleteOldImages(image) {
+    if (this.uploadImages.includes(image)) {
+      const index = this.uploadImages.indexOf(image);
+      if (index > -1) {
+        this.uploadImages.splice(index, 1);
       }
     }
   }
@@ -367,11 +402,10 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       this.deliverySpaceUpdateDto.brandIds = this.brandIds;
     }
 
-    console.log(this.deliverySpaceUpdateDto);
-    // if (this.uploadImages && this.uploadImages.length > 0) {
-    //   this.deliverySpaceUpdateDto.images = this.uploadImages;
-    // }
-    delete this.deliverySpaceUpdateDto.images;
+    if (this.uploadImages && this.uploadImages.length > 0) {
+      this.deliverySpaceUpdateDto.images = this.uploadImages;
+      this.deliverySpaceUpdateDto.newImages = this.newImages;
+    }
 
     DeliverySpaceService.update(
       this.$route.params.id,
@@ -380,6 +414,7 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       if (res) {
         this.changedImage = false;
         this.deliverySpaceUpdateDto = new DeliverySpaceUpdateDto();
+        DeliverySpaceService.findOne(this.$route.params.id);
         this.$root.$emit('find_delivery_space');
         toast.success('수정완료');
       }
