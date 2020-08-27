@@ -78,31 +78,6 @@
             }}</option>
           </select>
         </div>
-        <div class="col-6 col-lg-2 mb-3">
-          <label for="company">업체명</label>
-          <select
-            class="custom-select"
-            id="company"
-            v-model="founderConsultSearchDto.companyNo"
-          >
-            <option value selected>전체</option>
-            <option
-              v-for="company in companySelect"
-              :key="company.no"
-              :value="company.no"
-              >{{ company.nameKr }}</option
-            >
-          </select>
-        </div>
-        <!-- <div class="col-6 col-lg-2 mb-3">
-          <label for="company_district">업체 지점</label>
-          <input
-            type="text"
-            class="form-control"
-            id="company_district"
-            v-model="founderConsultSearchDto.companyDistrictNameKr"
-          />
-        </div> -->
       </div>
       <!-- second row -->
       <div class="form-row">
@@ -243,21 +218,6 @@
             >
               ADDRESS
             </th>
-
-            <th
-              scope="col"
-              v-bind:class="{ highlighted: founderConsultSearchDto.companyNo }"
-            >
-              COMPANY
-            </th>
-            <th
-              scope="col"
-              v-bind:class="{
-                highlighted: founderConsultSearchDto.companyDistrictNameKr,
-              }"
-            >
-              DISTRICT
-            </th>
             <th
               scope="col"
               v-bind:class="{ highlighted: founderConsultSearchDto.hopeTime }"
@@ -322,32 +282,6 @@
               <div v-if="founderConsult.space">
                 {{ founderConsult.space.address }}
                 {{ founderConsult.space.detailAddress }}
-              </div>
-            </td>
-            <td v-if="founderConsult.space.companyDistricts">
-              <div
-                v-for="company in founderConsult.space.companyDistricts"
-                :key="company.no"
-              >
-                <div v-if="company.company.nameKr">
-                  <router-link
-                    :to="{
-                      name: 'CompanyDetail',
-                      params: {
-                        id: company.company.no,
-                      },
-                    }"
-                    >{{ company.company.nameKr }}</router-link
-                  >
-                </div>
-              </div>
-            </td>
-            <td>
-              <div
-                v-for="company in founderConsult.space.companyDistricts"
-                :key="company.no"
-              >
-                <div v-if="company.company.nameKr">{{ company.nameKr }}</div>
               </div>
             </td>
             <td>
