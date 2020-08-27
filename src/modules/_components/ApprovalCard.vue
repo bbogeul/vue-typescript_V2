@@ -9,29 +9,42 @@
       <div class="border rounded bg-light p-3 mt-4">
         <template v-if="data[status] === 'UPDATE_APPROVAL'">
           <h5 class="text-danger">승인 요청 항목</h5>
-          <div v-if="data[histories]" class="py-2 mt-3 mb-2 border-top border-bottom">
+          <div
+            v-if="data[histories]"
+            class="py-2 mt-3 mb-2 border-top border-bottom"
+          >
             <ul>
               <li v-for="(value, name) in data[histories][0]" :key="name">
-                <span
-                  v-if="histories === 'companyDistrictHistories'"
-                >{{ name | stringDistrictTransformer }}</span>
-                <span v-else>{{ name | stringTransformer }}</span>
-                :
-                <div v-if="value[0] && value[0].endpoint">
-                  <b-img-lazy
-                    :src="value[0].endpoint"
-                    :alt="value[0].originFilename"
-                    style="max-height:80px"
-                  ></b-img-lazy>
+                <div v-if="value.length > 0">
+                  <span v-if="histories === 'companyDistrictHistories'">{{
+                    name | stringDistrictTransformer
+                  }}</span>
+                  <span v-else>{{ name | stringTransformer }}</span>
+                  :
+                  <span v-if="value[0].endpoint">
+                    <b-img-lazy
+                      :src="value[0].endpoint"
+                      :alt="value[0].originFilename"
+                      style="max-height:80px"
+                    ></b-img-lazy>
+                  </span>
+                  <span v-else>{{ value }}</span>
                 </div>
-                <span v-else>{{ value }}</span>
               </li>
             </ul>
           </div>
         </template>
         <div class="text-right">
-          <b-button variant="primary" class="mx-1" @click="updateApproval()">승인</b-button>
-          <b-button variant="secondary" v-b-modal.refusal_info class="mx-1" v-if="dto">거절</b-button>
+          <b-button variant="primary" class="mx-1" @click="updateApproval()"
+            >승인</b-button
+          >
+          <b-button
+            variant="secondary"
+            v-b-modal.refusal_info
+            class="mx-1"
+            v-if="dto"
+            >거절</b-button
+          >
         </div>
       </div>
     </template>
@@ -42,24 +55,41 @@
           <h5 class="text-danger">승인 거절 사유</h5>
         </div>
         <div v-if="data[histories][0]">
-          <ul v-if="data[histories][0].refusalReasons" class="py-2 mt-3 border-top border-bottom">
-            <li v-for="(value, name) in data[histories][0].refusalReasons" :key="name">
+          <ul
+            v-if="data[histories][0].refusalReasons"
+            class="py-2 mt-3 border-top border-bottom"
+          >
+            <li
+              v-for="(value, name) in data[histories][0].refusalReasons"
+              :key="name"
+            >
               <span :class="{ 'text-danger': value }">
-                <span
-                  v-if="histories === 'companyDistrictUpdateHistories'"
-                >{{ name | stringDistrictTransformer }}</span>
+                <span v-if="histories === 'companyDistrictUpdateHistories'">{{
+                  name | stringDistrictTransformer
+                }}</span>
                 <span v-else>{{ name | stringTransformer }}</span>
               </span>
             </li>
           </ul>
-          <p v-if="data[histories][0].refusalDesc" class="mt-2">{{ data[histories][0].refusalDesc }}</p>
+          <p v-if="data[histories][0].refusalDesc" class="mt-2">
+            {{ data[histories][0].refusalDesc }}
+          </p>
         </div>
       </div>
     </template>
     <!-- 거절 사유 모달 -->
-    <b-modal id="refusal_info" title="승인 거절 사유" @ok="updateRefusal()" v-if="dto">
+    <b-modal
+      id="refusal_info"
+      title="승인 거절 사유"
+      @ok="updateRefusal()"
+      v-if="dto"
+    >
       <div v-if="data[histories]">
-        <div class="form-check" v-for="(value, name) in data[histories][0]" :key="name">
+        <div
+          class="form-check"
+          v-for="(value, name) in data[histories][0]"
+          :key="name"
+        >
           <input
             type="checkbox"
             v-model="reasonDto[name]"
@@ -68,7 +98,9 @@
             :id="name"
           />
           <label :for="name">
-            <span v-if="histories === 'companyDistrictHistories'">{{ name | stringTransformer }}</span>
+            <span v-if="histories === 'companyDistrictHistories'">{{
+              name | stringTransformer
+            }}</span>
             <span v-else>{{ name | stringTransformer }}</span>
           </label>
         </div>
