@@ -159,11 +159,8 @@
           >
         </div>
         <div v-if="!dataLoading">
-          <b-form-row no-gutters>
-            <div
-              v-if="uploadImages && uploadImages.length > 0"
-              class="attatchments-list mt-2"
-            >
+          <b-form-row no-gutters class="attatchments-list mt-2">
+            <template v-if="uploadImages && uploadImages.length > 0">
               <b-col
                 cols="2"
                 v-for="images in uploadImages"
@@ -178,18 +175,15 @@
                     class="border rounded"
                   />
                   <b-icon
-                    icon="backspace-fill"
+                    icon="x-circle-fill"
                     variant="danger"
                     class="btn-delete-item"
                     @click="deleteOldImages(images)"
                   ></b-icon>
                 </div>
               </b-col>
-            </div>
-            <div
-              v-if="newImages && newImages.length > 0"
-              class="attatchments-list mt-2"
-            >
+            </template>
+            <template v-if="newImages && newImages.length > 0">
               <b-col
                 cols="2"
                 v-for="images in newImages"
@@ -204,14 +198,14 @@
                     class="border rounded"
                   />
                   <b-icon
-                    icon="backspace-fill"
+                    icon="x-circle-fill"
                     variant="danger"
                     class="btn-delete-item"
                     @click="deleteNewImages(images)"
                   ></b-icon>
                 </div>
               </b-col>
-            </div>
+            </template>
           </b-form-row>
         </div>
         <div class="half-circle-spinner mt-5" v-if="dataLoading">

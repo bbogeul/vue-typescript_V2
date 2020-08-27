@@ -187,6 +187,10 @@ img {
 
 // attatchments file
 .attatchments-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
   .attatchments-list-item {
     position: relative;
     img {
