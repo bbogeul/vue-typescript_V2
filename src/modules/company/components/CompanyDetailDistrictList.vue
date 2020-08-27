@@ -1,5 +1,5 @@
 <template>
-  <div v-if="companyDistrictListCount > 0">
+  <div v-if="companyDistrictListCount > 0" class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>

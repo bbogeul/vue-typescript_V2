@@ -293,11 +293,17 @@
                 {{ founderConsult.nanudaUser.genderInfo.value }}
               </div>
             </td>
-            <td v-if="founderConsult.deliverySpaces">
-              {{ founderConsult.deliverySpaces.companyDistrict.company.nameKr }}
+            <td>
+              <div v-if="founderConsult.deliverySpaces">
+                {{
+                  founderConsult.deliverySpaces.companyDistrict.company.nameKr
+                }}
+              </div>
             </td>
-            <td v-if="founderConsult.deliverySpaces">
-              {{ founderConsult.deliverySpaces.companyDistrict.nameKr }}
+            <td>
+              <div v-if="founderConsult.deliverySpaces">
+                {{ founderConsult.deliverySpaces.companyDistrict.nameKr }}
+              </div>
             </td>
             <td>
               <div v-if="founderConsult.availableTime">
@@ -338,16 +344,18 @@
                 >{{ founderConsult.codeManagement.value }}</b-badge
               >
             </td>
-            <td
-              v-if="
-                founderConsult.deliverySpaces &&
-                  founderConsult.deliverySpaces.contracts
-              "
-            >
-              {{
-                founderConsult.deliverySpaces.quantity -
-                  founderConsult.deliverySpaces.contracts.length
-              }}/{{ founderConsult.deliverySpaces.quantity }}
+            <td>
+              <div
+                v-if="
+                  founderConsult.deliverySpaces &&
+                    founderConsult.deliverySpaces.contracts
+                "
+              >
+                {{
+                  founderConsult.deliverySpaces.quantity -
+                    founderConsult.deliverySpaces.contracts.length
+                }}/{{ founderConsult.deliverySpaces.quantity }}
+              </div>
             </td>
             <td>
               <router-link
