@@ -11,12 +11,7 @@
     <b-form-row>
       <b-col lg="12" class="text-right mb-3">
         <b-row no-gutters align-h="end">
-          <b-form-group
-            label="삭제 활성화"
-            label-size="sm"
-            label-text-align="right"
-            label-cols="8"
-          >
+          <b-form-group label="삭제 활성화" label-size="sm" label-text-align="right" label-cols="8">
             <b-form-checkbox
               switch
               size="lg"
@@ -32,57 +27,39 @@
           타입명
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.typeName"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.typeName"></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>건물명</label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.buildingName"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.buildingName"></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           평수
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.size"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.size"></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           공간 수
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="number"
-          v-model="deliverySpaceUpdateDto.quantity"
-        ></b-form-input>
+        <b-form-input type="number" v-model="deliverySpaceUpdateDto.quantity"></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           보증금 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.deposit"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.deposit"></b-form-input>
       </b-col>
       <b-col lg="3" class="mb-3">
         <label>
           월 임대료 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.monthlyRentFee"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.monthlyRentFee"></b-form-input>
       </b-col>
 
       <b-col lg="3" class="mb-3">
@@ -90,10 +67,7 @@
           월 관리비 (만원 단위)
           <span class="red-text">*</span>
         </label>
-        <b-form-input
-          type="text"
-          v-model="deliverySpaceUpdateDto.monthlyUtilityFee"
-        ></b-form-input>
+        <b-form-input type="text" v-model="deliverySpaceUpdateDto.monthlyUtilityFee"></b-form-input>
       </b-col>
       <b-col lg="12" class="mb-3">
         <label>공간 옵션</label>
@@ -107,8 +81,7 @@
             :key="option.no"
             :value="option.no"
             @change="addDeliverySpaceOption(option.no)"
-            >{{ option.deliverySpaceOptionName }}</b-form-checkbox
-          >
+          >{{ option.deliverySpaceOptionName }}</b-form-checkbox>
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12" class="mb-3">
@@ -123,8 +96,7 @@
             :key="amenity.no"
             :value="amenity.no"
             @change="addAmenity(amenity.no)"
-            >{{ amenity.amenityName }}</b-form-checkbox
-          >
+          >{{ amenity.amenityName }}</b-form-checkbox>
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12" class="mb-3">
@@ -139,8 +111,7 @@
             :key="brand.no"
             :value="brand.no"
             @change="addBrand(brand.no)"
-            >{{ brand.nameKr }}</b-form-checkbox
-          >
+          >{{ brand.nameKr }}</b-form-checkbox>
         </b-form-checkbox-group>
       </b-col>
       <b-col lg="12">
@@ -154,9 +125,7 @@
             v-on:change="upload($event.target.files)"
             multiple
           />
-          <label class="custom-file-label" for="customFileLang"
-            >이미지 변경</label
-          >
+          <label class="custom-file-label" for="customFileLang">이미지 변경</label>
         </div>
         <div v-if="!dataLoading">
           <b-form-row no-gutters class="attatchments-list mt-2">
@@ -168,12 +137,7 @@
                 class="p-2"
               >
                 <div class="attatchments-list-item">
-                  <b-img
-                    :src="images.endpoint"
-                    alt
-                    style="max-width:100%"
-                    class="border rounded"
-                  />
+                  <b-img :src="images.endpoint" alt style="max-width:100%" class="border rounded" />
                   <b-icon
                     icon="x-circle-fill"
                     variant="danger"
@@ -184,19 +148,9 @@
               </b-col>
             </template>
             <template v-if="newImages && newImages.length > 0">
-              <b-col
-                cols="2"
-                v-for="images in newImages"
-                :key="images.originFileName"
-                class="p-2"
-              >
+              <b-col cols="2" v-for="images in newImages" :key="images.originFileName" class="p-2">
                 <div class="attatchments-list-item">
-                  <b-img
-                    :src="images.endpoint"
-                    alt
-                    style="max-width:100%"
-                    class="border rounded"
-                  />
+                  <b-img :src="images.endpoint" alt style="max-width:100%" class="border rounded" />
                   <b-icon
                     icon="x-circle-fill"
                     variant="danger"
@@ -404,11 +358,21 @@ export default class DeliverySpaceUpdate extends BaseComponent {
     }
     if (
       this.uploadImages &&
-      this.uploadImages.length === 0 &&
+      this.uploadImages.length < 1 &&
       this.newImages &&
       this.newImages.length > 0
     ) {
       this.deliverySpaceUpdateDto.newImages = this.newImages;
+    }
+
+    if (
+      this.uploadImages &&
+      this.uploadImages.length < 1 &&
+      this.newImages &&
+      this.newImages.length < 1
+    ) {
+      this.deliverySpaceUpdateDto.newImages = [];
+      this.deliverySpaceUpdateDto.images = [];
     }
 
     DeliverySpaceService.update(

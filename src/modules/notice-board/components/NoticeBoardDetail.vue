@@ -2,16 +2,19 @@
   <div class="board-view">
     <div class="board-view-header">
       <div class="board-view-title">
-        <b-badge variant="warning" class="board-view-category">
-          {{ noticeBoard.noticeBoardType | enumTransformer }}
-        </b-badge>
+        <b-badge
+          variant="warning"
+          class="board-view-category"
+        >{{ noticeBoard.noticeBoardType | enumTransformer }}</b-badge>
         <h3>{{ noticeBoard.title }}</h3>
       </div>
       <div class="border-view-info">
         <span class="baord-view-user">{{ noticeBoard.adminNo }}</span>
-        <span class="baord-view-date">{{
+        <span class="baord-view-date">
+          {{
           noticeBoard.createdAt | dateTransformer
-        }}</span>
+          }}
+        </span>
       </div>
     </div>
     <div class="board-view-body">
@@ -20,9 +23,7 @@
         <span>{{ noticeBoard.started }}</span> ~
         <span>{{ noticeBoard.ended }}</span>
       </div>
-      <div v-html="noticeBoard.content" class="board-view-content">
-        {{ noticeBoard.content }}
-      </div>
+      <div v-html="noticeBoard.content" class="board-view-content">{{ noticeBoard.content }}</div>
       <div v-if="noticeBoard.url" class="board-view-url">
         <strong>URL</strong>
         <a :href="noticeBoard.url" target="_blank">{{ noticeBoard.url }}</a>
@@ -30,9 +31,8 @@
     </div>
     <div class="board-view-footer">
       <div class="text-right">
-        <router-link to="/notice-board" class="btn btn-secondary text-center"
-          >목록으로</router-link
-        >
+        <router-link to="/notice-board" class="btn btn-secondary text-center">목록으로</router-link>
+        <button class="btn btn-danger text-center" @click="deleteOne()">삭제하기</button>
       </div>
     </div>
   </div>
@@ -45,6 +45,7 @@ import NoticeBoardService from '../../../services/notice-board.service';
 import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
 import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
 import { ATTACHMENT_REASON_TYPE } from '../../../services/shared/file-upload/dto';
+import toast from '../../../../resources/assets/js/services/toast.js';
 
 @Component({
   name: 'NoticeBoardDetail',
@@ -58,6 +59,13 @@ export default class NoticeBoardDetail extends BaseComponent {
       if (res) {
         this.noticeBoard = res.data;
       }
+    });
+  }
+
+  deleteOne() {
+    NoticeBoardService.deleteOne(this.$route.params.id).subscribe(res => {
+      toast.success('공지사항 삭제했습니다');
+      this.$router.push('/notice-board');
     });
   }
 

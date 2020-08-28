@@ -38,6 +38,14 @@ class NoticeBoardService extends BaseService {
   findOne(noticeBoardNo: string) {
     return super.get<NoticeBoardDto>(`admin/notice-board/${noticeBoardNo}`);
   }
+
+  /**
+   * delete one for admin
+   * @param noticeBoardNo
+   */
+  deleteOne(noticeBoardNo: string) {
+    return super.delete<any>(`admin/notice-board/${noticeBoardNo}`);
+  }
 }
 
 export default new NoticeBoardService();
