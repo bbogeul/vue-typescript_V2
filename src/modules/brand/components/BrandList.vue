@@ -141,6 +141,7 @@
           <img
             :src="logo.endpoint"
             class="rounded mx-auto d-block company-logo"
+            style="max-height:80px"
           />
         </div>
       </div>

@@ -27,6 +27,10 @@ class BrandService extends BaseService {
   findForSelect() {
     return super.get<BrandDto[]>('admin/brand/select-option');
   }
+
+  deleteBrand(brandNo) {
+    return super.delete<BrandDto>(`admin/brand/${brandNo}`);
+  }
 }
 
 export default new BrandService();

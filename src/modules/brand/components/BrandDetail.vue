@@ -11,13 +11,18 @@
       <b-col md="6">
         <BaseCard title="브랜드 정보">
           <template v-slot:head>
-            <b-button
-              variant="primary"
-              v-b-modal.update_brand
-              @click="showUpdateModal()"
-            >
-              수정하기
-            </b-button>
+            <div>
+              <b-button variant="danger" v-b-modal.delete_brand>
+                삭제하기
+              </b-button>
+              <b-button
+                variant="primary"
+                v-b-modal.update_brand
+                @click="showUpdateModal()"
+              >
+                수정하기
+              </b-button>
+            </div>
           </template>
           <template v-slot:body>
             <div>
@@ -157,6 +162,23 @@
         </b-col>
       </b-form-row>
     </b-modal>
+    <!-- 브랜드 삭제하기 -->
+    <b-modal
+      id="delete_brand"
+      title="브랜드 삭제"
+      header-bg-variant="danger"
+      header-text-variant="light"
+      hide-footer
+    >
+      <div class="text-center">
+        <p>
+          <b>정말로 삭제하시겠습니까?</b>
+        </p>
+        <div class="mt-2 text-right">
+          <b-button variant="danger" @click="deleteBrand()">삭제</b-button>
+        </div>
+      </div>
+    </b-modal>
   </section>
 </template>
 <script lang="ts">
@@ -247,6 +269,15 @@ export default class BrandDetail extends BaseComponent {
   removeBrandLogo() {
     this.newBrandLogo = [];
     this.logoChanged = false;
+  }
+
+  deleteBrand() {
+    BrandService.deleteBrand(this.$route.params.id).subscribe(res => {
+      if (res) {
+        toast.success('삭제완료');
+        this.$router.push('/brand');
+      }
+    });
   }
 
   created() {
