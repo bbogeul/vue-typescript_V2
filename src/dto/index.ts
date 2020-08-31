@@ -22,3 +22,4 @@ export * from './nanuda-user';
 export * from './notice-board';
 export * from './space';
 export * from './space-type';
+export * from './sms';

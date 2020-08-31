@@ -5,4 +5,5 @@ export class DeliverySpaceListDto extends DeliverySpaceDto {
   companyDistrictName?: string;
   companyName?: string;
   companyNo?: number;
+  brandName?: string;
 }

@@ -1,36 +1,33 @@
 <template>
   <section>
-    <SectionTitle title="지점 타입 관리" divider> </SectionTitle>
+    <SectionTitle title="지점 타입 관리" divider></SectionTitle>
     <div class="search-box my-4" v-on:keyup.enter="search()">
       <b-form-row>
         <b-col cols="6" md="2" class="mb-3">
           <b-form-group label="업체명">
-            <b-form-input
-              list="company_lsit"
-              v-model="deliverySpaceSearchDto.companyName"
-            ></b-form-input>
+            <b-form-input list="company_lsit" v-model="deliverySpaceSearchDto.companyName"></b-form-input>
             <datalist id="company_lsit">
               <option
                 v-for="compay in companySelect"
                 :key="compay.no"
                 :value="compay.nameKr"
-                >{{ compay.nameKr }}</option
-              >
+              >{{ compay.nameKr }}</option>
             </datalist>
           </b-form-group>
         </b-col>
         <b-col cols="6" md="3" class="mb-3">
           <b-form-group label="업체 지점명">
-            <b-form-input
-              v-model="deliverySpaceSearchDto.companyDistrictName"
-            ></b-form-input>
+            <b-form-input v-model="deliverySpaceSearchDto.companyDistrictName"></b-form-input>
           </b-form-group>
         </b-col>
         <b-col cols="6" md="3" class="mb-3">
           <b-form-group label="타입명">
-            <b-form-input
-              v-model="deliverySpaceSearchDto.typeName"
-            ></b-form-input>
+            <b-form-input v-model="deliverySpaceSearchDto.typeName"></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="6" md="3" class="mb-3">
+          <b-form-group label="브랜드명">
+            <b-form-input v-model="deliverySpaceSearchDto.brandName"></b-form-input>
           </b-form-group>
         </b-col>
       </b-form-row>
@@ -49,104 +46,63 @@
           <strong class="text-primary">{{ deliverySpaceListCount }}</strong>
         </h5>
       </div>
-      <b-button variant="primary" v-b-modal.add_delivery_space
-        >지점 타입 추가</b-button
-      >
+      <b-button variant="primary" v-b-modal.add_delivery_space>지점 타입 추가</b-button>
     </div>
     <div v-if="!dataLoading">
       <div class="table-bordered table-responsive">
-        <table
-          class="table table-hover table-sm table-nowrap"
-          v-if="deliverySpaceListCount"
-        >
+        <table class="table table-hover table-sm table-nowrap" v-if="deliverySpaceListCount">
           <thead>
             <tr>
-              <th
-                scope="col"
-                v-bind:class="{ highlighted: deliverySpaceSearchDto.no }"
-              >
-                ID
-              </th>
+              <th scope="col" v-bind:class="{ highlighted: deliverySpaceSearchDto.no }">ID</th>
               <th
                 scope="col"
                 v-bind:class="{
                   highlighted: deliverySpaceSearchDto.companyName,
                 }"
-              >
-                업체명
-              </th>
+              >업체명</th>
               <th
                 scope="col"
                 v-bind:class="{
                   highlighted: deliverySpaceSearchDto.companyDistrictName,
                 }"
-              >
-                지점명
-              </th>
-              <th
-                scope="col"
-                v-bind:class="{ highlighted: deliverySpaceSearchDto.typeName }"
-              >
-                타입명
-              </th>
+              >지점명</th>
+              <th scope="col" v-bind:class="{ highlighted: deliverySpaceSearchDto.typeName }">타입명</th>
               <th
                 scope="col"
                 v-bind:class="{
                   highlighted: deliverySpaceSearchDto.buildingName,
                 }"
-              >
-                건물명
-              </th>
-              <th
-                scope="col"
-                v-bind:class="{ highlighted: deliverySpaceSearchDto.size }"
-              >
-                평수
-              </th>
-              <th
-                scope="col"
-                v-bind:class="{ highlighted: deliverySpaceSearchDto.deposit }"
-              >
-                보증금
-              </th>
+              >건물명</th>
+              <th scope="col" v-bind:class="{ highlighted: deliverySpaceSearchDto.size }">평수</th>
+              <th scope="col" v-bind:class="{ highlighted: deliverySpaceSearchDto.deposit }">보증금</th>
               <th
                 scope="col"
                 v-bind:class="{
                   highlighted: deliverySpaceSearchDto.monthlyRentFee,
                 }"
-              >
-                월 임대료
-              </th>
+              >월 임대료</th>
               <th
                 scope="col"
                 v-bind:class="{
                   highlighted: deliverySpaceSearchDto.monthlyUtilityFee,
                 }"
-              >
-                월 관리비
-              </th>
+              >월 관리비</th>
               <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="type in deliverySpaceList" :key="type.no">
-              <td>
-                {{ type.no }}
+              <td>{{ type.no }}</td>
+              <td class="text-nowrap">
+                <div
+                  v-if="type.companyDistrict.company.nameKr"
+                >{{ type.companyDistrict.company.nameKr }}</div>
               </td>
               <td class="text-nowrap">
-                <div v-if="type.companyDistrict.company.nameKr">
-                  {{ type.companyDistrict.company.nameKr }}
-                </div>
-              </td>
-              <td class="text-nowrap">
-                <div v-if="type.companyDistrict.nameKr">
-                  {{ type.companyDistrict.nameKr }}
-                </div>
+                <div v-if="type.companyDistrict.nameKr">{{ type.companyDistrict.nameKr }}</div>
               </td>
               <td>
-                <div v-if="type.typeName">
-                  {{ type.typeName }}
-                </div>
+                <div v-if="type.typeName">{{ type.typeName }}</div>
               </td>
               <td>
                 <div v-if="type.buildingName">{{ type.buildingName }}</div>
@@ -156,14 +112,10 @@
                 <div v-if="type.deposit">{{ type.deposit }} 만원</div>
               </td>
               <td>
-                <div v-if="type.monthlyRentFee">
-                  {{ type.monthlyRentFee }} 만원
-                </div>
+                <div v-if="type.monthlyRentFee">{{ type.monthlyRentFee }} 만원</div>
               </td>
               <td>
-                <div v-if="type.monthlyUtilityFee">
-                  {{ type.monthlyUtilityFee }} 만원
-                </div>
+                <div v-if="type.monthlyUtilityFee">{{ type.monthlyUtilityFee }} 만원</div>
               </td>
               <td>
                 <router-link
@@ -175,8 +127,7 @@
                       id: type.no,
                     },
                   }"
-                  >상세보기</router-link
-                >
+                >상세보기</router-link>
               </td>
             </tr>
           </tbody>
