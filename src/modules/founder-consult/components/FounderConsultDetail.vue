@@ -436,6 +436,7 @@
       id="send_message"
       ok-title="전송"
       cancel-title="취소"
+      @ok="sendMessage()"
       :title="`${founderConsult.nanudaUser.name} 사용자에게 문자하기`"
     >
       <p class="mb-2">
@@ -446,9 +447,16 @@
           }}
         </b>
       </p>
-      <b-form-textarea id="message" placeholder="메세지를 입력해주세요.." rows="3" max-rows="6"></b-form-textarea>
+      <b-form-input placeholder="제목을 입력해주세요" id="title" v-model="adminSendMessageDto.title"></b-form-input>
+      <b-form-textarea
+        id="message"
+        placeholder="메세지를 입력해주세요.."
+        rows="3"
+        max-rows="6"
+        v-model="adminSendMessageDto.message"
+      ></b-form-textarea>
     </b-modal>
-
+    <br />
     <!-- 열람 상태 미열람 모달 -->
     <b-modal
       id="reverse-read"
@@ -518,6 +526,7 @@ import FounderConsultService from '../../../services/founder-consult.service';
 import AdminService from '../../../services/admin.service';
 import FoodCategoryService from '../../../services/food-category.service';
 import FounderConsultManagementService from '../../../services/founder-consult-management.service';
+import SmsService from '../../../services/sms.service';
 import {
   AdminDto,
   AdminListDto,
@@ -568,6 +577,7 @@ export default class FounderConsultDetail extends BaseComponent {
   private elapsedTime = null;
   private deliveredTime = new Date();
   private createdTime = new Date();
+  private adminSendMessageDto = new AdminSendMessageDto();
 
   // get status color
   getStatusColor(status) {
@@ -580,6 +590,14 @@ export default class FounderConsultDetail extends BaseComponent {
       this.founderConsultUpdateDto.gender = this.founderConsult.nanudaUser.gender;
     }
     this.getGender();
+  }
+
+  // send message to user
+  sendMessage() {
+    this.adminSendMessageDto.phone = this.founderConsult.nanudaUser.phone;
+    SmsService.sendMessage(this.adminSendMessageDto).subscribe(res => {
+      toast.success('문자가 발송 되었습니다.');
+    });
   }
 
   // 상담 내용 수정

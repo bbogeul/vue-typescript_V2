@@ -7,6 +7,7 @@ class SmsService extends BaseService {
   }
 
   sendMessage(adminSendMessageDto: AdminSendMessageDto) {
+    console.log(adminSendMessageDto);
     return super.post<any>('admin/send-message', adminSendMessageDto);
   }
 }
