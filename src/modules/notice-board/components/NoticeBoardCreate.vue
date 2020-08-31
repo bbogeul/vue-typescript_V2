@@ -111,20 +111,28 @@
         v-if="attachments && attachments.length > 0"
         class="board-view-attatchments"
       >
-        <span
-          v-for="attachment in attachments"
-          :key="attachment.originFileName"
-          class="attatchment-item m-2"
-        >
-          <a
-            :href="attachment.endpoint"
-            target="_blank"
-            download
-            class="btn btn-sm btn-primary"
-            >{{ attachment.originFilename }}
-            <b-icon icon="cloud-download" class="ml-2"></b-icon>
-          </a>
-        </span>
+        <div class="attatchments-list">
+          <span
+            v-for="(attachment, index) in attachments"
+            :key="attachment.originFileName"
+            class="attatchments-list-item m-1"
+          >
+            <a
+              :href="attachment.endpoint"
+              target="_blank"
+              download
+              class="btn btn-sm btn-outline-info"
+              >{{ attachment.originFilename }}
+              <b-icon icon="cloud-download" class="ml-2"></b-icon>
+            </a>
+            <b-icon
+              icon="x-circle-fill"
+              variant="info"
+              class="btn-delete-item"
+              @click="deleteAttachment(attachment, index)"
+            ></b-icon>
+          </span>
+        </div>
       </div>
       <div class="text-center mt-4">
         <b-row
@@ -227,6 +235,15 @@ export default class NoticeBoardCreate extends BaseComponent {
           ATTACHMENT_REASON_TYPE.SUCCESS,
       ),
     );
+  }
+
+  deleteAttachment(attachemnt, index) {
+    if (this.attachments.includes(attachemnt)) {
+      index = this.attachments.indexOf(attachemnt);
+      if (index > -1) {
+        this.attachments.splice(index, 1);
+      }
+    }
   }
 
   create() {

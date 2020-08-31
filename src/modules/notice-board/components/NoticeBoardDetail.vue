@@ -1,41 +1,79 @@
 <template>
-  <div class="board-view">
-    <div class="board-view-header">
-      <div class="board-view-title">
-        <b-badge
-          variant="warning"
-          class="board-view-category"
-        >{{ noticeBoard.noticeBoardType | enumTransformer }}</b-badge>
-        <h3>{{ noticeBoard.title }}</h3>
+  <section>
+    <div class="board-view">
+      <div class="board-view-header">
+        <div class="board-view-title">
+          <b-badge variant="warning" class="board-view-category">{{
+            noticeBoard.noticeBoardType | enumTransformer
+          }}</b-badge>
+          <h3>{{ noticeBoard.title }}</h3>
+        </div>
+        <div class="border-view-info">
+          <span class="baord-view-user">{{ noticeBoard.adminNo }}</span>
+          <span class="baord-view-date">
+            {{ noticeBoard.createdAt | dateTransformer }}
+          </span>
+        </div>
       </div>
-      <div class="border-view-info">
-        <span class="baord-view-user">{{ noticeBoard.adminNo }}</span>
-        <span class="baord-view-date">
-          {{
-          noticeBoard.createdAt | dateTransformer
-          }}
-        </span>
+      <div class="board-view-body">
+        <div v-if="noticeBoard.started">
+          <strong>이벤트 기간</strong>
+          <span>{{ noticeBoard.started }}</span> ~
+          <span>{{ noticeBoard.ended }}</span>
+        </div>
+        <div v-html="noticeBoard.content" class="board-view-content">
+          {{ noticeBoard.content }}
+        </div>
+        <div
+          v-if="noticeBoard.attachments && noticeBoard.attachments.length > 0"
+          class="board-view-attachments"
+        >
+          <a
+            :href="attachment.endpoint"
+            target="_blank"
+            download
+            class="btn btn-outline-info btn-small m-1"
+            v-for="attachment in noticeBoard.attachments"
+            :key="attachment.key"
+          >
+            {{ attachment.originFilename }}
+            <b-icon icon="cloud-download" class="ml-2"></b-icon>
+          </a>
+        </div>
+        <div v-if="noticeBoard.url" class="board-view-url">
+          <strong>URL</strong>
+          <a :href="noticeBoard.url" target="_blank">{{ noticeBoard.url }}</a>
+        </div>
+      </div>
+      <div class="board-view-footer">
+        <div class="text-right">
+          <router-link to="/notice-board" class="btn btn-secondary text-center"
+            >목록으로</router-link
+          >
+          <button class="btn btn-danger text-center" v-b-modal.delete_notice>
+            삭제하기
+          </button>
+        </div>
       </div>
     </div>
-    <div class="board-view-body">
-      <div v-if="noticeBoard.started">
-        <strong>이벤트 기간</strong>
-        <span>{{ noticeBoard.started }}</span> ~
-        <span>{{ noticeBoard.ended }}</span>
+    <!-- 공지사항 삭제 -->
+    <b-modal
+      id="delete_notice"
+      title="공지사항 삭제"
+      header-bg-variant="danger"
+      header-text-variant="light"
+      hide-footer
+    >
+      <div class="text-center">
+        <p>
+          <b>정말로 삭제하시겠습니까?</b>
+        </p>
+        <div class="mt-2 text-right">
+          <b-button variant="danger" @click="deleteOne()">삭제</b-button>
+        </div>
       </div>
-      <div v-html="noticeBoard.content" class="board-view-content">{{ noticeBoard.content }}</div>
-      <div v-if="noticeBoard.url" class="board-view-url">
-        <strong>URL</strong>
-        <a :href="noticeBoard.url" target="_blank">{{ noticeBoard.url }}</a>
-      </div>
-    </div>
-    <div class="board-view-footer">
-      <div class="text-right">
-        <router-link to="/notice-board" class="btn btn-secondary text-center">목록으로</router-link>
-        <button class="btn btn-danger text-center" @click="deleteOne()">삭제하기</button>
-      </div>
-    </div>
-  </div>
+    </b-modal>
+  </section>
 </template>
 <script lang="ts">
 import Component from 'vue-class-component';

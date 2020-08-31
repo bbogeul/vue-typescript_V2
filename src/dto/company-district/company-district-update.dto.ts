@@ -2,6 +2,7 @@ import { BaseDto } from '@/core';
 import { APPROVAL_STATUS } from '@/services/shared';
 import { AmenityDto } from '../amenity/amenity.dto';
 import { CompanyDistrictDto } from './company-district.dto';
+import { FileAttachmentDto } from '@/services/shared/file-upload';
 
 export class CompanyDistrictUpdateDto extends BaseDto<CompanyDistrictUpdateDto>
   implements Partial<CompanyDistrictDto> {
@@ -15,4 +16,5 @@ export class CompanyDistrictUpdateDto extends BaseDto<CompanyDistrictUpdateDto>
   amenityIds?: number[];
   lat?: string;
   lon?: string;
+  image?: FileAttachmentDto[];
 }
