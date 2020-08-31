@@ -1,6 +1,7 @@
 import { BaseDto } from '@/core';
 import { NOTICE_BOARD } from '@/services/shared';
 import { AdminDto } from '../admin';
+import { FileAttachmentDto } from '@/services/shared/file-upload';
 
 export class NoticeBoardDto extends BaseDto<NoticeBoardDto> {
   no?: number;
@@ -11,4 +12,5 @@ export class NoticeBoardDto extends BaseDto<NoticeBoardDto> {
   url?: string;
   admin: AdminDto;
   noticeBoardType?: NOTICE_BOARD;
+  attachments?: FileAttachmentDto[];
 }
