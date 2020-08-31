@@ -19,7 +19,7 @@
       >
     </b-row>
     <div class="row d-flex align-items-stretch">
-      <div class="col col-12 col-lg-6 my-3">
+      <div class="col col-12 col-lg-5 my-3">
         <BaseCard title="지점 정보">
           <template v-slot:head>
             <div v-if="companyDistrictDto.companyDistrictStatus === 'APPROVAL'">
@@ -141,7 +141,7 @@
           </template>
         </BaseCard>
       </div>
-      <div class="col col-12 col-lg-6 my-3">
+      <div class="col col-12 col-lg-7 my-3">
         <BaseCard title="타입 정보">
           <template v-slot:head>
             <b-button variant="primary" v-b-modal.add_delivery_space
