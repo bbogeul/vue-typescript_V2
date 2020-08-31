@@ -284,12 +284,31 @@
           >
             <th scope="row">{{ founderConsult.no }}</th>
             <td>{{ founderConsult.deliverySpaceNo }}</td>
-            <td>{{ founderConsult.nanudaUser.name }}</td>
+            <td>
+              <div
+                v-if="
+                  founderConsult.nanudaUser && founderConsult.nanudaUser.name
+                "
+              >
+                {{ founderConsult.nanudaUser.name }}
+              </div>
+            </td>
             <td class="text-nowrap">
-              {{ founderConsult.nanudaUser.phone | phoneTransformer }}
+              <div
+                v-if="
+                  founderConsult.nanudaUser && founderConsult.nanudaUser.phone
+                "
+              >
+                {{ founderConsult.nanudaUser.phone | phoneTransformer }}
+              </div>
             </td>
             <td>
-              <div v-if="founderConsult.nanudaUser.genderInfo">
+              <div
+                v-if="
+                  founderConsult.nanudaUser &&
+                    founderConsult.nanudaUser.genderInfo
+                "
+              >
                 {{ founderConsult.nanudaUser.genderInfo.value }}
               </div>
             </td>

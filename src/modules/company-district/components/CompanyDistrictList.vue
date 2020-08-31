@@ -414,6 +414,9 @@ export default class CompanyDistrictList extends BaseComponent {
   }
 
   createCompanyDidstrict() {
+    if (this.attachments.length > 0) {
+      this.companyDistrictCreateDto.image = this.attachments;
+    }
     CompanyDistrictService.createCompanyDistrict(
       this.companyDistrictCreateDto,
     ).subscribe(res => {
