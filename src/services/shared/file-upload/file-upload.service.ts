@@ -22,7 +22,10 @@ export enum UPLOAD_TYPE {
   POPUP = 'popup',
   INQUIRY = 'inquiry',
   COMPANY_LOGO = 'company-logo',
+  COMPANY_USER_ATTACHMENT = 'company-user-attachment',
+  COMPANY_DISTRICT = 'company-district',
   BRAND_LOGO = 'brand-logo',
+  NOTICE_BOARD = 'notice-board',
 }
 
 type UploadOptionConfig = {
@@ -37,6 +40,22 @@ class FileUploadService extends BaseService {
       sizeLimit: 1024 * 1024 * 10,
       fileType: FileType.IMAGE,
       mimeType: FileType.IMAGE,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PUBLIC,
+    },
+    [UPLOAD_TYPE.COMPANY_DISTRICT]: {
+      path: 'company-district',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.IMAGE,
+      mimeType: FileType.IMAGE,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PUBLIC,
+    },
+    [UPLOAD_TYPE.COMPANY_USER_ATTACHMENT]: {
+      path: 'company-user-attachment',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.DOCUMENT,
+      mimeType: FileType.DOCUMENT,
       accessType: FileAccessType.PUBLIC,
       acl: ACL.PUBLIC,
     },
@@ -84,6 +103,14 @@ class FileUploadService extends BaseService {
       sizeLimit: 1024 * 1024 * 10,
       fileType: FileType.IMAGE,
       mimeType: FileType.IMAGE,
+      accessType: FileAccessType.PUBLIC,
+      acl: ACL.PUBLIC,
+    },
+    [UPLOAD_TYPE.NOTICE_BOARD]: {
+      path: 'notice-board',
+      sizeLimit: 1024 * 1024 * 10,
+      fileType: FileType.DOCUMENT,
+      mimeType: FileType.DOCUMENT,
       accessType: FileAccessType.PUBLIC,
       acl: ACL.PUBLIC,
     },
