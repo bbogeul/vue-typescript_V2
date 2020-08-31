@@ -43,7 +43,7 @@
       </span>
       <br />
       <span style="font-size: 11px; margin-bottom:5px">
-        <i>로그인하시는 부분에 있어 문제가 발생하면 시스템팀에게 문의 바랍니다</i>
+        <i>로그인하는 부분에 있어 문제가 발생하면 시스템팀에게 문의 바랍니다</i>
       </span>
       <p class="mt-5 mb-3 text-muted">
         &copy;
