@@ -5,6 +5,14 @@ import { Pagination } from '@/common';
 class AmenityService extends BaseService {
   /**
    *
+   * @param filter
+   * @param pagination
+   */
+  findAll(filter: AmenityListDto, pagination?: Pagination) {
+    return super.paginate<AmenityDto>('admin/amenity', filter, pagination);
+  }
+  /**
+   *
    * @param amenityType
    */
   findAmenities(amenityType: string) {
@@ -17,6 +25,18 @@ class AmenityService extends BaseService {
    */
   create(amenity: AmenityDto) {
     return super.post<AmenityDto>(`admin/amenity`, amenity);
+  }
+
+  /**
+   *
+   * @param aminityNo
+   * @param amenityDto
+   */
+  update(aminityNo, amenityDto: AmenityDto) {
+    return super.patch<AmenityListDto>(
+      `admin/amenity/${aminityNo}`,
+      amenityDto,
+    );
   }
 }
 
