@@ -55,6 +55,16 @@ class DeliveryFounderConsultService extends BaseService {
       deliveryFounderConsultUpdateDto,
     );
   }
+
+  /**
+   * reverse read status
+   * @param founderConsultNo
+   */
+  reverseReadStatus(deliveryFounderConsultNo: string) {
+    return super.patch<DeliveryFounderConsultDto>(
+      `admin/delivery-founder-consult/${deliveryFounderConsultNo}/reverse-read-status`,
+    );
+  }
 }
 
 export default new DeliveryFounderConsultService();
