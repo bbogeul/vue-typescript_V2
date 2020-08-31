@@ -130,19 +130,14 @@
         <div v-if="!dataLoading">
           <b-form-row no-gutters class="attatchments-list mt-2">
             <template v-if="uploadImages && uploadImages.length > 0">
-              <b-col
-                cols="2"
-                v-for="images in uploadImages"
-                :key="images.originFileName"
-                class="p-2"
-              >
+              <b-col cols="2" v-for="(images, index) in uploadImages" :key="index" class="p-2">
                 <div class="attatchments-list-item">
                   <b-img :src="images.endpoint" alt style="max-width:100%" class="border rounded" />
                   <b-icon
                     icon="x-circle-fill"
                     variant="danger"
                     class="btn-delete-item"
-                    @click="deleteOldImages(images)"
+                    @click="deleteOldImages(images, index)"
                   ></b-icon>
                 </div>
               </b-col>
@@ -155,7 +150,7 @@
                     icon="x-circle-fill"
                     variant="danger"
                     class="btn-delete-item"
-                    @click="deleteNewImages(images)"
+                    @click="deleteNewImages(images, index)"
                   ></b-icon>
                 </div>
               </b-col>
@@ -321,19 +316,20 @@ export default class DeliverySpaceUpdate extends BaseComponent {
 
   // TODO: 이미지 리스트 상 삭제 리팩토링 필요.. 음..
   // delete images
-  deleteNewImages(image) {
+  deleteNewImages(image, index) {
     if (this.newImages.includes(image)) {
-      const index = this.newImages.indexOf(image);
+      index = this.newImages.indexOf(image);
       if (index > -1) {
         this.newImages.splice(index, 1);
       }
     }
   }
 
-  deleteOldImages(image) {
+  deleteOldImages(image, index) {
     if (this.uploadImages.includes(image)) {
-      const index = this.uploadImages.indexOf(image);
+      index = this.uploadImages.indexOf(image);
       if (index > -1) {
+        console.log(index);
         this.uploadImages.splice(index, 1);
       }
     }
@@ -362,9 +358,9 @@ export default class DeliverySpaceUpdate extends BaseComponent {
       this.newImages &&
       this.newImages.length > 0
     ) {
+      this.deliverySpaceUpdateDto.images = [];
       this.deliverySpaceUpdateDto.newImages = this.newImages;
     }
-
     if (
       this.uploadImages &&
       this.uploadImages.length < 1 &&
