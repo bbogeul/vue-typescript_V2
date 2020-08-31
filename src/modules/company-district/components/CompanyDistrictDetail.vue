@@ -33,8 +33,26 @@
           </template>
           <template v-slot:body>
             <div v-if="companyDistrictDto">
+              <div
+                v-if="
+                  companyDistrictDto.image &&
+                    companyDistrictDto.image.length > 0
+                "
+                class="mb-4"
+              >
+                <div
+                  v-for="image in companyDistrictDto.image"
+                  :key="image.endpoint"
+                >
+                  <b-img-lazy
+                    :src="image.endpoint"
+                    class="rounded mx-auto d-block company-logo"
+                    style="max-height:160px"
+                  />
+                </div>
+              </div>
               <div>
-                <ul>
+                <ul class="u-list">
                   <li v-if="companyDistrictDto.no">
                     지점 ID : <b>{{ companyDistrictDto.no }}</b>
                   </li>
@@ -142,8 +160,40 @@
       id="update_district"
       size="xl"
       title="지점 정보 수정"
-      @ok="updateDistrict()"
+      @hide="clearOutUpdateDto()"
+      @cancel="clearOutUpdateDto()"
+      @ok="updateCompanyDistrict()"
     >
+      <div
+        v-if="
+          companyDistrictDto.image &&
+            companyDistrictDto.image.length > 0 &&
+            !imageChanged
+        "
+        class="mb-4"
+      >
+        <div v-for="image in companyDistrictDto.image" :key="image.endpoint">
+          <b-img-lazy
+            :src="image.endpoint"
+            class="rounded mx-auto d-block company-logo"
+            style="max-height:160px"
+          />
+        </div>
+      </div>
+      <div v-if="newImage && newImage.length > 0 && imageChanged" class="mb-4">
+        <div v-for="image in newImage" :key="image.endpoint">
+          <b-img-lazy
+            :src="image.endpoint"
+            class="rounded mx-auto d-block company-logo"
+            style="max-height:160px"
+          />
+        </div>
+        <div class="text-center mt-2">
+          <b-button variant="danger" @click="removeDistrcitImage()"
+            >대표 이미지 삭제</b-button
+          >
+        </div>
+      </div>
       <div class="form-row">
         <div class="col-5 col-md-6 mb-3">
           <label>지점명</label>
@@ -178,7 +228,7 @@
           /> -->
         </div>
         <div class="col-12 col-md-6 mb-3">
-          <label>공용 시설 정보</label>
+          <label>공통 시설</label>
           <b-form-checkbox-group
             id="common_amenity"
             v-model="selectedAmenityIds"
@@ -191,6 +241,22 @@
               >{{ amenity.amenityName }}</b-form-checkbox
             >
           </b-form-checkbox-group>
+        </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label for="">파일첨부</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFileLang"
+              lang="kr"
+              v-on:change="upload($event.target.files)"
+              multiple
+            />
+            <label class="custom-file-label" for="customFileLang"
+              >파일 첨부</label
+            >
+          </div>
         </div>
       </div>
     </b-modal>
@@ -225,6 +291,11 @@ import BaseCard from '../../_components/BaseCard.vue';
 import DeliverySpaceList from './DeliverySpaceList.vue';
 import DeliverySpaceCreate from '../../delivery-space/components/DeliverySpaceCreate.vue';
 
+import { FileAttachmentDto } from '@/services/shared/file-upload';
+import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
+import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
+import { ATTACHMENT_REASON_TYPE } from '@/services/shared/file-upload';
+
 import toast from '../../../../resources/assets/js/services/toast.js';
 import { getStatusColor } from '../../../core/utils/status-color.util';
 
@@ -250,6 +321,8 @@ export default class CompanyDistrictDetail extends BaseComponent {
   private addressData = {
     address: '',
   };
+  private imageChanged = false;
+  private newImage: FileAttachmentDto[] = [];
 
   getStatusColor(status) {
     return getStatusColor(status);
@@ -270,6 +343,26 @@ export default class CompanyDistrictDetail extends BaseComponent {
     this.getAmenities();
   }
 
+  async upload(file: FileList) {
+    const attachments = await FileUploadService.upload(
+      UPLOAD_TYPE.COMPANY_DISTRICT,
+      file,
+    );
+    this.newImage = [];
+    this.newImage.push(
+      ...attachments.filter(
+        fileUpload =>
+          fileUpload.attachmentReasonType === ATTACHMENT_REASON_TYPE.SUCCESS,
+      ),
+    );
+    this.imageChanged = true;
+  }
+
+  removeDistrcitImage() {
+    this.newImage = [];
+    this.imageChanged = false;
+  }
+
   // 공용 시설 정보 리스트
   getAmenities() {
     AmenityService.findAmenities('common-facility').subscribe(res => {
@@ -278,9 +371,12 @@ export default class CompanyDistrictDetail extends BaseComponent {
   }
 
   // 지점 정보 수정
-  updateDistrict() {
+  updateCompanyDistrict() {
     if (this.selectedAmenityIds) {
       this.companyDistrictUpdateDto.amenityIds = this.selectedAmenityIds;
+    }
+    if (this.newImage.length > 0) {
+      this.companyDistrictUpdateDto.image = this.newImage;
     }
     CompanyDistrictService.update(
       this.$route.params.id,
@@ -293,7 +389,7 @@ export default class CompanyDistrictDetail extends BaseComponent {
     });
   }
 
-  //승인s
+  //승인
   updateApproval() {
     CompanyDistrictService.updateCompanyDistrictStatus(
       this.$route.params.id,
@@ -318,6 +414,11 @@ export default class CompanyDistrictDetail extends BaseComponent {
         toast.success('승인거절');
       }
     });
+  }
+
+  clearOutUpdateDto() {
+    this.companyDistrictUpdateDto = new CompanyDistrictUpdateDto();
+    this.findOne(this.$route.params.id);
   }
 
   // 지도 가져오기

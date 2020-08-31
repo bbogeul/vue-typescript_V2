@@ -200,6 +200,15 @@
       size="xl"
       @ok="createCompanyDidstrict()"
     >
+      <div v-if="attachments && attachments.length > 0" class="mb-4">
+        <div v-for="attachment in attachments" :key="attachment.endpoint">
+          <b-img-lazy
+            :src="attachment.endpoint"
+            class="rounded mx-auto d-block company-logo"
+            style="max-height:80px"
+          />
+        </div>
+      </div>
       <div class="form-row">
         <div class="col-12 col-md-6 mt-2">
           <label for="create_district_name_kr">업체 지점명</label>
@@ -276,6 +285,22 @@
             >
           </select>
         </div>
+        <div class="col-12 col-md-6 mt-2">
+          <label for="">파일첨부</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFileLang"
+              lang="kr"
+              v-on:change="upload($event.target.files)"
+              multiple
+            />
+            <label class="custom-file-label" for="customFileLang"
+              >파일 첨부</label
+            >
+          </div>
+        </div>
       </div>
     </b-modal>
 
@@ -305,6 +330,12 @@ import {
 } from '../../../services/shared';
 
 import AmenityService from '../../../services/amenity.service';
+
+import { FileAttachmentDto } from '@/services/shared/file-upload';
+import FileUploadService from '../../../services/shared/file-upload/file-upload.service';
+import { UPLOAD_TYPE } from '../../../services/shared/file-upload/file-upload.service';
+import { ATTACHMENT_REASON_TYPE } from '@/services/shared/file-upload';
+
 import { getStatusColor } from '../../../core/utils/status-color.util';
 
 @Component({
@@ -326,6 +357,7 @@ export default class CompanyDistrictList extends BaseComponent {
   };
 
   private commonAmenityList = [];
+  private attachments = [];
 
   getStatusColor(status) {
     return getStatusColor(status);
@@ -393,6 +425,20 @@ export default class CompanyDistrictList extends BaseComponent {
   clearOutCompanyDistrictDto() {
     this.companyDistrictCreateDto = new CompanyDistrictDto();
     this.getAmenities();
+  }
+
+  async upload(file: FileList) {
+    const attachments = await FileUploadService.upload(
+      UPLOAD_TYPE.COMPANY_DISTRICT,
+      file,
+    );
+    this.attachments = [];
+    this.attachments.push(
+      ...attachments.filter(
+        fileUpload =>
+          fileUpload.attachmentReasonType === ATTACHMENT_REASON_TYPE.SUCCESS,
+      ),
+    );
   }
 
   getAmenities() {
